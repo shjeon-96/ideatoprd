@@ -8,26 +8,26 @@ export function HeroSection() {
     <section className="relative min-h-[90vh] overflow-hidden bg-background">
       {/* Subtle gradient orb background */}
       <div
-        className="pointer-events-none absolute -right-1/4 -top-1/4 h-[800px] w-[800px] rounded-full opacity-20 blur-3xl"
+        className="pointer-events-none absolute -right-1/4 -top-1/4 h-[800px] w-[800px] rounded-full opacity-20 blur-3xl dark:opacity-30"
         style={{
           background:
-            'radial-gradient(circle, oklch(0.62 0.24 300) 0%, transparent 70%)',
+            'radial-gradient(circle, var(--gradient-start) 0%, transparent 70%)',
         }}
       />
       <div
-        className="pointer-events-none absolute -bottom-1/4 -left-1/4 h-[600px] w-[600px] rounded-full opacity-15 blur-3xl"
+        className="pointer-events-none absolute -bottom-1/4 -left-1/4 h-[600px] w-[600px] rounded-full opacity-15 blur-3xl dark:opacity-25"
         style={{
           background:
-            'radial-gradient(circle, oklch(0.65 0.25 330) 0%, transparent 70%)',
+            'radial-gradient(circle, var(--gradient-end) 0%, transparent 70%)',
         }}
       />
 
       {/* Grid pattern overlay */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.015]"
+        className="pointer-events-none absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"
         style={{
-          backgroundImage: `linear-gradient(oklch(0.2 0 0) 1px, transparent 1px),
-                           linear-gradient(90deg, oklch(0.2 0 0) 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(var(--foreground) 1px, transparent 1px),
+                           linear-gradient(90deg, var(--foreground) 1px, transparent 1px)`,
           backgroundSize: '60px 60px',
         }}
       />
