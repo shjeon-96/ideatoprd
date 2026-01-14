@@ -31,7 +31,7 @@
 
 - [x] **Phase 1: Foundation** - 프로젝트 기반 설정 (TDD, FSD, 설정) ✓
 - [x] **Phase 2: UI Foundation** - 디자인 시스템 + 랜딩 페이지 ✓
-- [ ] **Phase 3: Authentication** - Supabase Auth + NextAuth.js
+- [x] **Phase 3: Authentication** - Supabase Auth + Protected Routes ✓
 - [ ] **Phase 4: Database** - Supabase PostgreSQL + 타입 정의
 - [ ] **Phase 5: PRD Generation** - Claude API + 템플릿 시스템
 - [ ] **Phase 6: Credit System** - Lemon Squeezy 결제 통합
@@ -71,23 +71,25 @@ Key deliverables:
 - ✓ 반응형 레이아웃
 - ✓ 다크모드 완벽 지원 (prefers-color-scheme)
 
-### Phase 3: Authentication
+### Phase 3: Authentication ✓ COMPLETE
 
-**Goal**: Supabase Auth + NextAuth.js 통합 인증 시스템
+**Goal**: Supabase Auth + Protected Routes 인증 시스템
 **Depends on**: Phase 2
-**Research**: Likely (Supabase + NextAuth integration)
-**Research topics**: Supabase Auth with Next.js 16 App Router, NextAuth.js v5 adapter patterns, Google OAuth setup
-**Plans**: TBD (3-4 plans expected)
+**Research**: Completed (Supabase with Next.js App Router)
+**Plans**: 4 plans executed
 
 Key deliverables:
 
-- Supabase 프로젝트 설정
-- NextAuth.js v5 설정 (App Router)
-- Google OAuth 프로바이더
-- 이메일/비밀번호 인증
-- 세션 관리 + 미들웨어
-- 로그인/회원가입 페이지
-- AuthGuard 컴포넌트
+- ✓ Supabase 클라이언트 설정 (server/client helpers)
+- ✓ Auth 미들웨어 (세션 리프레시)
+- ✓ Auth 콜백 라우트 (OAuth 처리)
+- ✓ Auth feature 모듈 (FSD 구조)
+- ✓ 로그인/회원가입 페이지 (Google OAuth + Email)
+- ✓ AuthGuard 서버 컴포넌트
+- ✓ useUser 클라이언트 훅
+- ✓ 보호된 라우트 그룹 ((protected))
+- ✓ UserMenu 컴포넌트
+- ✓ 대시보드 플레이스홀더
 
 ### Phase 4: Database
 
@@ -169,7 +171,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | ----------------- | -------------- | ----------- | ---------- |
 | 1. Foundation     | 2/2            | Complete ✓  | 2026-01-14 |
 | 2. UI Foundation  | 3/3            | Complete ✓  | 2026-01-14 |
-| 3. Authentication | 0/TBD          | Not started | -          |
+| 3. Authentication | 4/4            | Complete ✓  | 2026-01-14 |
 | 4. Database       | 0/TBD          | Not started | -          |
 | 5. PRD Generation | 0/TBD          | Not started | -          |
 | 6. Credit System  | 0/TBD          | Not started | -          |
