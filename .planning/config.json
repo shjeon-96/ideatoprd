@@ -1,0 +1,16 @@
+{
+  "project": "ideatoprd",
+  "workflow": {
+    "mode": "standard",
+    "depth": "balanced",
+    "tdd": true,
+    "parallelAgents": true
+  },
+  "preferences": {
+    "language": "ko",
+    "codeComments": "en",
+    "commitMessages": "en"
+  },
+  "initialized": "2026-01-14",
+  "version": "1.0.0"
+}
