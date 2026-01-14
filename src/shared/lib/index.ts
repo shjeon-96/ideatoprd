@@ -9,4 +9,4 @@
  * - Must be pure functions or constants
  */
 
-export {};
+export { cn } from './utils';

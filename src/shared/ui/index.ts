@@ -9,4 +9,33 @@
  * - Must be presentation-only (no business logic)
  */
 
-export {};
+// Button
+export { Button, buttonVariants } from './button';
+
+// Card
+export {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardAction,
+  CardDescription,
+  CardContent,
+} from './card';
+
+// Input
+export { Input } from './input';
+
+// Dialog
+export {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
+} from './dialog';
