@@ -1,4 +1,5 @@
 import { AuthGuard } from "@/src/features/auth";
+import { UserMenu } from "@/src/widgets/common";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -28,8 +29,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
             >
               IdeaToPRD
             </a>
-            {/* UserMenu will be added in Task 3 */}
-            <div id="user-menu-slot" />
+            <UserMenu />
           </div>
         </header>
         <main className="container mx-auto px-4 py-8">{children}</main>
