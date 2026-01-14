@@ -8,6 +8,9 @@ export {
   signOut,
 } from "./actions/auth-actions";
 
+// Hooks
+export { useUser } from "./hooks/use-user";
+
 // UI Components
 export { OAuthButton } from "./ui/oauth-button";
 export { LoginForm } from "./ui/login-form";
