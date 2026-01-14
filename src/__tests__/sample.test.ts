@@ -7,24 +7,24 @@
 
 // Simple utility function for testing
 function formatPrdTitle(title: string): string {
-  return title.trim().replace(/\s+/g, " ");
+  return title.trim().replace(/\s+/g, ' ');
 }
 
-describe("TDD Workflow Verification", () => {
-  describe("formatPrdTitle", () => {
-    it("should trim whitespace from title", () => {
-      const result = formatPrdTitle("  My PRD Title  ");
-      expect(result).toBe("My PRD Title");
+describe('TDD Workflow Verification', () => {
+  describe('formatPrdTitle', () => {
+    it('should trim whitespace from title', () => {
+      const result = formatPrdTitle('  My PRD Title  ');
+      expect(result).toBe('My PRD Title');
     });
 
-    it("should normalize multiple spaces to single space", () => {
-      const result = formatPrdTitle("My   PRD    Title");
-      expect(result).toBe("My PRD Title");
+    it('should normalize multiple spaces to single space', () => {
+      const result = formatPrdTitle('My   PRD    Title');
+      expect(result).toBe('My PRD Title');
     });
 
-    it("should handle empty string", () => {
-      const result = formatPrdTitle("");
-      expect(result).toBe("");
+    it('should handle empty string', () => {
+      const result = formatPrdTitle('');
+      expect(result).toBe('');
     });
   });
 });

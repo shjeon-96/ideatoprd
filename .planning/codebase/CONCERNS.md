@@ -9,6 +9,7 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
 ## Tech Debt
 
 **React Compiler Not Enabled:**
+
 - File: `next.config.ts`
 - Issue: Empty configuration, React Compiler not activated
 - Why: Default Create Next App doesn't enable it
@@ -21,6 +22,7 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
   ```
 
 **Default Metadata Values:**
+
 - File: `app/layout.tsx` (lines 15-18)
 - Issue: Using "Create Next App" as title/description
 - Why: Template defaults not updated
@@ -28,18 +30,19 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
 - Fix approach: Update metadata to reflect actual project:
   ```typescript
   export const metadata: Metadata = {
-    title: "IdeaToPRD",
-    description: "AI-powered PRD generator",
+    title: 'IdeaToPRD',
+    description: 'AI-powered PRD generator',
   };
   ```
 
 ## Known Bugs
 
-*No bugs detected - this is a fresh boilerplate with no custom logic.*
+_No bugs detected - this is a fresh boilerplate with no custom logic._
 
 ## Security Considerations
 
 **Firebase Debug Log in Git:**
+
 - File: `firebase-debug.log`
 - Risk: Contains user email (tmdgns893758@gmail.com) and auth tokens
 - Current mitigation: None (file is tracked)
@@ -48,6 +51,7 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
   2. Remove from git history: `git rm --cached firebase-debug.log`
 
 **No Environment Variable Template:**
+
 - File: Project root (missing `.env.example`)
 - Risk: Developers may commit secrets if no template exists
 - Current mitigation: None
@@ -55,19 +59,20 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
 
 ## Performance Bottlenecks
 
-*No performance issues - minimal boilerplate code.*
+_No performance issues - minimal boilerplate code._
 
 ## Fragile Areas
 
-*No fragile areas - no custom logic implemented yet.*
+_No fragile areas - no custom logic implemented yet._
 
 ## Scaling Limits
 
-*Not applicable - no production deployment.*
+_Not applicable - no production deployment._
 
 ## Dependencies at Risk
 
-*All dependencies are current and maintained:*
+_All dependencies are current and maintained:_
+
 - Next.js 16.1.1 (latest)
 - React 19.2.3 (latest)
 - Tailwind CSS 4.x (latest)
@@ -76,18 +81,21 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
 ## Missing Critical Features
 
 **Testing Infrastructure:**
+
 - Problem: No test framework, no tests
 - Current workaround: Manual testing only
 - Blocks: TDD workflow, CI/CD quality gates
 - Implementation complexity: Low (install Vitest, add config)
 
 **Environment Configuration:**
+
 - Problem: No .env files or templates
 - Current workaround: Hardcoded values (none yet)
 - Blocks: Deployment, secrets management
 - Implementation complexity: Low (create .env.example)
 
 **Project Documentation:**
+
 - Problem: No project-specific CLAUDE.md
 - Current workaround: Relying on global instructions
 - Blocks: Context-specific AI assistance
@@ -96,6 +104,7 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
 ## Test Coverage Gaps
 
 **Entire Codebase:**
+
 - What's not tested: Everything (no tests exist)
 - Risk: Any future changes could break silently
 - Priority: High (before adding features)
@@ -104,21 +113,24 @@ This is a **fresh Create Next App project** (boilerplate stage). The codebase is
 ## Recommendations Summary
 
 ### Immediate (before any development):
+
 1. **Add `firebase-debug.log` to `.gitignore`** and remove from tracking
 2. **Create `.env.example`** template file
 3. **Enable React Compiler** in `next.config.ts`
 
 ### Short-term (before feature development):
+
 4. **Configure Vitest** for testing
 5. **Update metadata** in `app/layout.tsx`
 6. **Create project CLAUDE.md** with specific instructions
 
 ### Long-term:
+
 7. Set up CI/CD with GitHub Actions
 8. Add error boundaries and `not-found.tsx`
 9. Configure monitoring (Sentry or similar)
 
 ---
 
-*Concerns audit: 2026-01-14*
-*Update as issues are fixed or new ones discovered*
+_Concerns audit: 2026-01-14_
+_Update as issues are fixed or new ones discovered_
