@@ -41,17 +41,30 @@
 | 영역 | 기술 | 선택 이유 |
 |------|------|-----------|
 | Frontend | Next.js 16 (App Router) | 서버 컴포넌트, 이미 설정됨 |
-| Styling | Tailwind CSS 4 | 이미 설정됨 |
-| Auth | Firebase Auth + NextAuth.js | Google OAuth, 세션 관리 |
-| Database | Firebase Firestore | NoSQL, 실시간 업데이트 |
+| Styling | Tailwind CSS 4 + shadcn/ui | 유틸리티 CSS + 컴포넌트 |
+| Auth | **Supabase Auth** + NextAuth.js | Google OAuth, 세션 관리 |
+| Database | **Supabase PostgreSQL** | SQL, RLS 보안, 타입 생성 |
 | AI | Anthropic Claude API | PRD 생성 품질 |
 | Payment | Lemon Squeezy | 크레딧 판매 |
 | Hosting | Vercel | Next.js 최적화, Edge Functions |
+| Testing | **Vitest** + Testing Library | TDD 워크플로우 |
 
 **아키텍처 패턴:**
-- DDD (Domain-Driven Design) 구조 채택
+- **FSD (Feature-Sliced Design)** 구조 채택
 - 서버 액션으로 API 라우트 최소화
 - 타입 안전성: TypeScript strict mode
+- **TDD**: 테스트 먼저 작성 후 구현
+
+**FSD 디렉토리 구조:**
+```
+src/
+├── app/           # Next.js App Router (라우팅만)
+├── widgets/       # 페이지 구성 블록 (Header, Sidebar)
+├── features/      # 비즈니스 기능 (generate-prd, buy-credits)
+├── entities/      # 도메인 엔티티 (user, prd, purchase)
+├── shared/        # 공통 유틸, UI, API 클라이언트
+└── pages/         # 페이지별 컴포넌트 조합
+```
 
 ---
 
@@ -60,7 +73,7 @@
 **기술적 제약:**
 - React Compiler 활성화 필요 (현재 미설정)
 - 테스트 인프라 구축 필요 (현재 없음)
-- Firebase SDK 설치 필요 (CLI만 초기화됨)
+- Supabase 프로젝트 설정 필요
 
 **비즈니스 제약:**
 - MVP 2주 내 출시 목표
@@ -99,11 +112,22 @@
 - [x] 코드베이스 분석 (.planning/codebase/)
 
 **다음 단계:**
-- [ ] 프로젝트 초기 설정 (React Compiler, 테스트 등)
-- [ ] DDD 디렉토리 구조 생성
-- [ ] Firebase SDK 설치 및 설정
-- [ ] 인증 시스템 구현
-- [ ] 랜딩 페이지 구현
+- [ ] Phase 1: Foundation (React Compiler, Vitest, FSD 구조)
+- [ ] Phase 2: UI Foundation (디자인 시스템, 랜딩 페이지)
+- [ ] Phase 3: Authentication (Supabase Auth)
+- [ ] Phase 4: Database (Supabase PostgreSQL)
+- [ ] Phase 5: PRD Generation (Claude API)
+- [ ] Phase 6: Credit System (Lemon Squeezy)
+- [ ] Phase 7: Dashboard (히스토리, 내보내기)
+
+## Key Decisions
+
+| 날짜 | 결정 | 이유 |
+|------|------|------|
+| 2026-01-14 | Firebase → Supabase | PostgreSQL, RLS, 타입 생성 지원 |
+| 2026-01-14 | DDD → FSD | 기능 중심 구조, 확장성 |
+| 2026-01-14 | TDD 적용 | 품질 보장, 리팩토링 안전성 |
+| 2026-01-14 | frontend-design 플러그인 | 고품질 UI 빠른 구현 |
 
 ---
 
