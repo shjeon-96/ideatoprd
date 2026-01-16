@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { PRDForm, PRDViewer } from '@/src/features/prd-generation';
+import { PRDForm, PRDViewer, CREDITS_PER_VERSION } from '@/src/features/prd-generation';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { useUser } from '@/src/features/auth/hooks/use-user';
+import { InsufficientCreditsModal } from '@/src/features/purchase/ui/InsufficientCreditsModal';
+import { CreditBalance } from '@/src/features/purchase/ui/CreditBalance';
 
 export default function GeneratePage() {
   const { profile, isLoading: isUserLoading, refetch } = useUser();
@@ -11,12 +13,26 @@ export default function GeneratePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Credit modal state
+  const [showCreditModal, setShowCreditModal] = useState(false);
+  const [requiredCredits, setRequiredCredits] = useState(0);
+
   const handleGenerate = useCallback(
     async (data: {
       idea: string;
       template: PRDTemplate;
       version: PRDVersion;
     }) => {
+      // Check credits before generating
+      const creditsNeeded = CREDITS_PER_VERSION[data.version];
+      const currentCredits = profile?.credits ?? 0;
+
+      if (currentCredits < creditsNeeded) {
+        setRequiredCredits(creditsNeeded);
+        setShowCreditModal(true);
+        return;
+      }
+
       setIsGenerating(true);
       setContent('');
       setError(null);
@@ -30,6 +46,14 @@ export default function GeneratePage() {
 
         if (!response.ok) {
           const errorData = await response.json();
+
+          // Handle insufficient credits (402)
+          if (response.status === 402) {
+            setRequiredCredits(creditsNeeded);
+            setShowCreditModal(true);
+            return;
+          }
+
           throw new Error(errorData.error || 'PRD 생성에 실패했습니다.');
         }
 
@@ -59,7 +83,7 @@ export default function GeneratePage() {
         setIsGenerating(false);
       }
     },
-    [refetch]
+    [profile?.credits, refetch]
   );
 
   if (isUserLoading) {
@@ -79,12 +103,7 @@ export default function GeneratePage() {
             아이디어를 입력하면 AI가 PRD를 자동으로 생성합니다.
           </p>
         </div>
-        <div className="rounded-lg bg-primary/10 px-4 py-2">
-          <span className="text-sm text-muted-foreground">보유 크레딧</span>
-          <span className="ml-2 text-lg font-bold text-primary">
-            {profile?.credits ?? 0}
-          </span>
-        </div>
+        <CreditBalance credits={profile?.credits ?? 0} size="lg" />
       </div>
 
       {error && (
@@ -108,6 +127,14 @@ export default function GeneratePage() {
           <PRDViewer content={content} isStreaming={isGenerating} />
         </div>
       </div>
+
+      {/* Insufficient Credits Modal */}
+      <InsufficientCreditsModal
+        open={showCreditModal}
+        onOpenChange={setShowCreditModal}
+        currentCredits={profile?.credits ?? 0}
+        requiredCredits={requiredCredits}
+      />
     </div>
   );
 }
