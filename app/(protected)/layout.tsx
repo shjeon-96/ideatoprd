@@ -32,7 +32,7 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
             <UserMenu />
           </div>
         </header>
-        <main className="container mx-auto px-4 py-8">{children}</main>
+        {children}
       </div>
     </AuthGuard>
   );

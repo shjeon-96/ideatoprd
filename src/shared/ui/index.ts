@@ -9,6 +9,9 @@
  * - Must be presentation-only (no business logic)
  */
 
+// Badge
+export { Badge, badgeVariants, type BadgeProps } from './badge';
+
 // Button
 export { Button, buttonVariants } from './button';
 
