@@ -5,10 +5,11 @@
  *
  * Exports:
  * - model: Credit packages, variant mapping, webhook types
- * - api: Checkout actions (to be added in 06-02)
- * - ui: Purchase UI components (to be added in 06-02)
+ * - api: Checkout actions
+ * - ui: Purchase UI components
  */
 
 export { CREDIT_PACKAGES, type CreditPackageConfig } from './model';
 export { getPackageByVariantId } from './model';
-// UI exports will be added in 06-02
+export { CreditPackages, PurchaseButton, CreditBalance } from './ui';
+// Server action: import directly from ./api/create-checkout in server contexts
