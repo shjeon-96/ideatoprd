@@ -49,7 +49,9 @@ export async function signUpWithEmail(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/signup?message=이메일을 확인하여 가입을 완료해주세요.");
+  redirect(
+    `/signup?message=${encodeURIComponent("이메일을 확인하여 가입을 완료해주세요.")}`
+  );
 }
 
 /**

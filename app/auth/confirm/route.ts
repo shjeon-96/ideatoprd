@@ -31,8 +31,23 @@ export async function GET(request: NextRequest) {
       // Successful verification - redirect to intended destination
       return NextResponse.redirect(new URL(next, request.url));
     }
+
+    // Verification failed - redirect with error details
+    const errorUrl = new URL("/auth/error", request.url);
+    errorUrl.searchParams.set("error", error.code || "verification_failed");
+    errorUrl.searchParams.set(
+      "error_description",
+      encodeURIComponent(error.message)
+    );
+    return NextResponse.redirect(errorUrl);
   }
 
-  // Missing params or verification failed - redirect to error page
-  return NextResponse.redirect(new URL("/auth/error", request.url));
+  // Missing params - redirect to error page
+  const errorUrl = new URL("/auth/error", request.url);
+  errorUrl.searchParams.set("error", "missing_params");
+  errorUrl.searchParams.set(
+    "error_description",
+    encodeURIComponent("token_hash 또는 type 파라미터가 누락되었습니다.")
+  );
+  return NextResponse.redirect(errorUrl);
 }
