@@ -131,19 +131,21 @@ Key deliverables:
 
 **Goal**: Lemon Squeezy 결제 + 크레딧 관리 시스템
 **Depends on**: Phase 5
-**Research**: Likely (Lemon Squeezy API)
-**Research topics**: Lemon Squeezy API for Next.js, webhook signature verification, credit package patterns
-**Plans**: TBD (2-3 plans expected)
+**Research**: Completed (Lemon Squeezy API, webhook patterns)
+**Plans**: 3 plans created
 
 Key deliverables:
 
-- Lemon Squeezy 계정/상품 설정
-- 크레딧 패키지 (Starter, Basic, Pro, Business)
-- 결제 체크아웃 플로우
-- 웹훅 엔드포인트
-- 크레딧 차감/충전 로직
-- 크레딧 부족 모달
-- 구매 히스토리
+- Lemon Squeezy SDK 설정 (06-01)
+- 웹훅 핸들러 + 서명 검증 (06-01)
+- 크레딧 패키지 정의 (06-01)
+- Checkout Server Action (06-02)
+- Lemon.js Overlay 통합 (06-02)
+- 크레딧 패키지 선택 UI (06-02)
+- 구매 페이지 (06-02)
+- 크레딧 부족 모달 (06-03)
+- 헤더 크레딧 표시 (06-03)
+- 구매 히스토리 (06-03)
 
 ### Phase 7: Dashboard
 
@@ -172,9 +174,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Foundation     | 2/2            | Complete ✓  | 2026-01-14 |
 | 2. UI Foundation  | 3/3            | Complete ✓  | 2026-01-14 |
 | 3. Authentication | 4/4            | Complete ✓  | 2026-01-14 |
-| 4. Database       | 0/TBD          | Not started | -          |
-| 5. PRD Generation | 0/TBD          | Not started | -          |
-| 6. Credit System  | 0/TBD          | Not started | -          |
+| 4. Database       | 3/3            | Complete ✓  | 2026-01-16 |
+| 5. PRD Generation | 5/5            | Complete ✓  | 2026-01-16 |
+| 6. Credit System  | 0/3            | Planned     | -          |
 | 7. Dashboard      | 0/TBD          | Not started | -          |
 
 ---
