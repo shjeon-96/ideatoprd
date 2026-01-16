@@ -5,24 +5,24 @@
 See: .planning/PROJECT.md (updated 2026-01-14)
 
 **Core value:** 아이디어 한 줄로 PRD 자동 생성 (2-3일 → 5분)
-**Current focus:** Phase 5 — PRD Generation
+**Current focus:** Phase 7 — Dashboard
 
 ## Current Position
 
-Phase: 4 of 7 (Database) ✓ COMPLETE
-Plan: 3/3 in Phase 4
+Phase: 6 of 7 (Credit System) ✓ COMPLETE
+Plan: 3/3 in Phase 6
 Status: Phase complete
-Last activity: 2026-01-16 — Phase 4 complete via parallel execution
+Last activity: 2026-01-16 — Phase 6 complete via sequential execution
 
-Progress: ██████░░░░ 57%
+Progress: █████████░ 86%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 12
-- Average duration: ~11 min
-- Total execution time: ~143 min
+- Total plans completed: 18
+- Average duration: ~10 min
+- Total execution time: ~180 min
 
 **By Phase:**
 
@@ -32,11 +32,13 @@ Progress: ██████░░░░ 57%
 | 2. UI Foundation| 3/3   | ~40min | ~13min   |
 | 3. Authentication| 4/4  | ~60min | ~15min   |
 | 4. Database     | 3/3   | ~23min | ~8min    |
+| 5. PRD Generation| 3/3  | ~22min | ~7min    |
+| 6. Credit System| 3/3   | ~15min | ~5min    |
 
 **Recent Trend:**
 
-- Last 5 plans: 03-03, 03-04, 04-01, 04-02, 04-03
-- Trend: Parallel execution for independent plans, faster average time
+- Last 5 plans: 05-03, 06-01, 06-02, 06-03
+- Trend: Sequential execution for dependent plans, consistent fast execution
 
 ## Accumulated Context
 
@@ -55,6 +57,7 @@ Recent decisions affecting current work:
 - **Database**: JSONB for flexible PRD content, SELECT-only RLS for server-managed tables
 - **Credit System**: FOR UPDATE row locking, security definer functions
 - **Supabase CLI**: npx supabase (global install not supported)
+- **Payment**: Lemon Squeezy MoR + Overlay checkout (Server Action for URL)
 
 ### Deferred Issues
 
@@ -73,7 +76,7 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-16
-Stopped at: Phase 4 complete
+Stopped at: Phase 6 complete
 Resume file: None
 
 ## Phase 4 Deliverables Summary
@@ -105,3 +108,28 @@ Resume file: None
 - Protected route group ((protected))
 - UserMenu component with logout
 - Dashboard placeholder page
+
+## Phase 5 Deliverables Summary
+
+- Anthropic SDK 설정 (src/shared/lib/anthropic/)
+- **5 PRD 템플릿**: SaaS, Mobile, Marketplace, Extension, AI-Wrapper
+- 프롬프트 엔지니어링 (template-specific system prompts)
+- PRD 생성 API 엔드포인트 (streaming)
+- 스트리밍 응답 UI (실시간 마크다운 렌더링)
+- 생성 진행률 표시 (GenerationProgress 컴포넌트)
+- 기본/상세 버전 분기
+
+## Phase 6 Deliverables Summary
+
+- **Lemon Squeezy SDK** 설정 (src/shared/lib/lemon-squeezy/)
+- **웹훅 핸들러** + HMAC-SHA256 서명 검증 (timing-safe)
+- **4개 크레딧 패키지**: Starter(10), Basic(30), Pro(100), Business(300)
+- **Checkout Server Action** (src/features/purchase/api/create-checkout.ts)
+- **Lemon.js Overlay** 통합 (in-page checkout)
+- **CreditPackages UI** 패키지 선택 그리드
+- **PurchaseButton** Lemon.js 연동 버튼
+- **CreditBalance** 크레딧 표시 컴포넌트 (sm/md/lg)
+- **Purchase 페이지** (/purchase)
+- **InsufficientCreditsModal** 크레딧 부족 모달
+- **PurchaseHistory** 구매 내역 표시
+- **UserMenu 업데이트** 크레딧 표시 + 구매 링크

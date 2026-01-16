@@ -32,9 +32,9 @@
 - [x] **Phase 1: Foundation** - 프로젝트 기반 설정 (TDD, FSD, 설정) ✓
 - [x] **Phase 2: UI Foundation** - 디자인 시스템 + 랜딩 페이지 ✓
 - [x] **Phase 3: Authentication** - Supabase Auth + Protected Routes ✓
-- [ ] **Phase 4: Database** - Supabase PostgreSQL + 타입 정의
-- [ ] **Phase 5: PRD Generation** - Claude API + 템플릿 시스템
-- [ ] **Phase 6: Credit System** - Lemon Squeezy 결제 통합
+- [x] **Phase 4: Database** - Supabase PostgreSQL + 타입 정의 ✓
+- [x] **Phase 5: PRD Generation** - Claude API + 템플릿 시스템 ✓
+- [x] **Phase 6: Credit System** - Lemon Squeezy 결제 통합 ✓
 - [ ] **Phase 7: Dashboard** - PRD 히스토리 + 내보내기
 
 ## Phase Details
@@ -91,61 +91,59 @@ Key deliverables:
 - ✓ UserMenu 컴포넌트
 - ✓ 대시보드 플레이스홀더
 
-### Phase 4: Database
+### Phase 4: Database ✓ COMPLETE
 
 **Goal**: Supabase PostgreSQL 스키마 + Row Level Security + TypeScript 타입
 **Depends on**: Phase 3
-**Research**: Likely (Supabase RLS patterns)
-**Research topics**: Supabase RLS best practices, PostgreSQL schema design for SaaS, Supabase client generation
-**Plans**: TBD (2-3 plans expected)
+**Research**: Completed (Supabase RLS patterns)
+**Plans**: 3 plans executed
 
 Key deliverables:
 
-- users 테이블 (credits, profile)
-- prds 테이블 (content, metadata)
-- purchases 테이블 (payment records)
-- usage_logs 테이블 (audit trail)
-- Row Level Security 정책
-- TypeScript 타입 자동 생성
-- Database hooks/functions
+- ✓ profiles 테이블 (credits, profile)
+- ✓ prds 테이블 (JSONB content, metadata)
+- ✓ purchases 테이블 (payment records)
+- ✓ usage_logs 테이블 (audit trail)
+- ✓ Row Level Security 정책
+- ✓ TypeScript 타입 자동 생성
+- ✓ 3개 크레딧 함수 (deduct/add/get)
 
-### Phase 5: PRD Generation
+### Phase 5: PRD Generation ✓ COMPLETE
 
 **Goal**: Claude API 통합 + PRD 템플릿 시스템 + 생성 로직
 **Depends on**: Phase 4
-**Research**: Likely (Anthropic Claude API)
-**Research topics**: Anthropic Claude API current docs, streaming responses in Next.js, prompt engineering for PRD generation
-**Plans**: TBD (3-4 plans expected)
+**Research**: Completed (Anthropic Claude API)
+**Plans**: 3 plans executed
 
 Key deliverables:
 
-- Anthropic SDK 설정
-- PRD 템플릿 5종 (SaaS, Mobile, Marketplace, Extension, AI-Wrapper)
-- 프롬프트 엔지니어링
-- PRD 생성 API 엔드포인트
-- 스트리밍 응답 UI
-- 생성 진행률 표시
-- 기본/상세 버전 분기
+- ✓ Anthropic SDK 설정
+- ✓ PRD 템플릿 5종 (SaaS, Mobile, Marketplace, Extension, AI-Wrapper)
+- ✓ 프롬프트 엔지니어링
+- ✓ PRD 생성 API 엔드포인트
+- ✓ 스트리밍 응답 UI
+- ✓ 생성 진행률 표시
+- ✓ 기본/상세 버전 분기
 
-### Phase 6: Credit System
+### Phase 6: Credit System ✓ COMPLETE
 
 **Goal**: Lemon Squeezy 결제 + 크레딧 관리 시스템
 **Depends on**: Phase 5
 **Research**: Completed (Lemon Squeezy API, webhook patterns)
-**Plans**: 3 plans created
+**Plans**: 3 plans executed
 
 Key deliverables:
 
-- Lemon Squeezy SDK 설정 (06-01)
-- 웹훅 핸들러 + 서명 검증 (06-01)
-- 크레딧 패키지 정의 (06-01)
-- Checkout Server Action (06-02)
-- Lemon.js Overlay 통합 (06-02)
-- 크레딧 패키지 선택 UI (06-02)
-- 구매 페이지 (06-02)
-- 크레딧 부족 모달 (06-03)
-- 헤더 크레딧 표시 (06-03)
-- 구매 히스토리 (06-03)
+- ✓ Lemon Squeezy SDK 설정 (06-01)
+- ✓ 웹훅 핸들러 + 서명 검증 (06-01)
+- ✓ 크레딧 패키지 정의 (06-01)
+- ✓ Checkout Server Action (06-02)
+- ✓ Lemon.js Overlay 통합 (06-02)
+- ✓ 크레딧 패키지 선택 UI (06-02)
+- ✓ 구매 페이지 (06-02)
+- ✓ 크레딧 부족 모달 (06-03)
+- ✓ 헤더 크레딧 표시 (06-03)
+- ✓ 구매 히스토리 (06-03)
 
 ### Phase 7: Dashboard
 
@@ -175,8 +173,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. UI Foundation  | 3/3            | Complete ✓  | 2026-01-14 |
 | 3. Authentication | 4/4            | Complete ✓  | 2026-01-14 |
 | 4. Database       | 3/3            | Complete ✓  | 2026-01-16 |
-| 5. PRD Generation | 5/5            | Complete ✓  | 2026-01-16 |
-| 6. Credit System  | 0/3            | Planned     | -          |
+| 5. PRD Generation | 3/3            | Complete ✓  | 2026-01-16 |
+| 6. Credit System  | 3/3            | Complete ✓  | 2026-01-16 |
 | 7. Dashboard      | 0/TBD          | Not started | -          |
 
 ---
