@@ -1,5 +1,6 @@
 import { AuthGuard } from "@/src/features/auth";
 import { UserMenu } from "@/src/widgets/common";
+import { MobileNav } from "@/src/widgets/dashboard";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -23,12 +24,15 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
       <div className="min-h-screen bg-background">
         <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto flex h-14 items-center justify-between px-4">
-            <a
-              href="/"
-              className="font-editorial text-lg font-medium tracking-tight"
-            >
-              IdeaToPRD
-            </a>
+            <div className="flex items-center gap-2">
+              <MobileNav />
+              <a
+                href="/"
+                className="font-editorial text-lg font-medium tracking-tight"
+              >
+                IdeaToPRD
+              </a>
+            </div>
             <UserMenu />
           </div>
         </header>

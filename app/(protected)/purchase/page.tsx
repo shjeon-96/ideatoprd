@@ -28,7 +28,11 @@ export default function PurchasePage() {
   if (isUserLoading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div
+          className="h-8 w-8 motion-safe:animate-spin rounded-full border-4 border-primary border-t-transparent"
+          role="status"
+          aria-label="로딩 중"
+        />
       </div>
     );
   }
@@ -47,14 +51,14 @@ export default function PurchasePage() {
       </div>
 
       {/* Error message */}
-      {error && (
-        <div className="mb-6 rounded-lg bg-destructive/10 p-4 text-destructive">
+      {error ? (
+        <div role="alert" className="mb-6 rounded-lg bg-destructive/10 p-4 text-destructive">
           {error}
           <button onClick={() => setError(null)} className="ml-4 text-sm underline">
             닫기
           </button>
         </div>
-      )}
+      ) : null}
 
       {/* Package selection */}
       <div className="mb-8">

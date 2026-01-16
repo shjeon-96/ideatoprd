@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { createClient } from '@/src/shared/lib/supabase/server';
 import type { PRD } from '@/src/entities';
 
@@ -16,10 +17,11 @@ export interface PrdListItem {
 /**
  * Fetches PRDs for the current authenticated user
  * Uses RLS policy to automatically filter by user_id
+ * Wrapped with React.cache() for per-request deduplication
  *
  * @returns List of PRDs ordered by creation date (newest first)
  */
-export async function getPrds(): Promise<PrdListItem[]> {
+export const getPrds = cache(async (): Promise<PrdListItem[]> => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -33,4 +35,4 @@ export async function getPrds(): Promise<PrdListItem[]> {
   }
 
   return data ?? [];
-}
+});

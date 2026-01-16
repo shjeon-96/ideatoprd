@@ -57,7 +57,7 @@ export function OAuthButton({ className }: OAuthButtonProps) {
       disabled={isPending}
     >
       {isPending ? (
-        <span className="size-5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+        <span className="size-5 motion-safe:animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
       ) : (
         <GoogleIcon className="size-5" />
       )}

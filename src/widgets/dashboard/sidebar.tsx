@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, FileText, CreditCard, Settings } from 'lucide-react';
+import { FileText, PlusCircle, CreditCard, Settings } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 
-const navItems = [
-  { href: '/dashboard', icon: Home, label: 'My PRDs' },
-  { href: '/generate', icon: FileText, label: 'New PRD' },
+export const navItems = [
+  { href: '/dashboard', icon: FileText, label: 'My PRDs' },
+  { href: '/generate', icon: PlusCircle, label: 'New PRD' },
   { href: '/purchase', icon: CreditCard, label: 'Credits' },
   { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
 ];

@@ -40,11 +40,11 @@ export function LoginForm() {
 
       <CardContent className="space-y-6">
         {/* Error Alert */}
-        {error && (
-          <div className="rounded-md border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        {error ? (
+          <div role="alert" className="rounded-md border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             {decodeURIComponent(error)}
           </div>
-        )}
+        ) : null}
 
         {/* Google OAuth */}
         <OAuthButton className="w-full" />
@@ -102,7 +102,7 @@ export function LoginForm() {
             disabled={isPending}
           >
             {isPending ? (
-              <span className="size-5 animate-spin rounded-full border-2 border-brand-primary-foreground border-t-transparent" />
+              <span className="size-5 motion-safe:animate-spin rounded-full border-2 border-brand-primary-foreground border-t-transparent" />
             ) : (
               "로그인"
             )}

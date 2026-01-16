@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { createClient } from '@/src/shared/lib/supabase/server';
 import type { PRD } from '@/src/entities';
 
@@ -26,11 +27,12 @@ export interface PrdDetailItem {
 /**
  * Fetches a single PRD by ID for the current authenticated user
  * Uses RLS policy to automatically verify ownership (user_id = auth.uid())
+ * Wrapped with React.cache() for per-request deduplication
  *
  * @param id - PRD UUID
  * @returns PRD detail or null if not found/not owned
  */
-export async function getPrd(id: string): Promise<PrdDetailItem | null> {
+export const getPrd = cache(async (id: string): Promise<PrdDetailItem | null> => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -49,4 +51,4 @@ export async function getPrd(id: string): Promise<PrdDetailItem | null> {
   }
 
   return data as PrdDetailItem;
-}
+});

@@ -134,11 +134,13 @@ export function PRDForm({ onSubmit, isLoading, userCredits }: PRDFormProps) {
       >
         {isLoading ? (
           <>
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+            <span className="mr-2 motion-safe:animate-spin">
+              <Loader2 className="h-5 w-5" />
+            </span>
             PRD 생성 중...
           </>
         ) : (
-          <>PRD 생성하기 ({creditsRequired} 크레딧)</>
+          `PRD 생성하기 (${creditsRequired} 크레딧)`
         )}
       </Button>
     </form>

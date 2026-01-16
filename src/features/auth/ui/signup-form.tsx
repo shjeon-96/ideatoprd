@@ -58,18 +58,18 @@ export function SignupForm() {
 
       <CardContent className="space-y-6">
         {/* Success Message */}
-        {message && (
-          <div className="rounded-md border border-brand-primary/50 bg-brand-secondary px-4 py-3 text-sm text-brand-primary">
+        {message ? (
+          <div role="status" className="rounded-md border border-brand-primary/50 bg-brand-secondary px-4 py-3 text-sm text-brand-primary">
             {decodeURIComponent(message)}
           </div>
-        )}
+        ) : null}
 
         {/* Error Alert */}
-        {(error || passwordError) && (
-          <div className="rounded-md border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+        {(error || passwordError) ? (
+          <div role="alert" className="rounded-md border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             {passwordError || (error && decodeURIComponent(error))}
           </div>
-        )}
+        ) : null}
 
         {/* Google OAuth */}
         <OAuthButton className="w-full" />
@@ -146,7 +146,7 @@ export function SignupForm() {
             disabled={isPending}
           >
             {isPending ? (
-              <span className="size-5 animate-spin rounded-full border-2 border-brand-primary-foreground border-t-transparent" />
+              <span className="size-5 motion-safe:animate-spin rounded-full border-2 border-brand-primary-foreground border-t-transparent" />
             ) : (
               "회원가입"
             )}
