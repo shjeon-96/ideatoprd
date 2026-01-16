@@ -1,15 +1,17 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { useUser } from "@/src/features/auth/hooks/use-user";
 import { signOut } from "@/src/features/auth/actions/auth-actions";
+import { Coins, ShoppingCart, Settings, LogOut } from "lucide-react";
 
 /**
  * User menu component with dropdown
- * Shows user email and logout option
+ * Shows user email, credits, and navigation options
  */
 export function UserMenu() {
-  const { user, loading, isAuthenticated } = useUser();
+  const { user, profile, loading, isAuthenticated } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -68,19 +70,42 @@ export function UserMenu() {
               {userEmail}
             </p>
           </div>
+
+          {/* Credit display */}
+          <div className="px-4 py-3 border-b border-border">
+            <div className="flex items-center gap-2 text-sm">
+              <Coins className="h-4 w-4 text-primary" />
+              <span className="font-medium">{profile?.credits ?? 0}</span>
+              <span className="text-muted-foreground">크레딧</span>
+            </div>
+          </div>
+
           <div className="py-1">
-            <a
-              href="/settings"
-              className="block px-4 py-2 text-sm text-foreground hover:bg-accent transition-colors"
+            <Link
+              href="/purchase"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent transition-colors"
               onClick={() => setIsOpen(false)}
             >
+              <ShoppingCart className="h-4 w-4" />
+              크레딧 구매
+            </Link>
+            <Link
+              href="/settings"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              <Settings className="h-4 w-4" />
               Settings
-            </a>
+            </Link>
+          </div>
+
+          <div className="border-t border-border py-1">
             <form action={signOut}>
               <button
                 type="submit"
-                className="w-full px-4 py-2 text-left text-sm text-foreground hover:bg-accent transition-colors"
+                className="w-full flex items-center gap-2 px-4 py-2 text-left text-sm text-foreground hover:bg-accent transition-colors"
               >
+                <LogOut className="h-4 w-4" />
                 Sign out
               </button>
             </form>
