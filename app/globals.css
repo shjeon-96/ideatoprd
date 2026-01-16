@@ -5,53 +5,53 @@
 
 :root {
   /* Neo-Editorial Base - Warm off-white with deep ink */
-  --background: oklch(0.985 0.005 85);
-  --foreground: oklch(0.12 0.02 260);
+  --background: #faf9f7;
+  --foreground: #1a1a2e;
   --radius: 0.5rem;
-  --card: oklch(0.995 0.003 85);
-  --card-foreground: oklch(0.12 0.02 260);
-  --popover: oklch(0.995 0.003 85);
-  --popover-foreground: oklch(0.12 0.02 260);
-  --primary: oklch(0.15 0.02 260);
-  --primary-foreground: oklch(0.98 0.005 85);
-  --secondary: oklch(0.96 0.008 85);
-  --secondary-foreground: oklch(0.15 0.02 260);
-  --muted: oklch(0.95 0.008 85);
-  --muted-foreground: oklch(0.45 0.02 260);
-  --accent: oklch(0.94 0.01 85);
-  --accent-foreground: oklch(0.15 0.02 260);
-  --destructive: oklch(0.55 0.22 25);
-  --border: oklch(0.88 0.01 85);
-  --input: oklch(0.92 0.008 85);
-  --ring: oklch(0.5 0.15 25);
-  --chart-1: oklch(0.65 0.18 25);
-  --chart-2: oklch(0.55 0.12 260);
-  --chart-3: oklch(0.45 0.08 200);
-  --chart-4: oklch(0.75 0.15 85);
-  --chart-5: oklch(0.6 0.14 340);
-  --sidebar: oklch(0.97 0.005 85);
-  --sidebar-foreground: oklch(0.12 0.02 260);
-  --sidebar-primary: oklch(0.15 0.02 260);
-  --sidebar-primary-foreground: oklch(0.98 0.005 85);
-  --sidebar-accent: oklch(0.94 0.01 85);
-  --sidebar-accent-foreground: oklch(0.15 0.02 260);
-  --sidebar-border: oklch(0.88 0.01 85);
-  --sidebar-ring: oklch(0.5 0.15 25);
+  --card: #ffffff;
+  --card-foreground: #1a1a2e;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a2e;
+  --primary: #1a1a2e;
+  --primary-foreground: #faf9f7;
+  --secondary: #f5f4f1;
+  --secondary-foreground: #1a1a2e;
+  --muted: #f0eeeb;
+  --muted-foreground: #64647a;
+  --accent: #f5f4f1;
+  --accent-foreground: #1a1a2e;
+  --destructive: #dc4a3d;
+  --border: #e5e3df;
+  --input: #e5e3df;
+  --ring: #e07a5f;
+  --chart-1: #e07a5f;
+  --chart-2: #3d405b;
+  --chart-3: #81b29a;
+  --chart-4: #f2cc8f;
+  --chart-5: #c9ada7;
+  --sidebar: #f5f4f1;
+  --sidebar-foreground: #1a1a2e;
+  --sidebar-primary: #1a1a2e;
+  --sidebar-primary-foreground: #faf9f7;
+  --sidebar-accent: #f0eeeb;
+  --sidebar-accent-foreground: #1a1a2e;
+  --sidebar-border: #e5e3df;
+  --sidebar-ring: #e07a5f;
 
-  /* IdeaToPRD Brand Colors - Coral/Amber accent (distinctive, not generic purple) */
-  --brand-primary: oklch(0.65 0.2 25);
-  --brand-primary-foreground: oklch(0.98 0.005 85);
-  --brand-secondary: oklch(0.96 0.04 25);
-  --brand-accent: oklch(0.72 0.18 45);
+  /* IdeaToPRD Brand Colors - Coral/Terracotta accent */
+  --brand-primary: #e07a5f;
+  --brand-primary-foreground: #ffffff;
+  --brand-secondary: #fdf0ed;
+  --brand-accent: #f2a285;
 
-  /* Gradient - Warm coral to amber */
-  --gradient-start: oklch(0.62 0.22 25);
-  --gradient-end: oklch(0.68 0.18 50);
+  /* Gradient - Warm coral to terracotta */
+  --gradient-start: #e07a5f;
+  --gradient-end: #f2a285;
 
   /* Editorial extras */
-  --ink: oklch(0.08 0.02 260);
-  --paper: oklch(0.985 0.005 85);
-  --highlight: oklch(0.92 0.12 90);
+  --ink: #1a1a2e;
+  --paper: #faf9f7;
+  --highlight: #fff3cd;
 }
 
 @theme inline {
@@ -113,52 +113,52 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Neo-Editorial Dark - Deep ink with warm paper tones */
-    --background: oklch(0.12 0.02 260);
-    --foreground: oklch(0.92 0.01 85);
-    --card: oklch(0.16 0.02 260);
-    --card-foreground: oklch(0.92 0.01 85);
-    --popover: oklch(0.16 0.02 260);
-    --popover-foreground: oklch(0.92 0.01 85);
-    --primary: oklch(0.92 0.01 85);
-    --primary-foreground: oklch(0.12 0.02 260);
-    --secondary: oklch(0.2 0.02 260);
-    --secondary-foreground: oklch(0.92 0.01 85);
-    --muted: oklch(0.22 0.02 260);
-    --muted-foreground: oklch(0.6 0.02 85);
-    --accent: oklch(0.2 0.02 260);
-    --accent-foreground: oklch(0.92 0.01 85);
-    --destructive: oklch(0.65 0.2 25);
-    --border: oklch(1 0 0 / 12%);
-    --input: oklch(1 0 0 / 10%);
-    --ring: oklch(0.7 0.18 25);
-    --chart-1: oklch(0.72 0.2 25);
-    --chart-2: oklch(0.6 0.15 260);
-    --chart-3: oklch(0.65 0.12 200);
-    --chart-4: oklch(0.8 0.15 85);
-    --chart-5: oklch(0.68 0.16 340);
-    --sidebar: oklch(0.14 0.02 260);
-    --sidebar-foreground: oklch(0.92 0.01 85);
-    --sidebar-primary: oklch(0.72 0.2 25);
-    --sidebar-primary-foreground: oklch(0.98 0.005 85);
-    --sidebar-accent: oklch(0.2 0.02 260);
-    --sidebar-accent-foreground: oklch(0.92 0.01 85);
-    --sidebar-border: oklch(1 0 0 / 12%);
-    --sidebar-ring: oklch(0.7 0.18 25);
+    --background: #1a1a2e;
+    --foreground: #f5f4f1;
+    --card: #252540;
+    --card-foreground: #f5f4f1;
+    --popover: #252540;
+    --popover-foreground: #f5f4f1;
+    --primary: #f5f4f1;
+    --primary-foreground: #1a1a2e;
+    --secondary: #2d2d44;
+    --secondary-foreground: #f5f4f1;
+    --muted: #35354d;
+    --muted-foreground: #a0a0b2;
+    --accent: #2d2d44;
+    --accent-foreground: #f5f4f1;
+    --destructive: #ef6b5e;
+    --border: rgba(255, 255, 255, 0.1);
+    --input: rgba(255, 255, 255, 0.08);
+    --ring: #f2a285;
+    --chart-1: #f2a285;
+    --chart-2: #6b6b8a;
+    --chart-3: #9bc4aa;
+    --chart-4: #f7dca8;
+    --chart-5: #d4bfba;
+    --sidebar: #222238;
+    --sidebar-foreground: #f5f4f1;
+    --sidebar-primary: #f2a285;
+    --sidebar-primary-foreground: #1a1a2e;
+    --sidebar-accent: #2d2d44;
+    --sidebar-accent-foreground: #f5f4f1;
+    --sidebar-border: rgba(255, 255, 255, 0.1);
+    --sidebar-ring: #f2a285;
 
     /* IdeaToPRD Brand Colors - Dark mode (brighter coral) */
-    --brand-primary: oklch(0.72 0.22 25);
-    --brand-primary-foreground: oklch(0.12 0.02 260);
-    --brand-secondary: oklch(0.22 0.04 25);
-    --brand-accent: oklch(0.78 0.18 45);
+    --brand-primary: #f2a285;
+    --brand-primary-foreground: #1a1a2e;
+    --brand-secondary: #3d2f2a;
+    --brand-accent: #f7c4a5;
 
     /* Gradient colors - Dark mode */
-    --gradient-start: oklch(0.68 0.22 25);
-    --gradient-end: oklch(0.72 0.18 50);
+    --gradient-start: #e07a5f;
+    --gradient-end: #f2a285;
 
     /* Editorial extras - Dark */
-    --ink: oklch(0.95 0.01 85);
-    --paper: oklch(0.12 0.02 260);
-    --highlight: oklch(0.35 0.12 45);
+    --ink: #f5f4f1;
+    --paper: #1a1a2e;
+    --highlight: #5c4a3d;
   }
 }
 
@@ -173,52 +173,52 @@ body {
 
 .dark {
   /* Neo-Editorial Dark - Deep ink with warm paper tones */
-  --background: oklch(0.12 0.02 260);
-  --foreground: oklch(0.92 0.01 85);
-  --card: oklch(0.16 0.02 260);
-  --card-foreground: oklch(0.92 0.01 85);
-  --popover: oklch(0.16 0.02 260);
-  --popover-foreground: oklch(0.92 0.01 85);
-  --primary: oklch(0.92 0.01 85);
-  --primary-foreground: oklch(0.12 0.02 260);
-  --secondary: oklch(0.2 0.02 260);
-  --secondary-foreground: oklch(0.92 0.01 85);
-  --muted: oklch(0.22 0.02 260);
-  --muted-foreground: oklch(0.6 0.02 85);
-  --accent: oklch(0.2 0.02 260);
-  --accent-foreground: oklch(0.92 0.01 85);
-  --destructive: oklch(0.65 0.2 25);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.7 0.18 25);
-  --chart-1: oklch(0.72 0.2 25);
-  --chart-2: oklch(0.6 0.15 260);
-  --chart-3: oklch(0.65 0.12 200);
-  --chart-4: oklch(0.8 0.15 85);
-  --chart-5: oklch(0.68 0.16 340);
-  --sidebar: oklch(0.14 0.02 260);
-  --sidebar-foreground: oklch(0.92 0.01 85);
-  --sidebar-primary: oklch(0.72 0.2 25);
-  --sidebar-primary-foreground: oklch(0.98 0.005 85);
-  --sidebar-accent: oklch(0.2 0.02 260);
-  --sidebar-accent-foreground: oklch(0.92 0.01 85);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.7 0.18 25);
+  --background: #1a1a2e;
+  --foreground: #f5f4f1;
+  --card: #252540;
+  --card-foreground: #f5f4f1;
+  --popover: #252540;
+  --popover-foreground: #f5f4f1;
+  --primary: #f5f4f1;
+  --primary-foreground: #1a1a2e;
+  --secondary: #2d2d44;
+  --secondary-foreground: #f5f4f1;
+  --muted: #35354d;
+  --muted-foreground: #a0a0b2;
+  --accent: #2d2d44;
+  --accent-foreground: #f5f4f1;
+  --destructive: #ef6b5e;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #f2a285;
+  --chart-1: #f2a285;
+  --chart-2: #6b6b8a;
+  --chart-3: #9bc4aa;
+  --chart-4: #f7dca8;
+  --chart-5: #d4bfba;
+  --sidebar: #222238;
+  --sidebar-foreground: #f5f4f1;
+  --sidebar-primary: #f2a285;
+  --sidebar-primary-foreground: #1a1a2e;
+  --sidebar-accent: #2d2d44;
+  --sidebar-accent-foreground: #f5f4f1;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #f2a285;
 
   /* IdeaToPRD Brand Colors - Dark mode */
-  --brand-primary: oklch(0.72 0.22 25);
-  --brand-primary-foreground: oklch(0.12 0.02 260);
-  --brand-secondary: oklch(0.22 0.04 25);
-  --brand-accent: oklch(0.78 0.18 45);
+  --brand-primary: #f2a285;
+  --brand-primary-foreground: #1a1a2e;
+  --brand-secondary: #3d2f2a;
+  --brand-accent: #f7c4a5;
 
   /* Gradient colors - Dark mode */
-  --gradient-start: oklch(0.68 0.22 25);
-  --gradient-end: oklch(0.72 0.18 50);
+  --gradient-start: #e07a5f;
+  --gradient-end: #f2a285;
 
   /* Editorial extras - Dark */
-  --ink: oklch(0.95 0.01 85);
-  --paper: oklch(0.12 0.02 260);
-  --highlight: oklch(0.35 0.12 45);
+  --ink: #f5f4f1;
+  --paper: #1a1a2e;
+  --highlight: #5c4a3d;
 }
 
 @layer base {

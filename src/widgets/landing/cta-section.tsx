@@ -52,7 +52,8 @@ export function CtaSection() {
           {/* CTA Button */}
           <Button
             size="lg"
-            className="group h-14 bg-white px-10 text-base font-semibold text-foreground shadow-xl shadow-black/20 transition-all hover:bg-white/95 hover:shadow-2xl"
+            className="group h-14 bg-white px-10 text-base font-semibold shadow-xl shadow-black/20 transition-all hover:bg-white/95 hover:shadow-2xl"
+            style={{ color: '#e07a5f' }}
           >
             무료로 시작하기
             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />

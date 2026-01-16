@@ -2,16 +2,16 @@ import { updateSession } from "@/src/shared/lib/supabase/middleware";
 import { type NextRequest } from "next/server";
 
 /**
- * Authentication middleware for session management
+ * Authentication proxy for session management
  *
- * This middleware:
+ * This proxy:
  * - Refreshes expired sessions on every request
  * - Passes updated session cookies to Server Components
  *
  * NOTE: This does NOT handle route protection.
  * Route protection should be implemented in individual pages/layouts.
  */
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   return await updateSession(request);
 }
 
