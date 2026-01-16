@@ -7,30 +7,9 @@
  * to avoid SSR build errors.
  */
 
-import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { useState, useEffect, type ReactElement } from 'react';
 import { Download } from 'lucide-react';
 import { Button } from '@/src/shared/ui/button';
-
-// Dynamic import with ssr: false - CRITICAL for @react-pdf/renderer
-const PDFDownloadLink = dynamic(
-  () => import('@react-pdf/renderer').then((mod) => mod.PDFDownloadLink),
-  {
-    ssr: false,
-    loading: () => (
-      <Button variant="secondary" disabled className="gap-2">
-        <Download className="h-4 w-4" />
-        Loading...
-      </Button>
-    ),
-  }
-);
-
-// PrdDocument must also be dynamically imported
-const PrdDocument = dynamic(
-  () => import('./prd-document').then((mod) => mod.PrdDocument),
-  { ssr: false }
-);
 
 interface PrdPdfDownloadProps {
   prd: {
@@ -45,17 +24,36 @@ interface PrdPdfDownloadProps {
 
 export function PrdPdfDownload({ prd }: PrdPdfDownloadProps) {
   const [isClient, setIsClient] = useState(false);
+  const [PdfComponents, setPdfComponents] = useState<{
+    PDFDownloadLink: React.ComponentType<{
+      document: ReactElement;
+      fileName: string;
+      children: (props: { loading: boolean }) => ReactElement;
+    }>;
+    PrdDocument: React.ComponentType<{ prd: PrdPdfDownloadProps['prd'] }>;
+  } | null>(null);
 
-  // Ensure we're on the client before rendering PDF components
+  // Load PDF components on client only
   useEffect(() => {
     setIsClient(true);
+
+    // Dynamically import both components
+    Promise.all([
+      import('@react-pdf/renderer'),
+      import('./prd-document'),
+    ]).then(([pdfRenderer, prdDoc]) => {
+      setPdfComponents({
+        PDFDownloadLink: pdfRenderer.PDFDownloadLink as typeof PdfComponents extends null ? never : NonNullable<typeof PdfComponents>['PDFDownloadLink'],
+        PrdDocument: prdDoc.PrdDocument,
+      });
+    });
   }, []);
 
   // Generate filename from title
   const fileName = `${(prd.title || 'untitled-prd').replace(/\s+/g, '-').toLowerCase()}.pdf`;
 
-  // Show placeholder while not on client
-  if (!isClient) {
+  // Show placeholder while not on client or components not loaded
+  if (!isClient || !PdfComponents) {
     return (
       <Button variant="secondary" disabled className="gap-2">
         <Download className="h-4 w-4" />
@@ -63,6 +61,8 @@ export function PrdPdfDownload({ prd }: PrdPdfDownloadProps) {
       </Button>
     );
   }
+
+  const { PDFDownloadLink, PrdDocument } = PdfComponents;
 
   return (
     <PDFDownloadLink
