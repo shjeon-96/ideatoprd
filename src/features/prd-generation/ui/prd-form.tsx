@@ -22,8 +22,9 @@ export function PRDForm({ onSubmit, isLoading, userCredits }: PRDFormProps) {
   const [template, setTemplate] = useState<PRDTemplate>('saas');
   const [version, setVersion] = useState<PRDVersion>('basic');
 
+  const isDev = process.env.NODE_ENV === 'development';
   const creditsRequired = version === 'detailed' ? 2 : 1;
-  const hasEnoughCredits = userCredits >= creditsRequired;
+  const hasEnoughCredits = isDev || userCredits >= creditsRequired;
   const isValidIdea = idea.trim().length >= MIN_IDEA_LENGTH;
 
   const handleSubmit = (e: React.FormEvent) => {

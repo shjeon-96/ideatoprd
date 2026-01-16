@@ -23,11 +23,12 @@ export default function GeneratePage() {
       template: PRDTemplate;
       version: PRDVersion;
     }) => {
-      // Check credits before generating
+      // Check credits before generating (skip in development)
+      const isDev = process.env.NODE_ENV === 'development';
       const creditsNeeded = CREDITS_PER_VERSION[data.version];
       const currentCredits = profile?.credits ?? 0;
 
-      if (currentCredits < creditsNeeded) {
+      if (!isDev && currentCredits < creditsNeeded) {
         setRequiredCredits(creditsNeeded);
         setShowCreditModal(true);
         return;
@@ -86,10 +87,15 @@ export default function GeneratePage() {
     [profile?.credits, refetch]
   );
 
-  if (isUserLoading) {
+  // Show loading only briefly, then default to 0 credits if profile not loaded
+  if (isUserLoading && !profile) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div
+          className="h-8 w-8 motion-safe:animate-spin rounded-full border-4 border-primary border-t-transparent"
+          role="status"
+          aria-label="로딩 중"
+        />
       </div>
     );
   }
@@ -107,7 +113,10 @@ export default function GeneratePage() {
       </div>
 
       {error && (
-        <div className="mb-6 rounded-lg bg-destructive/10 p-4 text-destructive">
+        <div
+          role="alert"
+          className="mb-6 rounded-lg bg-destructive/10 p-4 text-destructive"
+        >
           {error}
         </div>
       )}
@@ -123,7 +132,7 @@ export default function GeneratePage() {
         </div>
 
         {/* Right: Viewer */}
-        <div>
+        <div aria-live="polite" aria-atomic="false">
           <PRDViewer content={content} isStreaming={isGenerating} />
         </div>
       </div>

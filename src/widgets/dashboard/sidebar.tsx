@@ -6,8 +6,8 @@ import { Home, FileText, CreditCard, Settings } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 
 const navItems = [
-  { href: '/dashboard', icon: Home, label: 'Dashboard' },
-  { href: '/dashboard/prds', icon: FileText, label: 'My PRDs' },
+  { href: '/dashboard', icon: Home, label: 'My PRDs' },
+  { href: '/generate', icon: FileText, label: 'New PRD' },
   { href: '/purchase', icon: CreditCard, label: 'Credits' },
   { href: '/dashboard/settings', icon: Settings, label: 'Settings' },
 ];
@@ -38,7 +38,7 @@ export function Sidebar({ className }: SidebarProps) {
               key={href}
               href={href}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                'flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
                 isActive
                   ? 'bg-primary/10 text-primary font-medium'
                   : 'text-muted-foreground hover:bg-muted hover:text-foreground'

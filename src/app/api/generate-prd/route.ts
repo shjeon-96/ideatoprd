@@ -56,24 +56,31 @@ export async function POST(req: Request) {
 
     // 3. Deduct credits (atomic with FOR UPDATE lock)
     const creditsRequired = CREDITS_PER_VERSION[version];
-    const { data: deductResult, error: deductError } = await supabase.rpc(
-      'deduct_credit',
-      {
-        p_user_id: userId,
-        p_amount: creditsRequired,
-        p_description: `PRD 생성: ${idea.slice(0, 50)}...`,
-      }
-    );
+    const isDev = process.env.NODE_ENV === 'development';
 
-    if (deductError || !deductResult) {
-      console.error('Credit deduction failed:', deductError);
-      return new Response(
-        JSON.stringify({ error: '크레딧이 부족합니다.' }),
+    // Skip credit deduction in development mode
+    if (!isDev) {
+      const { data: deductResult, error: deductError } = await supabase.rpc(
+        'deduct_credit',
         {
-          status: 402,
-          headers: { 'Content-Type': 'application/json' },
+          p_user_id: userId,
+          p_amount: creditsRequired,
+          p_description: `PRD 생성: ${idea.slice(0, 50)}...`,
         }
       );
+
+      if (deductError || !deductResult) {
+        console.error('Credit deduction failed:', deductError);
+        return new Response(
+          JSON.stringify({ error: '크레딧이 부족합니다.' }),
+          {
+            status: 402,
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+      }
+    } else {
+      console.log('[DEV] Skipping credit deduction');
     }
 
     // 4. Select model based on version

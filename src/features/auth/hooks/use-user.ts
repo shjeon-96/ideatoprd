@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/src/shared/lib/supabase/client";
 import type { Profile } from "@/src/entities";
@@ -24,6 +24,7 @@ export function useUser(): UseUserReturn {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const loadingRef = useRef(true);
 
   const fetchProfile = useCallback(async (userId: string) => {
     const supabase = createClient();
@@ -34,7 +35,6 @@ export function useUser(): UseUserReturn {
       .single();
 
     if (error) {
-      console.error("Failed to fetch profile:", error);
       return null;
     }
     return data;
@@ -48,30 +48,48 @@ export function useUser(): UseUserReturn {
 
   useEffect(() => {
     const supabase = createClient();
+    let isMounted = true;
 
-    // Fetch initial user state
+    // Fetch initial user state with timeout
     const fetchUser = async () => {
       try {
         const {
           data: { user },
           error,
         } = await supabase.auth.getUser();
+
+        if (!isMounted) return;
         if (error) throw error;
         setUser(user);
 
         // Fetch profile if user exists
         if (user) {
           const profileData = await fetchProfile(user.id);
-          setProfile(profileData);
+          if (isMounted) {
+            setProfile(profileData);
+          }
         }
       } catch (err) {
-        setError(err instanceof Error ? err : new Error("Failed to fetch user"));
+        if (isMounted) {
+          setError(err instanceof Error ? err : new Error("Failed to fetch user"));
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          loadingRef.current = false;
+          setLoading(false);
+        }
       }
     };
 
     fetchUser();
+
+    // Safety timeout - ensure loading stops after 5 seconds
+    const timeout = setTimeout(() => {
+      if (isMounted && loadingRef.current) {
+        loadingRef.current = false;
+        setLoading(false);
+      }
+    }, 5000);
 
     // Subscribe to auth state changes
     const {
@@ -87,11 +105,14 @@ export function useUser(): UseUserReturn {
         setProfile(null);
       }
 
+      loadingRef.current = false;
       setLoading(false);
     });
 
     // Cleanup subscription on unmount
     return () => {
+      isMounted = false;
+      clearTimeout(timeout);
       subscription.unsubscribe();
     };
   }, [fetchProfile]);
