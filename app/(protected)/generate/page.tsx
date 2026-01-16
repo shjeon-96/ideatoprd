@@ -52,6 +52,7 @@ export default function GeneratePage() {
           if (response.status === 402) {
             setRequiredCredits(creditsNeeded);
             setShowCreditModal(true);
+            setIsGenerating(false);
             return;
           }
 
@@ -74,8 +75,18 @@ export default function GeneratePage() {
           setContent((prev) => prev + chunk);
         }
 
-        // Refresh user profile to update credits
-        await refetch();
+        // Refresh user profile to update credits (with timeout)
+        try {
+          await Promise.race([
+            refetch(),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('Refetch timeout')), 3000)
+            )
+          ]);
+        } catch {
+          // Ignore refetch errors - PRD was generated successfully
+          console.warn('Profile refetch failed or timed out');
+        }
       } catch (err) {
         setError(
           err instanceof Error ? err.message : 'PRD 생성 중 오류가 발생했습니다.'
