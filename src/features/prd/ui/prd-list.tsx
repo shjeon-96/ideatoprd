@@ -51,7 +51,7 @@ export async function PrdList({ workspaceId, workspaceSlug }: PrdListProps = {})
   const basePath = workspaceSlug ? `/w/${workspaceSlug}/dashboard` : '/dashboard';
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
       {prds.map((prd) => (
         <Link key={prd.id} href={`${basePath}/prds/${prd.id}`}>
           <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer">

@@ -119,6 +119,47 @@
       }
     }
   },
+  "contact": {
+    "meta": {
+      "title": "Contact Us | IdeaToPRD",
+      "description": "Get help with IdeaToPRD - general inquiries, refund requests, and feedback"
+    },
+    "title": "How can we help?",
+    "description": "We're here to help with any questions about IdeaToPRD. Choose an option below or email us directly.",
+    "responseTime": "We typically respond within 24 hours",
+    "options": {
+      "email": {
+        "title": "General Inquiry",
+        "description": "Questions about features, pricing, or getting started with IdeaToPRD"
+      },
+      "refund": {
+        "title": "Refund Request",
+        "description": "Request a refund within 30 days of purchase - no questions asked"
+      },
+      "feedback": {
+        "title": "Feedback & Suggestions",
+        "description": "Share your ideas to help us improve IdeaToPRD"
+      }
+    },
+    "emailSubjects": {
+      "general": "[IdeaToPRD] General Inquiry",
+      "refund": "[IdeaToPRD] Refund Request",
+      "feedback": "[IdeaToPRD] Feedback"
+    },
+    "directEmail": "Or email us directly at:",
+    "faqPrompt": "Looking for answers?",
+    "faqLink": "Check our FAQ",
+    "refundPolicy": {
+      "title": "Refund Policy",
+      "description": "We offer a hassle-free 30-day money-back guarantee on all purchases.",
+      "items": {
+        "timeframe": "Request within 30 days of purchase for a full refund",
+        "subscription": "Subscriptions can be cancelled anytime from your account",
+        "credits": "Unused one-time credit purchases are refundable within 30 days"
+      }
+    },
+    "backToHome": "← Back to Home"
+  },
   "common": {
     "credits": "Credits",
     "workspaceCredits": "Workspace Credits",

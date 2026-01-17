@@ -98,13 +98,55 @@ export async function searchTechTrends(idea: string): Promise<TrendSearchResult[
   }));
 }
 
-// Comprehensive trend research
+// Search depth configuration by version
+type SearchDepthConfig = {
+  searchDepth: 'basic' | 'advanced';
+  maxResults: number;
+};
+
+const VERSION_SEARCH_CONFIG: Record<string, SearchDepthConfig> = {
+  basic: { searchDepth: 'basic', maxResults: 2 },
+  detailed: { searchDepth: 'basic', maxResults: 3 },
+  research: { searchDepth: 'advanced', maxResults: 5 },
+};
+
+// Version-aware search function
+async function searchWithConfig(
+  query: string,
+  config: SearchDepthConfig
+): Promise<TrendSearchResult[]> {
+  const response = await getClient().search(query, {
+    searchDepth: config.searchDepth,
+    maxResults: config.maxResults,
+    includeAnswer: false,
+  });
+
+  return response.results.map((r) => ({
+    title: r.title,
+    url: r.url,
+    content: r.content,
+    score: r.score,
+  }));
+}
+
+// Comprehensive trend research (default: research version depth)
 export async function researchTrends(idea: string): Promise<TrendResearchResult> {
-  // Run all searches in parallel
+  return researchTrendsByVersion(idea, 'research');
+}
+
+// Version-based trend research with appropriate depth
+export async function researchTrendsByVersion(
+  idea: string,
+  version: 'basic' | 'detailed' | 'research'
+): Promise<TrendResearchResult> {
+  const config = VERSION_SEARCH_CONFIG[version];
+  const queries = buildSearchQueries(idea);
+
+  // Run all searches in parallel with version-specific config
   const [marketTrends, competitors, techTrends] = await Promise.all([
-    searchMarketTrends(idea),
-    searchCompetitors(idea),
-    searchTechTrends(idea),
+    searchWithConfig(queries.market, config),
+    searchWithConfig(queries.competitors, config),
+    searchWithConfig(queries.tech, config),
   ]);
 
   // Generate summary from results

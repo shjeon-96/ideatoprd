@@ -93,7 +93,7 @@ export default async function PrdDetailPage({ params }: PrdDetailPageProps) {
       </div>
 
       {/* Main content grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1fr_280px]">
         {/* PRD Content */}
         <div className="space-y-6">
           <div className="rounded-lg border p-6">

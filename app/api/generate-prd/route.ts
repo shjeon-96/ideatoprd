@@ -18,7 +18,7 @@ import {
   PRDSaveError,
 } from '@/src/features/prd-generation/api/save-prd';
 import {
-  researchTrends,
+  researchTrendsByVersion,
   formatResearchForPrompt,
 } from '@/src/shared/lib/tavily';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
@@ -199,17 +199,15 @@ export async function POST(req: Request) {
     // 4. Select model based on version (research uses advanced model)
     const model = version === 'basic' ? defaultModel : advancedModel;
 
-    // 5. Perform trend research for research version
+    // 5. Perform trend research for ALL versions (with version-appropriate depth)
     let researchContext = '';
-    if (version === 'research') {
-      try {
-        const trendResearch = await researchTrends(idea);
-        researchContext = formatResearchForPrompt(trendResearch);
-      } catch (researchError) {
-        // Log but continue without research data
-        console.error('Trend research failed:', researchError);
-        researchContext = '\n<trend_research>\nResearch data unavailable. Please generate PRD based on your knowledge.\n</trend_research>\n';
-      }
+    try {
+      const trendResearch = await researchTrendsByVersion(idea, version);
+      researchContext = formatResearchForPrompt(trendResearch);
+    } catch (researchError) {
+      // Log but continue without research data
+      console.error('Trend research failed:', researchError);
+      researchContext = '\n<trend_research>\nResearch data temporarily unavailable.\n</trend_research>\n';
     }
 
     // 6. Build prompt with language support and research context

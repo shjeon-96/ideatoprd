@@ -16,18 +16,18 @@ export const metadata: Metadata = {
  */
 export default function DashboardPage() {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="space-y-6">
       {/* Welcome modal for new users */}
       <DashboardOnboarding />
 
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-editorial font-medium tracking-tight mb-1">
+          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             My PRDs
           </h1>
-          <p className="text-muted-foreground">Manage your generated PRD documents</p>
+          <p className="text-sm text-muted-foreground sm:text-base">Manage your generated PRD documents</p>
         </div>
-        <Button asChild>
+        <Button asChild size="sm" className="w-fit">
           <Link href="/generate">
             <Plus className="h-4 w-4" />
             New PRD
@@ -35,12 +35,12 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+      <div className="grid gap-6 xl:grid-cols-[1fr_260px]">
         {/* Main content - PRD list */}
         <PrdListClient />
 
         {/* Sidebar - Onboarding checklist */}
-        <aside className="order-first lg:order-last">
+        <aside className="order-first xl:order-last">
           <DashboardChecklist />
         </aside>
       </div>

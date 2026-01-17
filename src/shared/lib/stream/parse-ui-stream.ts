@@ -1,10 +1,9 @@
 /**
  * Parse AI SDK UIMessageStream responses
  *
- * UIMessageStream format:
- * - Text chunks: 0:"text content"
- * - Data messages: 8:[{...data...}]
- * - Message annotations: e:{...annotation...}
+ * Supports multiple formats:
+ * 1. Legacy UIMessageStream: 0:"text", 8:[{...}], e:{...}
+ * 2. SSE format (AI SDK v6+): data: {"type":"text-delta","delta":"..."}
  */
 
 export interface StreamMessage {
@@ -22,10 +21,54 @@ export interface PRDSaveResult {
 }
 
 /**
+ * Parse SSE format line (AI SDK v6+)
+ * Format: data: {"type":"text-delta","id":"0","delta":"text content"}
+ */
+function parseSSELine(line: string): StreamMessage | null {
+  if (!line.startsWith('data:')) return null;
+
+  const jsonStr = line.slice(5).trim();
+  if (!jsonStr || jsonStr === '[DONE]') return null;
+
+  try {
+    const parsed = JSON.parse(jsonStr);
+
+    // Handle text-delta messages
+    if (parsed.type === 'text-delta' && parsed.delta !== undefined) {
+      return { type: 'text', content: parsed.delta };
+    }
+
+    // Handle data messages (for PRD save results, etc.)
+    if (parsed.type === 'data' && parsed.data) {
+      return { type: 'data', data: parsed.data };
+    }
+
+    // Handle error messages
+    if (parsed.type === 'error') {
+      return { type: 'error', content: parsed.message || 'Unknown error' };
+    }
+
+    // Handle finish messages with data
+    if (parsed.type === 'finish' && parsed.finishReason) {
+      return null; // Ignore finish messages
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Parse a single line from the UIMessageStream or raw text stream
  */
 function parseStreamLine(line: string): StreamMessage | null {
   if (!line || line.trim() === '') return null;
+
+  // SSE format (AI SDK v6+): data: {...}
+  if (line.startsWith('data:')) {
+    return parseSSELine(line);
+  }
 
   // Text chunk format: 0:"content"
   if (line.startsWith('0:')) {
@@ -72,21 +115,30 @@ function parseStreamLine(line: string): StreamMessage | null {
     }
   }
 
+  // Ignore empty lines and other SSE-related lines
+  if (line.startsWith(':') || line.startsWith('event:') || line.startsWith('id:')) {
+    return null;
+  }
+
   // Fallback: treat as raw text (for toTextStreamResponse)
   // This handles plain text streams without UIMessageStream formatting
   return { type: 'text', content: line };
 }
 
 /**
- * Detect if the stream is UIMessageStream format or raw text
- * UIMessageStream lines start with number/letter followed by colon (0:, 8:, e:, 3:, etc.)
+ * Detect if the stream is UIMessageStream format, SSE format, or raw text
  */
-function isUIMessageStreamFormat(chunk: string): boolean {
-  return /^[0-9a-f]:/.test(chunk);
+function isStructuredStreamFormat(chunk: string): boolean {
+  const trimmed = chunk.trim();
+  // Check for legacy UIMessageStream format (0:, 8:, e:, etc.)
+  if (/^[0-9a-f]:/.test(trimmed)) return true;
+  // Check for SSE format
+  if (trimmed.startsWith('data:')) return true;
+  return false;
 }
 
 /**
- * Process streaming response from UIMessageStream or raw text stream
+ * Process streaming response from UIMessageStream, SSE, or raw text stream
  */
 export async function processUIMessageStream(
   response: Response,
@@ -111,7 +163,7 @@ export async function processUIMessageStream(
 
     // Auto-detect stream format on first chunk
     if (isRawTextStream === null) {
-      isRawTextStream = !isUIMessageStreamFormat(chunk.trim());
+      isRawTextStream = !isStructuredStreamFormat(chunk.trim());
     }
 
     // For raw text streams, pass chunks directly to onText
@@ -120,7 +172,7 @@ export async function processUIMessageStream(
       continue;
     }
 
-    // For UIMessageStream, process line by line
+    // For structured streams (UIMessageStream or SSE), process line by line
     buffer += chunk;
     const lines = buffer.split('\n');
     buffer = lines.pop() || ''; // Keep incomplete line in buffer
@@ -149,7 +201,7 @@ export async function processUIMessageStream(
     }
   }
 
-  // Process remaining buffer (only for UIMessageStream)
+  // Process remaining buffer
   if (!isRawTextStream && buffer) {
     const message = parseStreamLine(buffer);
     if (message?.type === 'text' && message.content) {

@@ -119,6 +119,47 @@
       }
     }
   },
+  "contact": {
+    "meta": {
+      "title": "문의하기 | IdeaToPRD",
+      "description": "IdeaToPRD 관련 문의 - 일반 문의, 환불 요청, 피드백"
+    },
+    "title": "무엇을 도와드릴까요?",
+    "description": "IdeaToPRD에 관한 모든 질문에 답해드립니다. 아래 옵션을 선택하거나 직접 이메일을 보내주세요.",
+    "responseTime": "보통 24시간 이내에 답변드립니다",
+    "options": {
+      "email": {
+        "title": "일반 문의",
+        "description": "기능, 가격, IdeaToPRD 시작 방법에 대한 질문"
+      },
+      "refund": {
+        "title": "환불 요청",
+        "description": "구매 후 30일 이내 환불 요청 - 이유 불문"
+      },
+      "feedback": {
+        "title": "피드백 & 제안",
+        "description": "IdeaToPRD 개선을 위한 아이디어를 공유해 주세요"
+      }
+    },
+    "emailSubjects": {
+      "general": "[IdeaToPRD] 일반 문의",
+      "refund": "[IdeaToPRD] 환불 요청",
+      "feedback": "[IdeaToPRD] 피드백"
+    },
+    "directEmail": "또는 직접 이메일을 보내주세요:",
+    "faqPrompt": "답변을 찾고 계신가요?",
+    "faqLink": "FAQ 확인하기",
+    "refundPolicy": {
+      "title": "환불 정책",
+      "description": "모든 구매에 대해 30일 환불 보장을 제공합니다.",
+      "items": {
+        "timeframe": "구매 후 30일 이내 요청 시 전액 환불",
+        "subscription": "구독은 계정에서 언제든지 해지 가능",
+        "credits": "사용하지 않은 일회성 크레딧은 30일 이내 환불 가능"
+      }
+    },
+    "backToHome": "← 홈으로 돌아가기"
+  },
   "common": {
     "credits": "크레딧",
     "workspaceCredits": "워크스페이스 크레딧",

@@ -91,7 +91,7 @@ export function PrdListClient({
   return (
     <div className="space-y-6">
       {/* PRD Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
         {prds.map((prd) => (
           <Link key={prd.id} href={`${basePath}/prds/${prd.id}`}>
             <Card className="h-full hover:border-primary/50 transition-colors cursor-pointer">
@@ -160,7 +160,7 @@ function PrdListSkeleton() {
   // Using a simple static label for accessibility
   return (
     <div
-      className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+      className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3"
       role="status"
       aria-busy="true"
     >

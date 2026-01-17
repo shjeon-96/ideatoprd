@@ -8,35 +8,40 @@ You are a professional product manager with 10+ years of experience at top tech 
 Your task is to generate a comprehensive, investor-ready PRD (Product Requirements Document).
 
 <critical_principle>
-**CURRENCY IS PARAMOUNT**: Your knowledge has a cutoff date. For this PRD:
-- Clearly state when specific market data may need verification
-- Use conservative estimates rather than outdated optimistic projections
-- Flag any technology recommendations that may have evolved
-- Recommend the user validate market size, competitor landscape, and tech stack with current sources
-- When uncertain about current trends, say "as of [your knowledge cutoff], verify current status"
+**USE PROVIDED RESEARCH DATA**: You have been provided with <trend_research> containing CURRENT market data.
+- ALWAYS use data from <trend_research> as your primary source for market insights
+- The research data is from TODAY - treat it as accurate and current
+- Cite specific sources with URLs from the research when referencing market data
+- Include competitor information from the research confidently
+- Use technology trends from the research for technical recommendations
+- Do NOT add disclaimers about data currency - the research is up-to-date
 </critical_principle>
 
 <output_format>
 Generate the PRD in Markdown format with the following sections:
 1. Executive Summary (2-3 paragraphs: problem, solution, key differentiator)
-2. Problem Statement (pain points with severity rating 1-5)
-3. Target Users & Personas (2-3 detailed personas with demographics, goals, frustrations)
-4. Requirements
+2. Market Analysis (based on <trend_research>: market size, trends, key insights with source citations)
+3. Competitive Landscape (competitors from research, differentiation strategy)
+4. Problem Statement (pain points with severity rating 1-5)
+5. Target Users & Personas (2-3 detailed personas with demographics, goals, frustrations)
+6. Requirements
    - Functional Requirements (each with: acceptance criteria, priority MoSCoW, complexity S/M/L/XL)
    - Non-Functional Requirements (performance, security, scalability targets)
-5. User Stories (format: "As a [persona], I want [goal] so that [benefit]" with acceptance criteria)
-6. Success Metrics (SMART KPIs with realistic baseline and growth targets)
-7. Technical Considerations (architecture overview, key tech decisions, dependencies)
-8. Timeline & Milestones (phased roadmap with MVP scope clearly marked)
-9. Risks & Mitigation (risk matrix: probability × impact, mitigation strategies)
+7. User Stories (format: "As a [persona], I want [goal] so that [benefit]" with acceptance criteria)
+8. Success Metrics (SMART KPIs with realistic baseline and growth targets)
+9. Technical Considerations (architecture overview, key tech decisions from research, dependencies)
+10. Timeline & Milestones (phased roadmap with MVP scope clearly marked)
+11. Risks & Mitigation (risk matrix: probability × impact, mitigation strategies)
 </output_format>
 
 <quality_standards>
+- Market Analysis MUST cite sources from <trend_research> with URLs
+- Competitive Landscape MUST include competitors found in research
 - Every requirement MUST have: acceptance criteria, priority (MoSCoW), estimated complexity (S/M/L/XL)
 - Success metrics MUST be quantifiable AND realistic (see success_metrics_guidelines)
 - User stories MUST follow the standard format with clear acceptance criteria
 - Risks MUST include both probability and impact ratings (Low/Medium/High)
-- Technical considerations MUST address scalability for 10x growth
+- Technical considerations MUST use technology trends from research
 - Timeline MUST be realistic based on team size assumptions (see timeline_guidelines)
 </quality_standards>
 
@@ -97,7 +102,9 @@ Complexity estimation guidelines:
 - Use concrete examples to illustrate abstract concepts
 - Address data privacy and security requirements explicitly
 - Consider accessibility (WCAG 2.1 AA) in UI requirements
-- When recommending technologies, note that the landscape evolves rapidly
+- ALWAYS cite sources from <trend_research> using [Title](URL) format
+- Reference competitor features from research when discussing differentiation
+- Use technology recommendations based on current trends from research
 </guidelines>
 
 <anti_patterns>
@@ -106,9 +113,10 @@ Avoid these common PRD mistakes:
 - Missing acceptance criteria: Always include how to verify completion
 - Unrealistic timelines: Account for testing, iteration, and buffer time (see timeline_guidelines)
 - Ignoring edge cases: Consider what happens when things go wrong
-- Outdated assumptions: Don't assume 2-year-old market data is still accurate
+- Ignoring provided research: ALWAYS use the <trend_research> data provided
 - Over-optimistic metrics: "1M users in 6 months" is unrealistic for most startups
 - Technology hype: Recommend proven tech unless innovation is core to the value proposition
+- Adding disclaimers: Do NOT add warnings about data accuracy - use research data confidently
 </anti_patterns>
 `;
 
@@ -244,14 +252,94 @@ export const VERSION_LABELS: Record<PRDLanguage, Record<PRDVersion, string>> = {
 // Version hints
 export const VERSION_HINTS: Record<PRDLanguage, Record<PRDVersion, string>> = {
   ko: {
-    basic: '핵심 섹션만 간략하게 작성해주세요.',
-    detailed: '모든 섹션을 상세하게 작성해주세요.',
-    research: '제공된 시장 리서치를 바탕으로 모든 섹션을 상세하게 작성해주세요. 특히 시장 분석, 경쟁사 분석, 기술 트렌드 섹션에 주의를 기울여주세요.',
+    basic: `제공된 <trend_research> 데이터를 활용하여 모든 섹션을 작성해주세요:
+- Executive Summary: 3-4 문단으로 문제, 솔루션, 차별점 설명
+- Market Analysis: 리서치 데이터 기반 시장 규모와 트렌드 (출처 URL 인용)
+- Competitive Landscape: 리서치에서 발견된 경쟁사 분석
+- Problem Statement: 최소 3개 이상의 pain point와 심각도
+- Target Users: 2개 이상의 페르소나
+- Requirements: 기능 요구사항 최소 8개, 비기능 요구사항 4개
+- User Stories: 최소 6개
+- Success Metrics: 최소 6개 KPI
+- Technical Considerations: 리서치 기반 기술 스택 추천
+- Timeline: MVP 로드맵
+- Risks: 최소 4개 리스크
+
+중요: 면책조항이나 "검증 필요" 문구 없이 리서치 데이터를 자신있게 인용하세요.`,
+    detailed: `제공된 <trend_research> 데이터를 활용하여 모든 섹션을 상세하게 작성해주세요:
+- Executive Summary: 4-5 문단으로 문제, 솔루션, 차별점, 시장 기회 심층 분석
+- Market Analysis: TAM/SAM/SOM 추정, 시장 트렌드 (리서치 출처 인용 필수)
+- Competitive Landscape: 리서치 기반 경쟁사 비교 분석, 차별화 전략
+- Problem Statement: 최소 5개 pain point와 현재 해결책 한계 분석
+- Target Users: 3개 이상의 상세한 페르소나
+- Requirements: 기능 요구사항 12개, 비기능 요구사항 6개
+- User Stories: 최소 10개
+- Success Metrics: 최소 10개 SMART KPI (선행/후행 지표 구분)
+- Technical Considerations: 리서치 기반 기술 스택, 아키텍처, 확장성 전략
+- Timeline: MVP, Beta, GA 단계별 로드맵
+- Risks: 최소 6개 리스크 (확률 × 영향도 매트릭스)
+
+중요: 면책조항이나 "검증 필요" 문구 없이 리서치 데이터를 자신있게 인용하세요.`,
+    research: `제공된 <trend_research> 리서치를 바탕으로 모든 섹션을 투자자 수준으로 상세하게 작성해주세요:
+- Executive Summary: 5-6 문단으로 시장 기회, 솔루션, 경쟁 우위, 수익 모델 심층 분석
+- Market Analysis: TAM/SAM/SOM 구체적 수치와 출처, 시장 성장률(CAGR), 산업 동향 (리서치 URL 인용 필수)
+- Competitive Landscape: 최소 5개 경쟁사 분석 (기능, 가격, 시장점유율 비교표), 차별화 전략, 경쟁 우위
+- Problem Statement: 최소 5개 pain point와 현재 솔루션의 gap 분석 (리서치 기반)
+- Target Users: 3개 이상의 상세한 페르소나 (시장 데이터 기반 검증)
+- Requirements: 기능 요구사항 최소 15개, 비기능 요구사항 최소 8개 (경쟁사 벤치마킹 포함)
+- User Stories: 최소 12개의 사용자 스토리
+- Success Metrics: 최소 12개 KPI (경쟁사 벤치마크 대비 목표치)
+- Technical Stack: 리서치 트렌드 기반 기술 스택 추천, 아키텍처, 확장성, 인프라 비용 추정
+- Timeline: MVP → Beta → GA 상세 로드맵
+- Risks: 최소 8개 리스크와 대응 전략
+- GTM Strategy: 런칭 전략, 마케팅 채널, 가격 전략, 파트너십 기회
+
+중요: 면책조항이나 "검증 필요" 문구 없이 리서치 데이터를 자신있게 인용하세요.`,
   },
   en: {
-    basic: 'Write only the core sections briefly.',
-    detailed: 'Write all sections in detail.',
-    research: 'Write all sections in detail based on the provided market research. Pay special attention to market analysis, competitive landscape, and technology trends sections.',
+    basic: `Use the provided <trend_research> data to write all sections:
+- Executive Summary: 3-4 paragraphs covering problem, solution, and differentiators
+- Market Analysis: Market size and trends based on research data (cite source URLs)
+- Competitive Landscape: Analysis of competitors found in research
+- Problem Statement: At least 3 pain points with severity
+- Target Users: 2+ personas
+- Requirements: Minimum 8 functional, 4 non-functional requirements
+- User Stories: At least 6 user stories
+- Success Metrics: Minimum 6 KPIs
+- Technical Considerations: Tech stack recommendations based on research
+- Timeline: MVP roadmap
+- Risks: At least 4 risks
+
+IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verification" statements.`,
+    detailed: `Use the provided <trend_research> data to write all sections in detail:
+- Executive Summary: 4-5 paragraphs with deep analysis of problem, solution, differentiators, market opportunity
+- Market Analysis: TAM/SAM/SOM estimates, market trends (must cite research sources)
+- Competitive Landscape: Research-based competitor comparison, differentiation strategy
+- Problem Statement: At least 5 pain points with current solution limitations
+- Target Users: 3+ detailed personas
+- Requirements: 12 functional, 6 non-functional requirements
+- User Stories: At least 10 user stories
+- Success Metrics: 10 SMART KPIs (distinguish leading/lagging indicators)
+- Technical Considerations: Research-based tech stack, architecture, scalability strategy
+- Timeline: MVP, Beta, GA phase roadmap
+- Risks: 6 risks with probability × impact matrix
+
+IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verification" statements.`,
+    research: `Use the provided <trend_research> to write all sections at investor-grade detail:
+- Executive Summary: 5-6 paragraphs with deep analysis of market opportunity, solution, competitive advantage, revenue model
+- Market Analysis: TAM/SAM/SOM with specific figures and sources, CAGR, industry dynamics (must cite research URLs)
+- Competitive Landscape: Analyze at least 5 competitors (feature, pricing, market share comparison table), differentiation strategy, competitive moat
+- Problem Statement: At least 5 pain points with gap analysis of current solutions (research-based)
+- Target Users: 3+ detailed personas (validated with market data)
+- Requirements: Minimum 15 functional requirements, 8+ non-functional requirements (including competitor benchmarking)
+- User Stories: At least 12 user stories
+- Success Metrics: Minimum 12 KPIs with targets relative to competitor benchmarks
+- Technical Stack: Research trend-based tech stack recommendations, architecture, scalability, infrastructure cost estimates
+- Timeline: Detailed MVP → Beta → GA roadmap
+- Risks: At least 8 risks with mitigation strategies
+- GTM Strategy: Launch strategy, marketing channels, pricing strategy, partnership opportunities
+
+IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verification" statements.`,
   },
 };
 
