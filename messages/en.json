@@ -58,24 +58,24 @@
       "plans": [
         {
           "name": "Starter",
-          "description": "Light start",
-          "features": ["3 PRD generations", "5 templates", "Markdown copy"]
+          "description": "For trying out",
+          "features": ["5 PRD generations", "5 templates", "Markdown copy"]
         },
         {
           "name": "Basic",
-          "description": "For indie hackers",
-          "features": ["10 PRD generations", "5 templates", "Markdown copy", "PRD history"]
+          "description": "For individuals",
+          "features": ["15 PRD generations", "5 templates", "Markdown copy", "PRD history"]
         },
         {
           "name": "Pro",
-          "description": "For startup PMs",
-          "features": ["25 PRD generations", "5 templates", "Markdown copy", "PRD history", "PDF download"]
+          "description": "For freelancers",
+          "features": ["50 PRD generations", "5 templates", "Markdown copy", "PRD history", "PDF download"]
         },
         {
           "name": "Business",
           "description": "For teams/agencies",
           "badge": "Best Value",
-          "features": ["100 PRD generations", "5 templates", "Markdown copy", "PRD history", "PDF download", "Priority support"]
+          "features": ["150 PRD generations", "5 templates", "Markdown copy", "PRD history", "PDF download", "Priority support"]
         }
       ],
       "trust": {

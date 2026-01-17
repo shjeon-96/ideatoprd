@@ -58,24 +58,24 @@
       "plans": [
         {
           "name": "Starter",
-          "description": "가볍게 시작하기",
-          "features": ["PRD 3회 생성", "5가지 템플릿", "Markdown 복사"]
+          "description": "체험용",
+          "features": ["PRD 5회 생성", "5가지 템플릿", "Markdown 복사"]
         },
         {
           "name": "Basic",
-          "description": "인디 해커용",
-          "features": ["PRD 10회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리"]
+          "description": "개인용",
+          "features": ["PRD 15회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리"]
         },
         {
           "name": "Pro",
-          "description": "스타트업 PM용",
-          "features": ["PRD 25회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리", "PDF 다운로드"]
+          "description": "프리랜서용",
+          "features": ["PRD 50회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리", "PDF 다운로드"]
         },
         {
           "name": "Business",
-          "description": "팀/에이전시용",
+          "description": "팀/기업용",
           "badge": "최고 가성비",
-          "features": ["PRD 100회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리", "PDF 다운로드", "우선 지원"]
+          "features": ["PRD 150회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리", "PDF 다운로드", "우선 지원"]
         }
       ],
       "trust": {

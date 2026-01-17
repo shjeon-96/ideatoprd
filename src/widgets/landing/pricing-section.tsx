@@ -13,10 +13,10 @@ interface PlanConfig {
 }
 
 const planConfigs: PlanConfig[] = [
-  { price: '$2.99', credits: 3 },
-  { price: '$7.99', credits: 10 },
-  { price: '$14.99', credits: 25, popular: true },
-  { price: '$49.99', credits: 100 },
+  { price: '$2.99', credits: 5 },
+  { price: '$6.99', credits: 15, popular: true },
+  { price: '$17.99', credits: 50 },
+  { price: '$39.99', credits: 150 },
 ];
 
 export function PricingSection() {

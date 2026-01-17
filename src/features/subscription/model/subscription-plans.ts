@@ -24,13 +24,13 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, SubscriptionPlanConfig
   basic: {
     name: 'Basic',
     description: '개인 사용자를 위한 기본 플랜',
-    monthlyCredits: 25,
-    creditCap: 50, // 2 months
-    monthlyPrice: 15,
-    yearlyPrice: 144, // $12/month
+    monthlyCredits: 20,
+    creditCap: 40, // 2 months
+    monthlyPrice: 9.99,
+    yearlyPrice: 99, // ~$8.25/month
     features: [
-      '월 25 크레딧',
-      '최대 50 크레딧 누적',
+      '월 20 크레딧',
+      '최대 40 크레딧 누적',
       '기본 PRD 템플릿',
       '이메일 지원',
     ],
@@ -40,13 +40,13 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, SubscriptionPlanConfig
   pro: {
     name: 'Pro',
     description: '전문가를 위한 프로 플랜',
-    monthlyCredits: 80,
-    creditCap: 160, // 2 months
-    monthlyPrice: 35,
-    yearlyPrice: 336, // $28/month
+    monthlyCredits: 60,
+    creditCap: 120, // 2 months
+    monthlyPrice: 24.99,
+    yearlyPrice: 249, // ~$20.75/month
     features: [
-      '월 80 크레딧',
-      '최대 160 크레딧 누적',
+      '월 60 크레딧',
+      '최대 120 크레딧 누적',
       '모든 PRD 템플릿',
       'Research 버전 포함',
       '우선 지원',
@@ -58,13 +58,13 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, SubscriptionPlanConfig
   business: {
     name: 'Business',
     description: '팀과 기업을 위한 비즈니스 플랜',
-    monthlyCredits: 200,
-    creditCap: 400, // 2 months
-    monthlyPrice: 69,
-    yearlyPrice: 662, // ~$55/month
+    monthlyCredits: 150,
+    creditCap: 300, // 2 months
+    monthlyPrice: 49.99,
+    yearlyPrice: 499, // ~$41.58/month
     features: [
-      '월 200 크레딧',
-      '최대 400 크레딧 누적',
+      '월 150 크레딧',
+      '최대 300 크레딧 누적',
       '모든 PRD 템플릿',
       'Research 버전 포함',
       '전용 지원',
