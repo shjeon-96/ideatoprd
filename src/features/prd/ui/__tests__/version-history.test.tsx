@@ -3,7 +3,8 @@
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from '@/src/__tests__/test-utils';
 import { VersionHistory } from '../version-history';
 import type { PrdVersionItem } from '../../api/get-prd';
 
@@ -48,7 +49,8 @@ describe('VersionHistory', () => {
         <VersionHistory versions={mockVersions} currentVersionId="prd-v2" />
       );
 
-      expect(screen.getByText('2개 버전')).toBeInTheDocument();
+      // English: "2 versions"
+      expect(screen.getByText('2 versions')).toBeInTheDocument();
     });
 
     it('should render all versions', () => {
@@ -56,16 +58,18 @@ describe('VersionHistory', () => {
         <VersionHistory versions={mockVersions} currentVersionId="prd-v2" />
       );
 
-      expect(screen.getByText('원본')).toBeInTheDocument();
-      expect(screen.getByText('수정 v2')).toBeInTheDocument();
+      // English translations
+      expect(screen.getByText('Original')).toBeInTheDocument();
+      expect(screen.getByText('Revision v2')).toBeInTheDocument();
     });
 
-    it('should show "현재" badge for current version', () => {
+    it('should show "Current" badge for current version', () => {
       render(
         <VersionHistory versions={mockVersions} currentVersionId="prd-v2" />
       );
 
-      expect(screen.getByText('현재')).toBeInTheDocument();
+      // English: "Current"
+      expect(screen.getByText('Current')).toBeInTheDocument();
     });
 
     it('should display revision feedback for non-original versions', () => {
@@ -101,15 +105,13 @@ describe('VersionHistory', () => {
   });
 
   describe('Date Formatting', () => {
-    it('should format dates in Korean locale', () => {
+    it('should format dates in English locale', () => {
       render(
         <VersionHistory versions={mockVersions} currentVersionId="prd-v2" />
       );
 
-      // Should contain formatted date (month/day format)
-      // The exact format depends on the locale and may vary
-      // Use getAllByText since there are multiple dates
-      const dateElements = screen.getAllByText(/1월/i);
+      // Should contain formatted date (Jan format for English)
+      const dateElements = screen.getAllByText(/Jan/i);
       expect(dateElements.length).toBeGreaterThan(0);
     });
   });
@@ -158,7 +160,7 @@ describe('VersionHistory', () => {
       );
 
       const currentVersionLink = screen.getByRole('link', {
-        name: /수정 v2/i,
+        name: /Revision v2/i,
       });
 
       // Current version should have primary/highlight styling in classname
@@ -171,7 +173,7 @@ describe('VersionHistory', () => {
       );
 
       const originalVersionLink = screen.getByRole('link', {
-        name: /원본/i,
+        name: /Original/i,
       });
 
       // Non-current version should not have the primary bg class

@@ -9,14 +9,14 @@ import { vi } from 'vitest';
 
 // Mock user data
 export const mockUser = {
-  id: 'test-user-id-123',
+  id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
   email: 'test@example.com',
   created_at: '2024-01-01T00:00:00Z',
 };
 
 // Mock PRD data
 export const mockPrd = {
-  id: 'prd-id-123',
+  id: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
   user_id: mockUser.id,
   title: 'Test PRD Title',
   idea: 'Test idea for PRD',
@@ -38,7 +38,7 @@ export const mockPrd = {
 // Mock PRD version data
 export const mockPrdVersions = [
   {
-    id: 'prd-id-456',
+    id: 'c0eebc99-9c0b-4ef8-bb6d-6bb9bd380a33',
     version_number: 2,
     title: 'Test PRD Title v2',
     revision_feedback: 'Improve the summary',
@@ -46,7 +46,7 @@ export const mockPrdVersions = [
     created_at: '2024-01-02T00:00:00Z',
   },
   {
-    id: 'prd-id-123',
+    id: 'b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22',
     version_number: 1,
     title: 'Test PRD Title',
     revision_feedback: null,

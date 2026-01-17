@@ -145,8 +145,8 @@ async function handleOrderCreated(
     return NextResponse.json({ message: 'Order not paid' }, { status: 200 });
   }
 
-  // Skip test orders in production
-  if (testMode && process.env.NODE_ENV === 'production') {
+  // Skip test orders in production (unless ALLOW_TEST_WEBHOOKS is set)
+  if (testMode && process.env.NODE_ENV === 'production' && !process.env.ALLOW_TEST_WEBHOOKS) {
     return NextResponse.json({ message: 'Test order ignored' }, { status: 200 });
   }
 
@@ -232,7 +232,7 @@ async function handleSubscriptionCreated(
   }
 
   // Skip test in production
-  if (testMode && process.env.NODE_ENV === 'production') {
+  if (testMode && process.env.NODE_ENV === 'production' && !process.env.ALLOW_TEST_WEBHOOKS) {
     return NextResponse.json({ message: 'Test subscription ignored' }, { status: 200 });
   }
 
@@ -439,7 +439,7 @@ async function handleSubscriptionPaymentSuccess(
   }
 
   // Skip test in production
-  if (testMode && process.env.NODE_ENV === 'production') {
+  if (testMode && process.env.NODE_ENV === 'production' && !process.env.ALLOW_TEST_WEBHOOKS) {
     return NextResponse.json({ message: 'Test payment ignored' }, { status: 200 });
   }
 

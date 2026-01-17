@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Script from 'next/script';
 import { useTranslations } from 'next-intl';
 import { Check, Loader2 } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
@@ -29,6 +30,14 @@ export function SubscriptionPlans({
   const [interval, setInterval] = useState<BillingInterval>('monthly');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+
+  // Initialize Lemon Squeezy when script loads
+  useEffect(() => {
+    if (scriptLoaded && typeof window !== 'undefined') {
+      window.createLemonSqueezy?.();
+    }
+  }, [scriptLoaded]);
 
   const handleSubscribe = async () => {
     if (!selectedPlan) return;
@@ -39,8 +48,13 @@ export function SubscriptionPlans({
     const result = await createSubscriptionCheckout(selectedPlan, interval);
 
     if (result.success) {
-      // Open Lemon Squeezy checkout
-      window.LemonSqueezy?.Url?.Open?.(result.checkoutUrl);
+      // Open Lemon Squeezy checkout overlay
+      if (window.LemonSqueezy?.Url?.Open) {
+        window.LemonSqueezy.Url.Open(result.checkoutUrl);
+      } else {
+        // Fallback: open in new tab
+        window.open(result.checkoutUrl, '_blank');
+      }
     } else {
       setError(result.error);
     }
@@ -49,8 +63,14 @@ export function SubscriptionPlans({
   };
 
   return (
-    <div className="space-y-8">
-      {/* Billing interval toggle */}
+    <>
+      <Script
+        src="https://assets.lemonsqueezy.com/lemon.js"
+        strategy="lazyOnload"
+        onLoad={() => setScriptLoaded(true)}
+      />
+      <div className="space-y-8">
+        {/* Billing interval toggle */}
       <BillingIntervalToggle
         value={interval}
         onChange={setInterval}
@@ -179,6 +199,7 @@ export function SubscriptionPlans({
           )}
         </button>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
