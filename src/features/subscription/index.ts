@@ -30,4 +30,7 @@ export {
   SubscriptionPlans,
   SubscriptionBadge,
   SubscriptionStatus,
+  TrustBadges,
+  SocialProof,
+  PricingFAQ,
 } from './ui';

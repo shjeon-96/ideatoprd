@@ -9,6 +9,7 @@ import {
   PrdPdfDownload,
   RevisionPanel,
   VersionHistory,
+  PrdRating,
 } from '@/src/features/prd';
 import { Badge } from '@/src/shared/ui/badge';
 import { Button } from '@/src/shared/ui/button';
@@ -104,6 +105,13 @@ export default async function PrdDetailPage({ params }: PrdDetailPageProps) {
               </p>
             )}
           </div>
+
+          {/* Rating */}
+          <PrdRating
+            prdId={prd.id}
+            initialRating={prd.rating}
+            initialFeedback={prd.rating_feedback}
+          />
 
           {/* Revision Panel */}
           <RevisionPanel prdId={prd.id} isResearchVersion={isResearchVersion} />

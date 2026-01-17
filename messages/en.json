@@ -216,8 +216,16 @@
       "placeholder": "PRD will be displayed here.",
       "preview": "PRD Preview",
       "generating": "Generating...",
+      "complete": "Complete",
       "copy": "Copy",
       "copied": "Copied"
+    },
+    "complete": {
+      "autoRedirect": "Redirecting in {seconds}s...",
+      "viewPrd": "View PRD",
+      "generateAnother": "Generate Another",
+      "tipTitle": "Pro tip",
+      "tipContent": "Use the revision feature to refine your PRD based on feedback. Each revision costs only 1 credit."
     }
   },
   "prdLanguage": {
@@ -322,6 +330,7 @@
     }
   },
   "subscribe": {
+    "launchOffer": "Launch Special Pricing",
     "mySubscription": "My Subscription",
     "description": "View your subscription status and benefits.",
     "currentCredits": "Current Credits",
@@ -358,6 +367,9 @@
   "subscription": {
     "popular": "Popular",
     "currentPlan": "Current Plan",
+    "bestValue": "Best value for PRD generation",
+    "costPerCredit": "${cost}/credit",
+    "saveAmount": "Save ${amount}/year",
     "billingCycle": {
       "monthly": "mo",
       "yearly": "yr"
@@ -423,6 +435,48 @@
     "monthly": "Monthly",
     "yearly": "Yearly",
     "discount": "20% off"
+  },
+  "pricing": {
+    "trust": {
+      "secure": "256-bit SSL Encrypted",
+      "payment": "Secure Payment via Lemon Squeezy",
+      "cancel": "Cancel Anytime",
+      "refund": "30-Day Money Back Guarantee"
+    },
+    "social": {
+      "users": "product managers trust us",
+      "rating": "average rating",
+      "prds": "PRDs generated"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": {
+        "credits": {
+          "question": "What are credits and how do they work?",
+          "answer": "Credits are used to generate PRDs. 1 credit = 1 Basic PRD generation. Detailed version uses 2 credits, and Research version uses 3 credits. Credits are added monthly and accumulate up to your plan's cap."
+        },
+        "cancel": {
+          "question": "Can I cancel my subscription anytime?",
+          "answer": "Yes, you can cancel anytime. Your subscription will remain active until the end of your current billing period, and you'll keep any accumulated credits."
+        },
+        "refund": {
+          "question": "What's your refund policy?",
+          "answer": "We offer a 30-day money-back guarantee. If you're not satisfied within the first 30 days, contact us for a full refund."
+        },
+        "switch": {
+          "question": "Can I switch plans?",
+          "answer": "Yes, you can upgrade or downgrade your plan at any time. Changes take effect on your next billing cycle."
+        },
+        "unused": {
+          "question": "What happens to unused credits?",
+          "answer": "Unused credits accumulate up to your plan's credit cap. For example, on the Pro plan (60 credits/month), you can accumulate up to 120 credits."
+        },
+        "payment": {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept all major credit cards (Visa, Mastercard, American Express) through our secure payment provider Lemon Squeezy."
+        }
+      }
+    }
   },
   "prd": {
     "untitled": "Untitled PRD",
@@ -549,6 +603,47 @@
     "aiWrapper": {
       "name": "AI-Wrapper",
       "description": "AI-powered service"
+    }
+  },
+  "onboarding": {
+    "welcome": {
+      "title": "Welcome to IdeaToPRD!",
+      "subtitle": "Create your first PRD in minutes with AI assistance.",
+      "sampleIdeasTitle": "Or start with a sample idea",
+      "startWithSample": "Start with this idea",
+      "startBlank": "Start from scratch",
+      "skipForNow": "Skip for now"
+    },
+    "sampleIdeas": {
+      "taskManager": {
+        "title": "AI Task Manager",
+        "description": "Smart task prioritization based on deadlines and user behavior"
+      },
+      "fitnessApp": {
+        "title": "Personalized Fitness Coach",
+        "description": "Custom workout plans based on goals and equipment"
+      },
+      "invoiceApp": {
+        "title": "Freelancer Invoicing",
+        "description": "Simple invoicing with payment reminders and expense tracking"
+      }
+    },
+    "checklist": {
+      "title": "Getting Started",
+      "progress": "{completed} of {total} completed",
+      "complete": "All done!",
+      "dismiss": "Dismiss",
+      "items": {
+        "accountCreated": "Create your account",
+        "firstPrd": "Generate your first PRD",
+        "exportPrd": "Export or share a PRD",
+        "subscribe": "Get a subscription for more credits"
+      },
+      "actions": {
+        "generate": "Generate",
+        "export": "View PRDs",
+        "subscribe": "Subscribe"
+      }
     }
   },
   "errors": {

@@ -306,10 +306,14 @@ describe('POST /api/revise-prd', () => {
       expect(streamText).toHaveBeenCalled();
 
       // Verify the call arguments contain expected content
+      // Note: Using messages format for Anthropic prompt caching
       const callArgs = (streamText as Mock).mock.calls[0][0];
       expect(callArgs.model).toBeDefined();
-      expect(callArgs.system).toContain('revision');
-      expect(callArgs.prompt).toContain('Executive Summary');
+      expect(callArgs.messages).toBeDefined();
+      expect(callArgs.messages[0].role).toBe('system');
+      expect(callArgs.messages[0].content).toContain('revision');
+      expect(callArgs.messages[1].role).toBe('user');
+      expect(callArgs.messages[1].content).toContain('Executive Summary');
     });
 
     // NOTE: This test is skipped because testing onFinish callback requires

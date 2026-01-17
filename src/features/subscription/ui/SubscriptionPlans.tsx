@@ -3,18 +3,25 @@
 import { useState, useEffect } from 'react';
 import Script from 'next/script';
 import { useTranslations } from 'next-intl';
-import { Check, Loader2 } from 'lucide-react';
+import { Check, Loader2, Zap, TrendingUp, Award } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 import {
   SUBSCRIPTION_PLANS,
   getPlanPrice,
-  getMonthlyEquivalent,
-  getYearlySavings,
+  getYearlySavingsAmount,
+  getCostPerCredit,
   type SubscriptionPlanConfig,
 } from '../model/subscription-plans';
 import { createSubscriptionCheckout } from '../api/create-subscription-checkout';
 import { BillingIntervalToggle } from './BillingIntervalToggle';
 import type { SubscriptionPlan, BillingInterval } from '@/src/entities';
+
+// Plan icons for visual distinction
+const PLAN_ICONS: Record<SubscriptionPlan, typeof Zap> = {
+  basic: Zap,
+  pro: TrendingUp,
+  business: Award,
+};
 
 interface SubscriptionPlansProps {
   currentPlan?: SubscriptionPlan | null;
@@ -84,8 +91,9 @@ export function SubscriptionPlans({
             const isCurrentPlan = currentPlan === key;
             const isSelected = selectedPlan === key;
             const price = getPlanPrice(key, interval);
-            const monthlyEquivalent = getMonthlyEquivalent(key, interval);
-            const savings = getYearlySavings(key);
+            const costPerCredit = getCostPerCredit(key, interval);
+            const yearlySavingsAmount = getYearlySavingsAmount(key);
+            const PlanIcon = PLAN_ICONS[key];
 
             return (
               <button
@@ -94,19 +102,21 @@ export function SubscriptionPlans({
                 disabled={disabled || isLoading || isCurrentPlan}
                 className={cn(
                   'relative flex flex-col rounded-xl border-2 p-6 text-left transition-all',
-                  'hover:border-primary/50 hover:shadow-md',
+                  'hover:border-primary/50 hover:shadow-lg hover:-translate-y-0.5',
                   'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
                   'disabled:cursor-not-allowed disabled:opacity-50',
                   isSelected
-                    ? 'border-primary bg-primary/5'
+                    ? 'border-primary bg-primary/5 shadow-lg -translate-y-0.5'
                     : isCurrentPlan
                       ? 'border-green-500 bg-green-50 dark:bg-green-950/20'
-                      : 'border-border bg-card'
+                      : plan.popular
+                        ? 'border-primary/30 bg-card'
+                        : 'border-border bg-card'
                 )}
               >
                 {/* Popular badge */}
                 {plan.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-primary to-brand-accent px-4 py-1 text-xs font-semibold text-white shadow-md">
                     {t('popular')}
                   </span>
                 )}
@@ -120,33 +130,52 @@ export function SubscriptionPlans({
 
                 {/* Selected indicator */}
                 {isSelected && (
-                  <div className="absolute right-3 top-3 rounded-full bg-primary p-1">
-                    <Check className="h-3 w-3 text-primary-foreground" />
+                  <div className="absolute right-3 top-3 rounded-full bg-primary p-1.5 shadow-sm">
+                    <Check className="h-3.5 w-3.5 text-primary-foreground" />
                   </div>
                 )}
 
-                {/* Plan name & description */}
-                <h3 className="text-xl font-bold">{t(plan.nameKey)}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{t(plan.descriptionKey)}</p>
+                {/* Plan icon & name */}
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    'flex size-10 items-center justify-center rounded-lg',
+                    plan.popular ? 'bg-brand-secondary' : 'bg-muted'
+                  )}>
+                    <PlanIcon className={cn(
+                      'size-5',
+                      plan.popular ? 'text-brand-primary' : 'text-muted-foreground'
+                    )} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">{t(plan.nameKey)}</h3>
+                    <p className="text-xs text-muted-foreground">{t(plan.descriptionKey)}</p>
+                  </div>
+                </div>
 
                 {/* Price */}
                 <div className="mt-6">
-                  <span className="text-4xl font-bold">${price}</span>
-                  <span className="text-muted-foreground">
-                    /{t(`billingCycle.${interval}`)}
-                  </span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold tracking-tight">${price}</span>
+                    <span className="text-muted-foreground">
+                      /{t(`billingCycle.${interval}`)}
+                    </span>
+                  </div>
+                  {/* Cost per credit - value anchoring */}
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {t('costPerCredit', { cost: costPerCredit })}
+                  </p>
                 </div>
 
                 {/* Monthly equivalent for yearly */}
                 {interval === 'yearly' && (
-                  <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-                    {t('monthlySavings', { price: monthlyEquivalent, discount: savings })}
-                  </p>
+                  <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700 dark:bg-green-950/50 dark:text-green-400">
+                    <span>{t('saveAmount', { amount: yearlySavingsAmount })}</span>
+                  </div>
                 )}
 
                 {/* Credits info */}
-                <div className="mt-4 rounded-lg bg-muted/50 p-3">
-                  <p className="text-sm font-medium">
+                <div className="mt-4 rounded-lg bg-gradient-to-br from-muted/50 to-muted p-3">
+                  <p className="text-sm font-semibold">
                     {t('monthlyCredits', { credits: plan.monthlyCredits })}
                   </p>
                   <p className="text-xs text-muted-foreground">
@@ -155,14 +184,23 @@ export function SubscriptionPlans({
                 </div>
 
                 {/* Features */}
-                <ul className="mt-4 space-y-2">
+                <ul className="mt-4 flex-1 space-y-2">
                   {plan.featureKeys.map((featureKey, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-sm">
-                      <Check className="h-4 w-4 text-green-500" />
+                    <li key={idx} className="flex items-start gap-2 text-sm">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-green-500" />
                       <span>{t(featureKey)}</span>
                     </li>
                   ))}
                 </ul>
+
+                {/* CTA hint */}
+                {plan.popular && !isCurrentPlan && (
+                  <div className="mt-4 pt-4 border-t border-border/50">
+                    <p className="text-center text-xs font-medium text-brand-primary">
+                      {t('bestValue')}
+                    </p>
+                  </div>
+                )}
               </button>
             );
           }

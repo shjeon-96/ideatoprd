@@ -23,6 +23,9 @@ export type Database = {
           id: string
           idea: string
           parent_id: string | null
+          rated_at: string | null
+          rating: number | null
+          rating_feedback: string | null
           revised_sections: string[] | null
           revision_feedback: string | null
           template: Database["public"]["Enums"]["prd_template"]
@@ -41,6 +44,9 @@ export type Database = {
           id?: string
           idea: string
           parent_id?: string | null
+          rated_at?: string | null
+          rating?: number | null
+          rating_feedback?: string | null
           revised_sections?: string[] | null
           revision_feedback?: string | null
           template?: Database["public"]["Enums"]["prd_template"]
@@ -59,6 +65,9 @@ export type Database = {
           id?: string
           idea?: string
           parent_id?: string | null
+          rated_at?: string | null
+          rating?: number | null
+          rating_feedback?: string | null
           revised_sections?: string[] | null
           revision_feedback?: string | null
           template?: Database["public"]["Enums"]["prd_template"]

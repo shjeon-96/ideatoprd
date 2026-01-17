@@ -230,10 +230,23 @@ ${promptTemplate.getHint(version)}
 
     const stream = createUIMessageStream({
       execute: async ({ writer }) => {
+        // Use messages format to enable Anthropic prompt caching
+        // System prompt is cached to reduce costs (~90% savings on input tokens)
         const result = streamText({
           model,
-          system: systemPrompt,
-          prompt: userPrompt,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+              providerOptions: {
+                anthropic: { cacheControl: { type: 'ephemeral' } },
+              },
+            },
+            {
+              role: 'user',
+              content: userPrompt,
+            },
+          ],
           maxOutputTokens: maxTokens,
           temperature: AI_CONFIG.temperature,
           onChunk: ({ chunk }) => {

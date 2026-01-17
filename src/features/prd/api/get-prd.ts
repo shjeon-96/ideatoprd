@@ -29,6 +29,10 @@ export interface PrdDetailItem {
   version_number: number;
   revision_feedback: string | null;
   revised_sections: string[] | null;
+  // Rating fields
+  rating: number | null;
+  rating_feedback: string | null;
+  rated_at: string | null;
 }
 
 /**
@@ -44,7 +48,7 @@ export const getPrd = cache(async (id: string): Promise<PrdDetailItem | null> =>
 
   const { data, error } = await supabase
     .from('prds')
-    .select('id, title, idea, template, version, content, created_at, updated_at, parent_id, version_number, revision_feedback, revised_sections')
+    .select('id, title, idea, template, version, content, created_at, updated_at, parent_id, version_number, revision_feedback, revised_sections, rating, rating_feedback, rated_at')
     .eq('id', id)
     .single();
 

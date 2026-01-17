@@ -20,3 +20,4 @@ export { PrdPdfDownload } from './ui/prd-pdf-download';
 export { PrdDocument } from './ui/prd-document';
 export { RevisionPanel } from './ui/revision-panel';
 export { VersionHistory } from './ui/version-history';
+export { PrdRating } from './ui/prd-rating';

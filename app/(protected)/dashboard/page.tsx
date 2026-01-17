@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import { Button } from '@/src/shared/ui/button';
 import { PrdListClient } from '@/src/features/prd';
+import { DashboardOnboarding, DashboardChecklist } from '@/src/features/onboarding';
 
 export const metadata: Metadata = {
   title: 'Dashboard | IdeaToPRD',
@@ -16,6 +17,9 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <div className="max-w-6xl mx-auto">
+      {/* Welcome modal for new users */}
+      <DashboardOnboarding />
+
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-editorial font-medium tracking-tight mb-1">
@@ -31,7 +35,15 @@ export default function DashboardPage() {
         </Button>
       </div>
 
-      <PrdListClient />
+      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        {/* Main content - PRD list */}
+        <PrdListClient />
+
+        {/* Sidebar - Onboarding checklist */}
+        <aside className="order-first lg:order-last">
+          <DashboardChecklist />
+        </aside>
+      </div>
     </div>
   );
 }

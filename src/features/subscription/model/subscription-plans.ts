@@ -107,3 +107,22 @@ export function getVariantId(plan: SubscriptionPlan, interval: BillingInterval):
   const config = SUBSCRIPTION_PLANS[plan];
   return interval === 'monthly' ? config.variantIdMonthly : config.variantIdYearly;
 }
+
+/**
+ * Get cost per credit for a plan (value anchoring).
+ */
+export function getCostPerCredit(plan: SubscriptionPlan, interval: BillingInterval): string {
+  const config = SUBSCRIPTION_PLANS[plan];
+  const price = interval === 'monthly' ? config.monthlyPrice : config.yearlyPrice / 12;
+  const costPerCredit = price / config.monthlyCredits;
+  return costPerCredit.toFixed(2);
+}
+
+/**
+ * Get yearly savings amount in dollars.
+ */
+export function getYearlySavingsAmount(plan: SubscriptionPlan): number {
+  const config = SUBSCRIPTION_PLANS[plan];
+  const yearlyWithoutDiscount = config.monthlyPrice * 12;
+  return Math.round(yearlyWithoutDiscount - config.yearlyPrice);
+}

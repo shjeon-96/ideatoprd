@@ -117,11 +117,22 @@ export async function POST(req: Request) {
       language,
     });
 
-    // 7. Stream the revised PRD
+    // 7. Stream the revised PRD with Anthropic prompt caching
     const result = streamText({
       model: advancedModel,
-      system,
-      prompt: userPrompt,
+      messages: [
+        {
+          role: 'system',
+          content: system,
+          providerOptions: {
+            anthropic: { cacheControl: { type: 'ephemeral' } },
+          },
+        },
+        {
+          role: 'user',
+          content: userPrompt,
+        },
+      ],
       maxOutputTokens: AI_CONFIG.maxTokens,
       temperature: AI_CONFIG.temperature,
       onChunk: ({ chunk }) => {

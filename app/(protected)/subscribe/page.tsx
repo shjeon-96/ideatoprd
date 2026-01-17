@@ -4,9 +4,15 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { SubscriptionPlans } from '@/src/features/subscription/ui/SubscriptionPlans';
-import { SubscriptionStatus } from '@/src/features/subscription/ui/SubscriptionStatus';
-import { getActiveSubscription, type ActiveSubscription } from '@/src/features/subscription';
+import {
+  SubscriptionPlans,
+  SubscriptionStatus,
+  TrustBadges,
+  SocialProof,
+  PricingFAQ,
+  getActiveSubscription,
+  type ActiveSubscription,
+} from '@/src/features/subscription';
 import { CreditBalance } from '@/src/features/purchase/ui/CreditBalance';
 import { useUser } from '@/src/features/auth/hooks/use-user';
 
@@ -106,25 +112,37 @@ export default function SubscribePage() {
 
   // No subscription - show plans
   return (
-    <div className="mx-auto max-w-5xl">
-      {/* Header */}
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold">{t('selectPlan')}</h1>
-        <p className="mt-2 text-muted-foreground">
+    <div className="mx-auto max-w-5xl space-y-12">
+      {/* Header with value proposition */}
+      <div className="text-center">
+        <span className="mb-4 inline-flex items-center gap-1 rounded-full bg-brand-secondary px-3 py-1 text-xs font-medium text-brand-primary">
+          <Sparkles className="size-3" />
+          {t('launchOffer')}
+        </span>
+        <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
+          {t('selectPlan')}
+        </h1>
+        <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
           {t('planDescription')}
         </p>
       </div>
 
+      {/* Social proof */}
+      <SocialProof />
+
       {/* Current credits */}
-      <div className="mb-8 flex justify-center">
+      <div className="flex justify-center">
         <CreditBalance credits={profile?.credits ?? 0} size="lg" />
       </div>
 
       {/* Subscription plans */}
       <SubscriptionPlans />
 
+      {/* Trust badges */}
+      <TrustBadges />
+
       {/* One-time purchase link */}
-      <div className="mt-12 text-center">
+      <div className="text-center">
         <p className="text-muted-foreground">
           {t('oneTimeQuestion')}
         </p>
@@ -137,29 +155,32 @@ export default function SubscribePage() {
         </Link>
       </div>
 
+      {/* FAQ */}
+      <PricingFAQ />
+
       {/* Benefits comparison */}
-      <div className="mt-12 rounded-lg border bg-muted/30 p-6">
-        <h3 className="text-lg font-semibold">{t('whySubscribe')}</h3>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div>
+      <div className="rounded-xl border border-border bg-gradient-to-br from-muted/30 to-muted/50 p-6 md:p-8">
+        <h3 className="text-xl font-semibold">{t('whySubscribe')}</h3>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
+          <div className="space-y-1">
             <h4 className="font-medium text-primary">{t('benefits.cheaper.title')}</h4>
             <p className="text-sm text-muted-foreground">
               {t('benefits.cheaper.description')}
             </p>
           </div>
-          <div>
+          <div className="space-y-1">
             <h4 className="font-medium text-primary">{t('benefits.autoRefill.title')}</h4>
             <p className="text-sm text-muted-foreground">
               {t('benefits.autoRefill.description')}
             </p>
           </div>
-          <div>
+          <div className="space-y-1">
             <h4 className="font-medium text-primary">{t('benefits.accumulate.title')}</h4>
             <p className="text-sm text-muted-foreground">
               {t('benefits.accumulate.description')}
             </p>
           </div>
-          <div>
+          <div className="space-y-1">
             <h4 className="font-medium text-primary">{t('benefits.yearlyDiscount.title')}</h4>
             <p className="text-sm text-muted-foreground">
               {t('benefits.yearlyDiscount.description')}

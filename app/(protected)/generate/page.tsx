@@ -1,20 +1,18 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { PRDForm, PRDViewer, CREDITS_PER_VERSION, type PRDLanguage } from '@/src/features/prd-generation';
+import { PRDForm, PRDViewer, GenerationProgress, GenerationComplete, CREDITS_PER_VERSION, type PRDLanguage } from '@/src/features/prd-generation';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { useUser } from '@/src/features/auth/hooks/use-user';
 import { useWorkspace } from '@/src/features/workspace';
 import { InsufficientCreditsModal } from '@/src/features/purchase/ui/InsufficientCreditsModal';
 import { CreditBalance } from '@/src/features/purchase/ui/CreditBalance';
 import { processUIMessageStream, type PRDSaveResult } from '@/src/shared/lib/stream';
-import { Sparkles, Wand2, CheckCircle, Loader2 } from 'lucide-react';
+import { Sparkles, Wand2 } from 'lucide-react';
 
 export default function GeneratePage() {
   const t = useTranslations();
-  const router = useRouter();
   const { profile, isLoading: isUserLoading, refetch } = useUser();
   const { currentWorkspace, isWorkspaceMode } = useWorkspace();
   const [content, setContent] = useState('');
@@ -22,9 +20,21 @@ export default function GeneratePage() {
   const [error, setError] = useState<string | null>(null);
   const [savedPrdId, setSavedPrdId] = useState<string | null>(null);
 
+  // Prefill idea from onboarding
+  const [prefillIdea, setPrefillIdea] = useState<string>('');
+
   // Credit modal state
   const [showCreditModal, setShowCreditModal] = useState(false);
   const [requiredCredits, setRequiredCredits] = useState(0);
+
+  // Check for prefilled idea from onboarding
+  useEffect(() => {
+    const savedIdea = localStorage.getItem('prefillIdea');
+    if (savedIdea) {
+      setPrefillIdea(savedIdea);
+      localStorage.removeItem('prefillIdea');
+    }
+  }, []);
 
   // Handle PRD save result from stream
   const handleSaveResult = useCallback(
@@ -33,10 +43,7 @@ export default function GeneratePage() {
         case 'prd_saved':
           if (result.prdId) {
             setSavedPrdId(result.prdId);
-            // Auto-redirect to PRD detail page after short delay
-            setTimeout(() => {
-              router.push(`/dashboard/prds/${result.prdId}`);
-            }, 1500);
+            // Auto-redirect is now handled by GenerationComplete component
           }
           break;
         case 'prd_save_failed':
@@ -48,8 +55,16 @@ export default function GeneratePage() {
           break;
       }
     },
-    [router, refetch, t]
+    [refetch, t]
   );
+
+  // Reset form for generating another PRD
+  const handleGenerateAnother = useCallback(() => {
+    setContent('');
+    setSavedPrdId(null);
+    setError(null);
+    setPrefillIdea('');
+  }, []);
 
   const handleGenerate = useCallback(
     async (data: {
@@ -176,20 +191,13 @@ export default function GeneratePage() {
         />
       </div>
 
-      {/* Success Alert - PRD Saved */}
+      {/* Success - PRD Saved with CTAs */}
       {savedPrdId && (
-        <div
-          role="status"
-          className="mb-8 flex items-center gap-3 rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-green-700 dark:text-green-400"
-        >
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-500/20">
-            <CheckCircle className="size-5" />
-          </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium">{t('generate.saveSuccess')}</p>
-            <p className="text-xs opacity-80">{t('generate.redirecting')}</p>
-          </div>
-          <Loader2 className="size-5 animate-spin opacity-60" />
+        <div className="mb-8">
+          <GenerationComplete
+            prdId={savedPrdId}
+            onGenerateAnother={handleGenerateAnother}
+          />
         </div>
       )}
 
@@ -223,12 +231,20 @@ export default function GeneratePage() {
             onSubmit={handleGenerate}
             isLoading={isGenerating}
             userCredits={profile?.credits ?? 0}
+            initialIdea={prefillIdea}
           />
         </div>
 
         {/* Right: Viewer Card */}
-        <div className="card-3d rounded-2xl border border-border/50 bg-card shadow-sm" aria-live="polite" aria-atomic="false">
-          <PRDViewer content={content} isStreaming={isGenerating} />
+        <div className="space-y-4">
+          {/* Progress Indicator */}
+          {(isGenerating || content) && (
+            <GenerationProgress content={content} isStreaming={isGenerating} />
+          )}
+
+          <div className="card-3d rounded-2xl border border-border/50 bg-card shadow-sm" aria-live="polite" aria-atomic="false">
+            <PRDViewer content={content} isStreaming={isGenerating} />
+          </div>
         </div>
       </div>
 

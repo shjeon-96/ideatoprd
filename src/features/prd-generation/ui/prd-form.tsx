@@ -19,11 +19,12 @@ interface PRDFormProps {
   }) => void;
   isLoading: boolean;
   userCredits: number;
+  initialIdea?: string;
 }
 
-export function PRDForm({ onSubmit, isLoading, userCredits }: PRDFormProps) {
+export function PRDForm({ onSubmit, isLoading, userCredits, initialIdea = '' }: PRDFormProps) {
   const t = useTranslations('generate');
-  const [idea, setIdea] = useState('');
+  const [idea, setIdea] = useState(initialIdea);
   const [template, setTemplate] = useState<PRDTemplate>('saas');
   const [version, setVersion] = useState<PRDVersion>('basic');
   const [language, setLanguage] = useState<PRDLanguage>('ko');

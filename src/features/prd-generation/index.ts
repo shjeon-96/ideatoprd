@@ -7,6 +7,6 @@ export {
   MAX_IDEA_LENGTH,
   MIN_IDEA_LENGTH,
 } from './model/types';
-export { PRDForm, PRDViewer, TemplateSelector } from './ui';
+export { PRDForm, PRDViewer, TemplateSelector, GenerationProgress, GenerationComplete } from './ui';
 // Server-only exports: import directly from ./api/save-prd in server components/route handlers
 // export { savePRD, extractPRDTitle, parsePRDContent } from './api/save-prd';
