@@ -1,12 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 import { navItemKeys } from './sidebar';
+
+// React Compiler compatible mounted state detection
+function subscribeMounted(callback: () => void): () => void {
+  callback();
+  return () => {};
+}
+
+function getMountedSnapshot(): boolean {
+  return true;
+}
+
+function getMountedServerSnapshot(): boolean {
+  return false;
+}
 
 /**
  * Mobile navigation drawer
@@ -17,23 +32,19 @@ export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  return (
-    <>
-      {/* Hamburger button */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="md:hidden flex items-center justify-center h-9 w-9 rounded-lg border border-border hover:bg-muted transition-colors"
-        aria-label={t('navigation.openMenu')}
-        aria-expanded={isOpen}
-      >
-        <Menu className="h-5 w-5" />
-      </button>
+  // Use useSyncExternalStore for mounted state (React Compiler compatible)
+  const mounted = useSyncExternalStore(
+    subscribeMounted,
+    getMountedSnapshot,
+    getMountedServerSnapshot
+  );
 
+  const drawerContent = (
+    <>
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-[9998] bg-black/70 md:hidden"
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />
@@ -42,25 +53,32 @@ export function MobileNav() {
       {/* Drawer */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 bg-background border-r border-border transform transition-transform duration-200 ease-in-out md:hidden',
+          'fixed top-0 left-0 bottom-0 z-[9999] w-64 border-r border-zinc-800 shadow-2xl transition-transform duration-200 ease-in-out md:hidden overflow-hidden',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
+        style={{ backgroundColor: '#0a0a0a' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <span className="font-semibold">{t('navigation.menu')}</span>
+        <div
+          className="flex items-center justify-between p-4 border-b border-zinc-800"
+          style={{ backgroundColor: '#0a0a0a' }}
+        >
+          <span className="font-semibold text-white">{t('navigation.menu')}</span>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors"
+            className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-zinc-800 transition-colors"
             aria-label={t('navigation.closeMenu')}
           >
-            <X className="h-5 w-5" />
+            <X className="h-5 w-5 text-white" />
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="p-4 space-y-1">
+        <nav
+          className="p-4 space-y-1 h-full overflow-y-auto"
+          style={{ backgroundColor: '#0a0a0a' }}
+        >
           {navItemKeys.map(({ href, icon: Icon, labelKey }) => {
             const isActive =
               href === '/dashboard'
@@ -76,7 +94,7 @@ export function MobileNav() {
                   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors',
                   isActive
                     ? 'bg-primary/10 text-primary font-medium'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -86,6 +104,24 @@ export function MobileNav() {
           })}
         </nav>
       </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Hamburger button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="md:hidden flex items-center justify-center h-9 w-9 rounded-lg border border-border hover:bg-muted transition-colors"
+        aria-label={t('navigation.openMenu')}
+        aria-expanded={isOpen}
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+
+      {/* Portal to body */}
+      {mounted && createPortal(drawerContent, document.body)}
     </>
   );
 }

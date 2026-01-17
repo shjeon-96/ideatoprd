@@ -202,9 +202,8 @@ describe('POST /api/revise-prd', () => {
       };
       (createClient as Mock).mockResolvedValue(mockSupabase);
 
-      // Set NODE_ENV to production to enable credit check
-      const originalEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'production';
+      // Use vi.stubEnv for NODE_ENV modification (Vitest recommended way)
+      vi.stubEnv('NODE_ENV', 'production');
 
       const req = createValidRequest({
         prdId: 'prd-id-123',
@@ -219,7 +218,7 @@ describe('POST /api/revise-prd', () => {
       expect(data.error).toContain('크레딧');
 
       // Restore env
-      process.env.NODE_ENV = originalEnv;
+      vi.unstubAllEnvs();
     });
   });
 
@@ -361,8 +360,8 @@ describe('POST /api/revise-prd', () => {
 
       // Execute the onFinish callback
       expect(capturedOnFinish).toBeDefined();
-      if (capturedOnFinish) {
-        await capturedOnFinish();
+      if (capturedOnFinish !== null) {
+        await (capturedOnFinish as () => Promise<void>)();
       }
 
       // Verify insert was called
@@ -439,8 +438,8 @@ describe('POST /api/revise-prd', () => {
       await POST(req);
 
       // Execute the onFinish callback - this should trigger refund attempt
-      if (capturedOnFinish) {
-        await capturedOnFinish();
+      if (capturedOnFinish !== null) {
+        await (capturedOnFinish as () => Promise<void>)();
       }
 
       // Verify refund was attempted (add_credit rpc call)
@@ -525,8 +524,8 @@ describe('POST /api/revise-prd', () => {
       await POST(req);
 
       // Execute the onFinish callback - should catch the exception
-      if (capturedOnFinish) {
-        await capturedOnFinish();
+      if (capturedOnFinish !== null) {
+        await (capturedOnFinish as () => Promise<void>)();
       }
 
       // Verify error was logged (catch block was executed)

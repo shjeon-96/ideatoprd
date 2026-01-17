@@ -4,8 +4,8 @@ import type { CreditPackage } from '@/src/entities';
  * Credit package configuration type.
  */
 export interface CreditPackageConfig {
-  name: string;
-  description: string;
+  nameKey: string; // i18n key for package name
+  descriptionKey: string; // i18n key for description
   credits: number;
   priceUsd: number;
   variantId: string;
@@ -18,30 +18,30 @@ export interface CreditPackageConfig {
  */
 export const CREDIT_PACKAGES: Record<CreditPackage, CreditPackageConfig> = {
   starter: {
-    name: 'Starter',
-    description: '체험용',
+    nameKey: 'packages.starter.name',
+    descriptionKey: 'packages.starter.description',
     credits: 5,
     priceUsd: 2.99,
     variantId: process.env.NEXT_PUBLIC_LS_VARIANT_STARTER || '',
   },
   basic: {
-    name: 'Basic',
-    description: '개인용',
+    nameKey: 'packages.basic.name',
+    descriptionKey: 'packages.basic.description',
     credits: 15,
     priceUsd: 6.99,
     variantId: process.env.NEXT_PUBLIC_LS_VARIANT_BASIC || '',
     popular: true,
   },
   pro: {
-    name: 'Pro',
-    description: '프리랜서용',
+    nameKey: 'packages.pro.name',
+    descriptionKey: 'packages.pro.description',
     credits: 50,
     priceUsd: 17.99,
     variantId: process.env.NEXT_PUBLIC_LS_VARIANT_PRO || '',
   },
   business: {
-    name: 'Business',
-    description: '팀/기업용',
+    nameKey: 'packages.business.name',
+    descriptionKey: 'packages.business.description',
     credits: 150,
     priceUsd: 39.99,
     variantId: process.env.NEXT_PUBLIC_LS_VARIANT_BUSINESS || '',

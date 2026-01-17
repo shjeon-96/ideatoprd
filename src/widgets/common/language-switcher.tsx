@@ -11,7 +11,7 @@ import { cn } from '@/src/shared/lib/utils';
  * Allows users to switch between available locales
  */
 export function LanguageSwitcher() {
-  const { locale, setLocale, isPending } = useLocale();
+  const { locale, setLocale, isPending, mounted } = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -46,17 +46,19 @@ export function LanguageSwitcher() {
     <div ref={menuRef} className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        disabled={isPending}
+        disabled={isPending || !mounted}
         className={cn(
           'flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm transition-colors hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-          isPending && 'opacity-50 cursor-not-allowed'
+          (isPending || !mounted) && 'opacity-50 cursor-not-allowed'
         )}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label="Select language"
       >
         <Globe className="h-4 w-4 text-muted-foreground" />
-        <span className="hidden sm:inline">{localeNames[locale]}</span>
+        <span className="hidden sm:inline min-w-[4rem]">
+          {localeNames[locale]}
+        </span>
       </button>
 
       {isOpen && (

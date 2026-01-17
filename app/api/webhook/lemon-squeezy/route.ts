@@ -187,7 +187,7 @@ async function handleOrderCreated(
     p_user_id: userId,
     p_amount: packageInfo.config.credits,
     p_usage_type: 'credit_purchase',
-    p_description: `Credit purchase: ${packageInfo.config.name} package (order ${orderId})`,
+    p_description: `Credit purchase: ${packageInfo.key} package (order ${orderId})`,
   });
 
   if (creditError) {
@@ -302,7 +302,7 @@ async function handleSubscriptionCreated(
     p_amount: planInfo.config.monthlyCredits,
     p_credit_cap: planInfo.config.creditCap,
     p_subscription_id: subscription.id,
-    p_description: `Initial subscription credit: ${planInfo.config.name} plan`,
+    p_description: `Initial subscription credit: ${planInfo.key} plan`,
   });
 
   if (creditError) {
@@ -310,13 +310,124 @@ async function handleSubscriptionCreated(
     // Don't fail the webhook - subscription is created, credits can be manually added
   }
 
+  // Business plan: Auto-create workspace if one doesn't exist
+  if (planInfo.key === 'business') {
+    await createBusinessWorkspace(userId, subscription.id, supabase);
+  }
+
   return NextResponse.json({ success: true }, { status: 200 });
+}
+
+/**
+ * Creates a workspace for Business plan subscribers
+ */
+async function createBusinessWorkspace(
+  userId: string,
+  subscriptionId: string,
+  supabase: ReturnType<typeof createClient<Database>>
+) {
+  // Check if user already has a workspace
+  const { data: existingWorkspace } = await supabase
+    .from('workspaces')
+    .select('id')
+    .eq('owner_id', userId)
+    .limit(1)
+    .single();
+
+  if (existingWorkspace) {
+    // Link subscription to existing workspace
+    await supabase
+      .from('workspaces')
+      .update({ subscription_id: subscriptionId })
+      .eq('id', existingWorkspace.id);
+    return;
+  }
+
+  // Get user profile for workspace name
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('display_name, email')
+    .eq('id', userId)
+    .single();
+
+  const workspaceName = profile?.display_name
+    ? `${profile.display_name}'s Workspace`
+    : 'My Workspace';
+
+  // Generate unique slug
+  let slug = workspaceName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 50);
+
+  // Check for uniqueness and append suffix if needed
+  let suffix = 0;
+  while (true) {
+    const checkSlug = suffix > 0 ? `${slug}-${suffix}` : slug;
+    const { data: existing } = await supabase
+      .from('workspaces')
+      .select('id')
+      .eq('slug', checkSlug)
+      .single();
+
+    if (!existing) {
+      slug = checkSlug;
+      break;
+    }
+    suffix++;
+    if (suffix > 100) {
+      // Fallback: use random suffix
+      slug = `${slug}-${Date.now()}`;
+      break;
+    }
+  }
+
+  // Create workspace
+  const { data: workspace, error: workspaceError } = await supabase
+    .from('workspaces')
+    .insert({
+      name: workspaceName,
+      slug,
+      owner_id: userId,
+      subscription_id: subscriptionId,
+      credit_balance: 0, // Credits go to personal account first
+    })
+    .select('id')
+    .single();
+
+  if (workspaceError) {
+    console.error('Failed to create workspace for Business subscription:', workspaceError);
+    return;
+  }
+
+  // Add owner as member
+  const { error: memberError } = await supabase
+    .from('workspace_members')
+    .insert({
+      workspace_id: workspace.id,
+      user_id: userId,
+      role: 'owner',
+    });
+
+  if (memberError) {
+    console.error('Failed to add owner to workspace:', memberError);
+  }
+
+  // Set as default workspace
+  await supabase
+    .from('profiles')
+    .update({ default_workspace_id: workspace.id })
+    .eq('id', userId);
+
+  console.log(`Created workspace for Business subscription: ${workspace.id}`);
 }
 
 async function handleSubscriptionPaymentSuccess(
   event: LemonSqueezySubscriptionInvoiceWebhookEvent,
   supabase: ReturnType<typeof createClient<Database>>
 ) {
+  const invoiceId = event.data.id;
   const attrs = event.data.attributes;
   const subscriptionLsId = String(event.data.relationships.subscription.data.id);
   const billingReason = attrs.billing_reason;
@@ -344,6 +455,12 @@ async function handleSubscriptionPaymentSuccess(
     return NextResponse.json({ error: 'Subscription not found' }, { status: 400 });
   }
 
+  // Idempotency check: Skip if this invoice was already processed
+  if (subscription.last_invoice_id === invoiceId) {
+    console.log(`Invoice ${invoiceId} already processed for subscription ${subscription.id}`);
+    return NextResponse.json({ message: 'Invoice already processed' }, { status: 200 });
+  }
+
   // Calculate new period
   const now = new Date();
   const periodEnd = new Date(now);
@@ -353,15 +470,25 @@ async function handleSubscriptionPaymentSuccess(
     periodEnd.setFullYear(periodEnd.getFullYear() + 1);
   }
 
-  // Update subscription period
-  const { error: updateError } = await supabase
+  // Update subscription period with idempotency key (last_invoice_id)
+  const { error: updateError, data: updateResult } = await supabase
     .from('subscriptions')
     .update({
       status: 'active',
       current_period_start: now.toISOString(),
       current_period_end: periodEnd.toISOString(),
+      last_invoice_id: invoiceId,
     })
-    .eq('id', subscription.id);
+    .eq('id', subscription.id)
+    // Only update if invoice hasn't been processed yet (atomic check)
+    .or(`last_invoice_id.is.null,last_invoice_id.neq.${invoiceId}`)
+    .select('id');
+
+  // If no rows updated, invoice was already processed (race condition protection)
+  if (!updateResult || updateResult.length === 0) {
+    console.log(`Invoice ${invoiceId} already processed (concurrent request)`);
+    return NextResponse.json({ message: 'Invoice already processed' }, { status: 200 });
+  }
 
   if (updateError) {
     console.error('Failed to update subscription period:', updateError);
@@ -382,7 +509,7 @@ async function handleSubscriptionPaymentSuccess(
     p_amount: subscription.monthly_credits,
     p_credit_cap: subscription.credit_cap,
     p_subscription_id: subscription.id,
-    p_description: `Monthly subscription credit renewal: ${subscription.plan} plan`,
+    p_description: `Monthly subscription credit renewal: ${subscription.plan} plan (invoice: ${invoiceId})`,
   });
 
   if (creditError) {
@@ -390,7 +517,7 @@ async function handleSubscriptionPaymentSuccess(
     // Don't fail webhook - payment processed, credits can be manually added
   }
 
-  console.log(`Subscription renewal: ${subscription.plan} plan, granted ${creditsGranted} credits`);
+  console.log(`Subscription renewal: ${subscription.plan} plan, granted ${creditsGranted} credits (invoice: ${invoiceId})`);
 
   return NextResponse.json({ success: true }, { status: 200 });
 }

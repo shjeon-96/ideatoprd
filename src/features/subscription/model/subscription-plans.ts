@@ -4,13 +4,13 @@ import type { SubscriptionPlan, BillingInterval } from '@/src/entities';
  * Subscription plan configuration type.
  */
 export interface SubscriptionPlanConfig {
-  name: string;
-  description: string;
+  nameKey: string; // i18n key for plan name
+  descriptionKey: string; // i18n key for description
   monthlyCredits: number;
   creditCap: number; // 2 months worth of credits
   monthlyPrice: number;
   yearlyPrice: number; // 20% discount
-  features: string[];
+  featureKeys: string[]; // i18n keys for features
   popular?: boolean;
   variantIdMonthly: string;
   variantIdYearly: string;
@@ -22,53 +22,53 @@ export interface SubscriptionPlanConfig {
  */
 export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, SubscriptionPlanConfig> = {
   basic: {
-    name: 'Basic',
-    description: '개인 사용자를 위한 기본 플랜',
+    nameKey: 'plans.basic.name',
+    descriptionKey: 'plans.basic.description',
     monthlyCredits: 20,
     creditCap: 40, // 2 months
     monthlyPrice: 9.99,
     yearlyPrice: 99, // ~$8.25/month
-    features: [
-      '월 20 크레딧',
-      '최대 40 크레딧 누적',
-      '기본 PRD 템플릿',
-      '이메일 지원',
+    featureKeys: [
+      'plans.basic.features.credits',
+      'plans.basic.features.cap',
+      'plans.basic.features.templates',
+      'plans.basic.features.support',
     ],
     variantIdMonthly: process.env.NEXT_PUBLIC_LS_VARIANT_SUB_BASIC_MONTHLY || '',
     variantIdYearly: process.env.NEXT_PUBLIC_LS_VARIANT_SUB_BASIC_YEARLY || '',
   },
   pro: {
-    name: 'Pro',
-    description: '전문가를 위한 프로 플랜',
+    nameKey: 'plans.pro.name',
+    descriptionKey: 'plans.pro.description',
     monthlyCredits: 60,
     creditCap: 120, // 2 months
     monthlyPrice: 24.99,
     yearlyPrice: 249, // ~$20.75/month
-    features: [
-      '월 60 크레딧',
-      '최대 120 크레딧 누적',
-      '모든 PRD 템플릿',
-      'Research 버전 포함',
-      '우선 지원',
+    featureKeys: [
+      'plans.pro.features.credits',
+      'plans.pro.features.cap',
+      'plans.pro.features.templates',
+      'plans.pro.features.research',
+      'plans.pro.features.support',
     ],
     popular: true,
     variantIdMonthly: process.env.NEXT_PUBLIC_LS_VARIANT_SUB_PRO_MONTHLY || '',
     variantIdYearly: process.env.NEXT_PUBLIC_LS_VARIANT_SUB_PRO_YEARLY || '',
   },
   business: {
-    name: 'Business',
-    description: '팀과 기업을 위한 비즈니스 플랜',
+    nameKey: 'plans.business.name',
+    descriptionKey: 'plans.business.description',
     monthlyCredits: 150,
     creditCap: 300, // 2 months
     monthlyPrice: 49.99,
     yearlyPrice: 499, // ~$41.58/month
-    features: [
-      '월 150 크레딧',
-      '최대 300 크레딧 누적',
-      '모든 PRD 템플릿',
-      'Research 버전 포함',
-      '전용 지원',
-      'API 액세스 (예정)',
+    featureKeys: [
+      'plans.business.features.credits',
+      'plans.business.features.cap',
+      'plans.business.features.templates',
+      'plans.business.features.research',
+      'plans.business.features.support',
+      'plans.business.features.api',
     ],
     variantIdMonthly: process.env.NEXT_PUBLIC_LS_VARIANT_SUB_BUSINESS_MONTHLY || '',
     variantIdYearly: process.env.NEXT_PUBLIC_LS_VARIANT_SUB_BUSINESS_YEARLY || '',

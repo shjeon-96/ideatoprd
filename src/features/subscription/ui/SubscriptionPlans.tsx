@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Check, Loader2 } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 import {
@@ -23,6 +24,7 @@ export function SubscriptionPlans({
   currentPlan = null,
   disabled = false,
 }: SubscriptionPlansProps) {
+  const t = useTranslations('subscription');
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | null>(null);
   const [interval, setInterval] = useState<BillingInterval>('monthly');
   const [isLoading, setIsLoading] = useState(false);
@@ -85,14 +87,14 @@ export function SubscriptionPlans({
                 {/* Popular badge */}
                 {plan.popular && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
-                    인기
+                    {t('popular')}
                   </span>
                 )}
 
                 {/* Current plan badge */}
                 {isCurrentPlan && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-green-500 px-3 py-1 text-xs font-medium text-white">
-                    현재 플랜
+                    {t('currentPlan')}
                   </span>
                 )}
 
@@ -104,40 +106,40 @@ export function SubscriptionPlans({
                 )}
 
                 {/* Plan name & description */}
-                <h3 className="text-xl font-bold">{plan.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
+                <h3 className="text-xl font-bold">{t(plan.nameKey)}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{t(plan.descriptionKey)}</p>
 
                 {/* Price */}
                 <div className="mt-6">
                   <span className="text-4xl font-bold">${price}</span>
                   <span className="text-muted-foreground">
-                    /{interval === 'monthly' ? '월' : '년'}
+                    /{t(`billingCycle.${interval}`)}
                   </span>
                 </div>
 
                 {/* Monthly equivalent for yearly */}
                 {interval === 'yearly' && (
                   <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-                    월 ${monthlyEquivalent} (연 {savings}% 절약)
+                    {t('monthlySavings', { price: monthlyEquivalent, discount: savings })}
                   </p>
                 )}
 
                 {/* Credits info */}
                 <div className="mt-4 rounded-lg bg-muted/50 p-3">
                   <p className="text-sm font-medium">
-                    월 <span className="text-lg font-bold text-primary">{plan.monthlyCredits}</span> 크레딧
+                    {t('monthlyCredits', { credits: plan.monthlyCredits })}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    최대 {plan.creditCap} 크레딧까지 누적 가능
+                    {t('creditCap', { cap: plan.creditCap })}
                   </p>
                 </div>
 
                 {/* Features */}
                 <ul className="mt-4 space-y-2">
-                  {plan.features.map((feature, idx) => (
+                  {plan.featureKeys.map((featureKey, idx) => (
                     <li key={idx} className="flex items-center gap-2 text-sm">
                       <Check className="h-4 w-4 text-green-500" />
-                      <span>{feature}</span>
+                      <span>{t(featureKey)}</span>
                     </li>
                   ))}
                 </ul>
@@ -168,12 +170,12 @@ export function SubscriptionPlans({
           {isLoading ? (
             <>
               <Loader2 className="mr-2 inline-block h-5 w-5 animate-spin" />
-              처리 중...
+              {t('processing')}
             </>
           ) : selectedPlan ? (
-            `${SUBSCRIPTION_PLANS[selectedPlan].name} 플랜 구독하기`
+            t('subscribeTo', { plan: t(SUBSCRIPTION_PLANS[selectedPlan].nameKey) })
           ) : (
-            '플랜을 선택하세요'
+            t('selectPlan')
           )}
         </button>
       </div>

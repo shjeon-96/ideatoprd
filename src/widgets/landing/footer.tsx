@@ -1,119 +1,33 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { Twitter, Github, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import { LanguageSwitcher } from '@/src/widgets/common';
-
-const socialLinks = [
-  { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-  { icon: Github, href: 'https://github.com', label: 'GitHub' },
-];
 
 export function Footer() {
   const t = useTranslations('landing.footer');
-
-  const footerLinks = {
-    product: {
-      title: t('product.title'),
-      links: [
-        { label: t('product.features'), href: '#features' },
-        { label: t('product.pricing'), href: '#pricing' },
-        { label: t('product.faq'), href: '#faq' },
-      ],
-    },
-    company: {
-      title: t('company.title'),
-      links: [
-        { label: t('company.blog'), href: '/blog' },
-        { label: t('company.contact'), href: '/contact' },
-      ],
-    },
-    legal: {
-      title: t('legal.title'),
-      links: [
-        { label: t('legal.terms'), href: '/terms' },
-        { label: t('legal.privacy'), href: '/privacy' },
-      ],
-    },
-  };
 
   return (
     <footer className="relative border-t border-border/50 bg-muted/10">
       {/* Top gradient line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent" />
 
-      <div className="container mx-auto px-4 py-20 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-12">
-          {/* Brand column */}
-          <div className="lg:col-span-4">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-primary to-brand-accent">
-                <Sparkles className="size-5 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold tracking-tight text-foreground">
-                  IdeaToPRD
-                </span>
-                <span className="ml-2 rounded-md bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-primary">
-                  Beta
-                </span>
-              </div>
+      <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          {/* Brand */}
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-primary to-brand-accent">
+              <Sparkles className="size-4 text-white" />
             </div>
-            <p className="mb-8 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              {t('tagline')}
-              <br />
-              {t('taglineDetail')}
-            </p>
-
-            {/* Social links */}
-            <div className="flex gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex size-11 items-center justify-center rounded-xl border border-border/50 bg-card text-muted-foreground transition-all hover:border-brand-primary/30 hover:bg-brand-secondary/30 hover:text-foreground"
-                    aria-label={social.label}
-                  >
-                    <Icon className="size-4 transition-transform group-hover:scale-110" />
-                  </a>
-                );
-              })}
-            </div>
+            <span className="text-lg font-bold tracking-tight text-foreground">
+              IdeaToPRD
+            </span>
           </div>
 
-          {/* Link columns */}
-          <div className="grid gap-8 sm:grid-cols-3 lg:col-span-6 lg:col-start-7">
-            {Object.entries(footerLinks).map(([key, section]) => (
-              <div key={key}>
-                <h3 className="mb-5 text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">
-                  {section.title}
-                </h3>
-                <ul className="space-y-3">
-                  {section.links.map((link) => (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        className="group inline-flex items-center gap-1.5 text-sm text-foreground/70 transition-colors hover:text-foreground"
-                      >
-                        {link.label}
-                        <ArrowUpRight className="size-3 opacity-0 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row">
+          {/* Center - Copyright */}
           <p className="text-sm text-muted-foreground">{t('copyright')}</p>
+
+          {/* Right - Language & Status */}
           <div className="flex items-center gap-4">
             <LanguageSwitcher />
             <div className="flex items-center gap-2 text-xs text-muted-foreground/60">

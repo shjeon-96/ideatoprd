@@ -5,9 +5,15 @@ import {
   extractPRDTitle,
   parsePRDContent,
 } from '@/src/features/prd-generation/api/save-prd';
-import type { PRDLanguage } from '@/src/features/prd-generation';
+import { revisePRDSchema, validateRequest } from '@/src/shared/lib/validation';
+import { ErrorCodes } from '@/src/shared/lib/errors';
 import type { Json } from '@/src/shared/types/database';
 import { createClient } from '@/src/shared/lib/supabase/server';
+import { revisionLogger } from '@/src/shared/lib/logger';
+import {
+  checkRateLimit,
+  rateLimitResponse,
+} from '@/src/shared/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -27,27 +33,14 @@ export async function POST(req: Request) {
   let fullContent = '';
 
   try {
-    const { prdId, feedback, sections, language = 'ko' } = (await req.json()) as {
-      prdId: string;
-      feedback: string;
-      sections: string[];
-      language?: PRDLanguage;
-    };
-
-    // 1. Validate input
-    if (!prdId || !feedback || !sections?.length) {
-      return jsonResponse(
-        { error: '필수 입력값이 누락되었습니다.' },
-        400
-      );
+    // 1. Validate input with Zod schema
+    const body = await req.json();
+    const validation = validateRequest(revisePRDSchema, body);
+    if (!validation.success) {
+      return jsonResponse({ error: validation.error }, 400);
     }
 
-    if (feedback.trim().length < 10) {
-      return jsonResponse(
-        { error: '피드백은 최소 10자 이상이어야 합니다.' },
-        400
-      );
-    }
+    const { prdId, feedback, sections, language } = validation.data;
 
     // 2. Authenticate user
     const supabase = await createClient();
@@ -57,11 +50,17 @@ export async function POST(req: Request) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return jsonResponse({ error: '로그인이 필요합니다.' }, 401);
+      return jsonResponse({ error: ErrorCodes.AUTH_REQUIRED }, 401);
     }
     userId = user.id;
 
-    // 3. Fetch original PRD
+    // 3. Check rate limit
+    const rateLimitResult = await checkRateLimit(userId, 'prdRevision');
+    if (!rateLimitResult.success) {
+      return rateLimitResponse(rateLimitResult);
+    }
+
+    // 4. Fetch original PRD
     const { data: originalPrd, error: prdError } = await supabase
       .from('prds')
       .select('*')
@@ -70,7 +69,7 @@ export async function POST(req: Request) {
       .single();
 
     if (prdError || !originalPrd) {
-      return jsonResponse({ error: 'PRD를 찾을 수 없습니다.' }, 404);
+      return jsonResponse({ error: ErrorCodes.PRD_NOT_FOUND }, 404);
     }
 
     // Get the PRD content (markdown)
@@ -78,7 +77,7 @@ export async function POST(req: Request) {
     const originalMarkdown = prdContent?.markdown || prdContent?.raw || '';
 
     if (!originalMarkdown) {
-      return jsonResponse({ error: 'PRD 내용을 읽을 수 없습니다.' }, 400);
+      return jsonResponse({ error: ErrorCodes.PRD_CONTENT_UNREADABLE }, 400);
     }
 
     // 4. Deduct credits
@@ -95,7 +94,7 @@ export async function POST(req: Request) {
       );
 
       if (deductError || !deductResult) {
-        return jsonResponse({ error: '크레딧이 부족합니다.' }, 402);
+        return jsonResponse({ error: ErrorCodes.CREDITS_INSUFFICIENT }, 402);
       }
     }
 
@@ -149,17 +148,34 @@ export async function POST(req: Request) {
             });
 
             if (insertError) {
-              console.error('[CRITICAL] Failed to save revised PRD:', insertError);
-              // Attempt refund
-              await supabase.rpc('add_credit', {
+              revisionLogger.error('Failed to save revised PRD - attempting refund', {
+                userId,
+                prdId: rootId,
+                error: insertError,
+              });
+              // Attempt refund and check result
+              const { data: refundResult, error: refundError } = await supabase.rpc('add_credit', {
                 p_user_id: userId,
                 p_amount: REVISION_CREDIT_COST,
                 p_usage_type: 'credit_refund',
-                p_description: '환불: PRD 수정 저장 실패',
+                p_description: 'refund:prd_save_failed',
               });
+
+              if (refundError || !refundResult) {
+                revisionLogger.error('[CRITICAL] Refund failed after save error - MANUAL INTERVENTION REQUIRED', {
+                  userId,
+                  prdId: rootId,
+                  credits: REVISION_CREDIT_COST,
+                  refundError,
+                });
+              }
             }
           } catch (saveError) {
-            console.error('[CRITICAL] Failed to save revised PRD:', saveError);
+            revisionLogger.error('Unexpected error saving revised PRD', {
+              userId,
+              prdId: rootId,
+              error: saveError,
+            });
           }
         }
       },
@@ -167,7 +183,10 @@ export async function POST(req: Request) {
 
     return result.toTextStreamResponse();
   } catch (error) {
-    console.error('PRD revision error:', error);
-    return jsonResponse({ error: 'PRD 수정 중 오류가 발생했습니다.' }, 500);
+    revisionLogger.error('Unexpected error during PRD revision', {
+      userId,
+      error,
+    });
+    return jsonResponse({ error: ErrorCodes.UNKNOWN_ERROR }, 500);
   }
 }

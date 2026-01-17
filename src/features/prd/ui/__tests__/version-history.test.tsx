@@ -2,7 +2,7 @@
  * Component tests for VersionHistory
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { VersionHistory } from '../version-history';
 import type { PrdVersionItem } from '../../api/get-prd';

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { CREDIT_PACKAGES, type CreditPackageConfig } from '../model/credit-packages';
 import type { CreditPackage } from '@/src/entities';
 import { cn } from '@/src/shared/lib/utils';
@@ -16,6 +17,9 @@ export function CreditPackages({
   onSelect,
   disabled = false,
 }: CreditPackagesProps) {
+  const t = useTranslations('purchase');
+  const tCommon = useTranslations('common');
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {(Object.entries(CREDIT_PACKAGES) as [CreditPackage, CreditPackageConfig][]).map(
@@ -37,7 +41,7 @@ export function CreditPackages({
             {/* Popular badge */}
             {pkg.popular && (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
-                인기
+                {t('popular')}
               </span>
             )}
 
@@ -49,13 +53,13 @@ export function CreditPackages({
             )}
 
             {/* Package name */}
-            <h3 className="text-lg font-semibold">{pkg.name}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{pkg.description}</p>
+            <h3 className="text-lg font-semibold">{t(pkg.nameKey)}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{t(pkg.descriptionKey)}</p>
 
             {/* Credits */}
             <div className="mt-4">
               <span className="text-3xl font-bold">{pkg.credits}</span>
-              <span className="ml-1 text-muted-foreground">크레딧</span>
+              <span className="ml-1 text-muted-foreground">{tCommon('credits')}</span>
             </div>
 
             {/* Price */}
@@ -66,7 +70,7 @@ export function CreditPackages({
 
             {/* Price per credit */}
             <p className="mt-2 text-xs text-muted-foreground">
-              크레딧당 ${(pkg.priceUsd / pkg.credits).toFixed(2)}
+              {t('perCredit', { price: (pkg.priceUsd / pkg.credits).toFixed(2) })}
             </p>
           </button>
         )

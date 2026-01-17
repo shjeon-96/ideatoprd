@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Script from 'next/script';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/src/shared/ui/button';
 import { createCreditCheckout } from '../api/create-checkout';
 import type { CreditPackage } from '@/src/entities';
@@ -20,6 +21,7 @@ export function PurchaseButton({
   onError,
   disabled = false,
 }: PurchaseButtonProps) {
+  const t = useTranslations('purchase');
   const [isLoading, setIsLoading] = useState(false);
   const [scriptLoaded, setScriptLoaded] = useState(false);
 
@@ -39,7 +41,7 @@ export function PurchaseButton({
 
   async function handlePurchase() {
     if (!packageKey) {
-      onError?.('패키지를 선택해주세요.');
+      onError?.(t('errors.selectPackage'));
       return;
     }
 
@@ -62,7 +64,7 @@ export function PurchaseButton({
       }
     } catch (err) {
       console.error('Purchase error:', err);
-      onError?.('결제 처리 중 오류가 발생했습니다.');
+      onError?.(t('errors.paymentError'));
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +86,7 @@ export function PurchaseButton({
         size="lg"
         className="w-full sm:w-auto"
       >
-        {isLoading ? '처리 중...' : '크레딧 구매하기'}
+        {isLoading ? t('processing') : t('buyCredits')}
       </Button>
     </>
   );

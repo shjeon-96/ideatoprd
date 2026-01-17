@@ -11,9 +11,11 @@ import { type NextRequest } from "next/server";
  * NOTE: This does NOT handle route protection.
  * Route protection should be implemented in individual pages/layouts.
  */
-export async function proxy(request: NextRequest) {
+async function proxyHandler(request: NextRequest) {
   return await updateSession(request);
 }
+
+export default proxyHandler;
 
 export const config = {
   matcher: [

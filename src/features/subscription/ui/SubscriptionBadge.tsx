@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Crown } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 import { SUBSCRIPTION_PLANS } from '../model/subscription-plans';
@@ -12,6 +13,8 @@ interface SubscriptionBadgeProps {
 }
 
 export function SubscriptionBadge({ plan, status, className }: SubscriptionBadgeProps) {
+  const t = useTranslations('subscription');
+
   if (!plan || !status) {
     return null;
   }
@@ -31,9 +34,9 @@ export function SubscriptionBadge({ plan, status, className }: SubscriptionBadge
       )}
     >
       <Crown className="h-3 w-3" />
-      <span>{planConfig.name}</span>
+      <span>{t(planConfig.nameKey)}</span>
       {isCancelled && (
-        <span className="text-[10px] opacity-70">(취소됨)</span>
+        <span className="text-[10px] opacity-70">({t('status.cancelled')})</span>
       )}
     </div>
   );

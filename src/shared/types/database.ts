@@ -31,6 +31,7 @@ export type Database = {
           user_id: string
           version: Database["public"]["Enums"]["prd_version"]
           version_number: number
+          workspace_id: string | null
         }
         Insert: {
           content?: Json | null
@@ -48,6 +49,7 @@ export type Database = {
           user_id: string
           version?: Database["public"]["Enums"]["prd_version"]
           version_number?: number
+          workspace_id?: string | null
         }
         Update: {
           content?: Json | null
@@ -65,6 +67,7 @@ export type Database = {
           user_id?: string
           version?: Database["public"]["Enums"]["prd_version"]
           version_number?: number
+          workspace_id?: string | null
         }
         Relationships: [
           {
@@ -81,6 +84,13 @@ export type Database = {
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "prds_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profiles: {
@@ -88,6 +98,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           credits: number
+          default_workspace_id: string | null
           display_name: string | null
           email: string | null
           id: string
@@ -104,6 +115,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           credits?: number
+          default_workspace_id?: string | null
           display_name?: string | null
           email?: string | null
           id: string
@@ -120,6 +132,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           credits?: number
+          default_workspace_id?: string | null
           display_name?: string | null
           email?: string | null
           id?: string
@@ -132,7 +145,15 @@ export type Database = {
             | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_default_workspace_id_fkey"
+            columns: ["default_workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       purchases: {
         Row: {
@@ -199,6 +220,7 @@ export type Database = {
           current_period_start: string
           ends_at: string | null
           id: string
+          last_invoice_id: string | null
           lemon_squeezy_customer_id: string | null
           lemon_squeezy_subscription_id: string
           lemon_squeezy_variant_id: string | null
@@ -219,6 +241,7 @@ export type Database = {
           current_period_start: string
           ends_at?: string | null
           id?: string
+          last_invoice_id?: string | null
           lemon_squeezy_customer_id?: string | null
           lemon_squeezy_subscription_id: string
           lemon_squeezy_variant_id?: string | null
@@ -239,6 +262,7 @@ export type Database = {
           current_period_start?: string
           ends_at?: string | null
           id?: string
+          last_invoice_id?: string | null
           lemon_squeezy_customer_id?: string | null
           lemon_squeezy_subscription_id?: string
           lemon_squeezy_variant_id?: string | null
@@ -322,6 +346,153 @@ export type Database = {
           },
         ]
       }
+      workspaces: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          owner_id: string
+          credit_balance: number
+          subscription_id: string | null
+          settings: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          owner_id: string
+          credit_balance?: number
+          subscription_id?: string | null
+          settings?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          owner_id?: string
+          credit_balance?: number
+          subscription_id?: string | null
+          settings?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspaces_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspaces_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_members: {
+        Row: {
+          id: string
+          workspace_id: string
+          user_id: string
+          role: Database["public"]["Enums"]["workspace_role"]
+          joined_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          workspace_id: string
+          user_id: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          joined_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          workspace_id?: string
+          user_id?: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          joined_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_members_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_invitations: {
+        Row: {
+          id: string
+          workspace_id: string
+          email: string
+          role: Database["public"]["Enums"]["workspace_role"]
+          status: Database["public"]["Enums"]["invitation_status"]
+          invited_by: string
+          token: string
+          created_at: string
+          expires_at: string
+          responded_at: string | null
+        }
+        Insert: {
+          id?: string
+          workspace_id: string
+          email: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          status?: Database["public"]["Enums"]["invitation_status"]
+          invited_by: string
+          token?: string
+          created_at?: string
+          expires_at?: string
+          responded_at?: string | null
+        }
+        Update: {
+          id?: string
+          workspace_id?: string
+          email?: string
+          role?: Database["public"]["Enums"]["workspace_role"]
+          status?: Database["public"]["Enums"]["invitation_status"]
+          invited_by?: string
+          token?: string
+          created_at?: string
+          expires_at?: string
+          responded_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_invitations_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_invitations_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -383,10 +554,114 @@ export type Database = {
         }
         Returns: number
       }
+      // Workspace functions
+      deduct_workspace_credit: {
+        Args: {
+          p_workspace_id: string
+          p_user_id: string
+          p_amount: number
+          p_prd_id?: string
+          p_description?: string
+        }
+        Returns: boolean
+      }
+      add_workspace_credit: {
+        Args: {
+          p_workspace_id: string
+          p_amount: number
+          p_subscription_id?: string
+          p_credit_cap?: number
+          p_description?: string
+        }
+        Returns: number
+      }
+      transfer_credit_to_workspace: {
+        Args: {
+          p_user_id: string
+          p_workspace_id: string
+          p_amount: number
+        }
+        Returns: boolean
+      }
+      create_workspace: {
+        Args: {
+          p_name: string
+          p_slug: string
+          p_owner_id?: string
+        }
+        Returns: string
+      }
+      accept_workspace_invitation: {
+        Args: {
+          p_token: string
+          p_user_id?: string
+        }
+        Returns: string
+      }
+      get_user_workspaces: {
+        Args: {
+          p_user_id?: string
+        }
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          role: Database["public"]["Enums"]["workspace_role"]
+          credit_balance: number
+          member_count: number
+          created_at: string
+        }[]
+      }
+      get_workspace_details: {
+        Args: {
+          p_workspace_id: string
+        }
+        Returns: {
+          id: string
+          name: string
+          slug: string
+          credit_balance: number
+          owner_id: string
+          member_id: string
+          member_email: string
+          member_name: string
+          member_role: Database["public"]["Enums"]["workspace_role"]
+          member_joined_at: string
+        }[]
+      }
+      is_workspace_member: {
+        Args: {
+          p_workspace_id: string
+          p_user_id?: string
+        }
+        Returns: boolean
+      }
+      get_workspace_role: {
+        Args: {
+          p_workspace_id: string
+          p_user_id?: string
+        }
+        Returns: Database["public"]["Enums"]["workspace_role"]
+      }
+      can_manage_workspace: {
+        Args: {
+          p_workspace_id: string
+          p_user_id?: string
+        }
+        Returns: boolean
+      }
+      can_create_in_workspace: {
+        Args: {
+          p_workspace_id: string
+          p_user_id?: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       billing_interval: "monthly" | "yearly"
       credit_package: "starter" | "basic" | "pro" | "business"
+      invitation_status: "pending" | "accepted" | "declined" | "expired"
       prd_template:
         | "saas"
         | "mobile"
@@ -408,6 +683,9 @@ export type Database = {
         | "credit_refund"
         | "signup_bonus"
         | "subscription_credit"
+        | "workspace_prd_generation"
+        | "workspace_credit_transfer"
+      workspace_role: "owner" | "member" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -537,6 +815,7 @@ export const Constants = {
     Enums: {
       billing_interval: ["monthly", "yearly"],
       credit_package: ["starter", "basic", "pro", "business"],
+      invitation_status: ["pending", "accepted", "declined", "expired"],
       prd_template: [
         "saas",
         "mobile",
@@ -560,7 +839,10 @@ export const Constants = {
         "credit_refund",
         "signup_bonus",
         "subscription_credit",
+        "workspace_prd_generation",
+        "workspace_credit_transfer",
       ],
+      workspace_role: ["owner", "member", "viewer"],
     },
   },
 } as const

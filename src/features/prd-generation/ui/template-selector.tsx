@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import type { PRDTemplate } from '@/src/entities';
 import { cn } from '@/src/shared/lib/utils';
 import { Briefcase, Smartphone, Store, Puzzle, Sparkles } from 'lucide-react';
@@ -12,30 +13,15 @@ interface TemplateSelectorProps {
 
 const TEMPLATES: {
   id: PRDTemplate;
-  label: string;
+  labelKey: string;
   icon: typeof Briefcase;
-  description: string;
+  descriptionKey: string;
 }[] = [
-  { id: 'saas', label: 'SaaS', icon: Briefcase, description: '구독 기반 웹 서비스' },
-  { id: 'mobile', label: 'Mobile', icon: Smartphone, description: 'iOS/Android 앱' },
-  {
-    id: 'marketplace',
-    label: 'Marketplace',
-    icon: Store,
-    description: '양면 플랫폼',
-  },
-  {
-    id: 'extension',
-    label: 'Extension',
-    icon: Puzzle,
-    description: '브라우저/앱 확장',
-  },
-  {
-    id: 'ai_wrapper',
-    label: 'AI Wrapper',
-    icon: Sparkles,
-    description: 'AI 기반 서비스',
-  },
+  { id: 'saas', labelKey: 'templates.saas.label', icon: Briefcase, descriptionKey: 'templates.saas.description' },
+  { id: 'mobile', labelKey: 'templates.mobile.label', icon: Smartphone, descriptionKey: 'templates.mobile.description' },
+  { id: 'marketplace', labelKey: 'templates.marketplace.label', icon: Store, descriptionKey: 'templates.marketplace.description' },
+  { id: 'extension', labelKey: 'templates.extension.label', icon: Puzzle, descriptionKey: 'templates.extension.description' },
+  { id: 'ai_wrapper', labelKey: 'templates.aiWrapper.label', icon: Sparkles, descriptionKey: 'templates.aiWrapper.description' },
 ];
 
 export function TemplateSelector({
@@ -43,9 +29,11 @@ export function TemplateSelector({
   onChange,
   disabled,
 }: TemplateSelectorProps) {
+  const t = useTranslations('generate');
+
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-      {TEMPLATES.map(({ id, label, icon: Icon, description }) => (
+      {TEMPLATES.map(({ id, labelKey, icon: Icon, descriptionKey }) => (
         <button
           key={id}
           type="button"
@@ -61,8 +49,8 @@ export function TemplateSelector({
           )}
         >
           <Icon className="h-6 w-6" />
-          <span className="text-sm font-medium">{label}</span>
-          <span className="text-center text-xs opacity-70">{description}</span>
+          <span className="text-sm font-medium">{t(labelKey)}</span>
+          <span className="text-center text-xs opacity-70">{t(descriptionKey)}</span>
         </button>
       ))}
     </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useLocale, useTranslations } from 'next-intl';
 import { Calendar, CreditCard, AlertCircle } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
 import { SUBSCRIPTION_PLANS } from '../model/subscription-plans';
@@ -11,12 +12,16 @@ interface SubscriptionStatusProps {
 }
 
 export function SubscriptionStatus({ subscription, className }: SubscriptionStatusProps) {
+  const t = useTranslations('subscription.status');
+  const tPlan = useTranslations('subscription');
+  const locale = useLocale();
   const planConfig = SUBSCRIPTION_PLANS[subscription.plan];
   const isActive = subscription.status === 'active';
   const isCancelled = subscription.status === 'cancelled';
+  const dateLocale = locale === 'ko' ? 'ko-KR' : 'en-US';
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('ko-KR', {
+    return new Intl.DateTimeFormat(dateLocale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -28,8 +33,8 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">{planConfig.name} 플랜</h3>
-          <p className="text-sm text-muted-foreground">{planConfig.description}</p>
+          <h3 className="text-lg font-semibold">{t('planName', { plan: tPlan(planConfig.nameKey) })}</h3>
+          <p className="text-sm text-muted-foreground">{tPlan(planConfig.descriptionKey)}</p>
         </div>
         <div
           className={cn(
@@ -39,7 +44,7 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
             !isActive && !isCancelled && 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
           )}
         >
-          {isActive ? '활성' : isCancelled ? '취소됨' : subscription.status}
+          {isActive ? t('active') : isCancelled ? t('cancelled') : subscription.status}
         </div>
       </div>
 
@@ -49,10 +54,10 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
           <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
           <div className="text-sm">
             <p className="font-medium text-yellow-700 dark:text-yellow-300">
-              구독이 취소되었습니다
+              {t('cancelledWarning')}
             </p>
             <p className="text-yellow-600 dark:text-yellow-400">
-              {formatDate(subscription.endsAt)}까지 서비스를 이용할 수 있습니다.
+              {t('availableUntil', { date: formatDate(subscription.endsAt) })}
             </p>
           </div>
         </div>
@@ -62,10 +67,10 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         {/* Credits */}
         <div className="rounded-lg bg-muted/50 p-4">
-          <p className="text-sm text-muted-foreground">월간 크레딧</p>
+          <p className="text-sm text-muted-foreground">{t('monthlyCredits')}</p>
           <p className="mt-1 text-2xl font-bold">{subscription.monthlyCredits}</p>
           <p className="text-xs text-muted-foreground">
-            최대 {subscription.creditCap}까지 누적
+            {t('maxAccumulation', { cap: subscription.creditCap })}
           </p>
         </div>
 
@@ -73,10 +78,10 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
         <div className="rounded-lg bg-muted/50 p-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CreditCard className="h-4 w-4" />
-            <span>결제 주기</span>
+            <span>{t('billingCycle')}</span>
           </div>
           <p className="mt-1 text-xl font-semibold">
-            {subscription.billingInterval === 'monthly' ? '월간' : '연간'}
+            {subscription.billingInterval === 'monthly' ? t('monthly') : t('yearly')}
           </p>
         </div>
 
@@ -84,7 +89,7 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
         <div className="rounded-lg bg-muted/50 p-4">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
-            <span>{isCancelled ? '종료일' : '다음 결제일'}</span>
+            <span>{isCancelled ? t('endDate') : t('nextBillingDate')}</span>
           </div>
           <p className="mt-1 text-xl font-semibold">
             {formatDate(isCancelled && subscription.endsAt
@@ -96,12 +101,12 @@ export function SubscriptionStatus({ subscription, className }: SubscriptionStat
 
       {/* Features */}
       <div className="mt-6">
-        <h4 className="text-sm font-medium text-muted-foreground">포함된 기능</h4>
+        <h4 className="text-sm font-medium text-muted-foreground">{t('includedFeatures')}</h4>
         <ul className="mt-2 grid gap-1 sm:grid-cols-2">
-          {planConfig.features.map((feature, idx) => (
+          {planConfig.featureKeys.map((featureKey, idx) => (
             <li key={idx} className="flex items-center gap-2 text-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              {feature}
+              {tPlan(featureKey)}
             </li>
           ))}
         </ul>

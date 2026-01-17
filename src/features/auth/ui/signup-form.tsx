@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/src/shared/ui/button";
 import { Input } from "@/src/shared/ui/input";
 import {
@@ -22,6 +23,7 @@ export function SignupForm() {
   const message = searchParams.get("message");
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("auth");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -33,12 +35,12 @@ export function SignupForm() {
 
     // Client-side validation
     if (password.length < 6) {
-      setPasswordError("비밀번호는 최소 6자 이상이어야 합니다.");
+      setPasswordError(t("passwordMinLength"));
       return;
     }
 
     if (password !== confirmPassword) {
-      setPasswordError("비밀번호가 일치하지 않습니다.");
+      setPasswordError(t("passwordMismatch"));
       return;
     }
 
@@ -50,9 +52,9 @@ export function SignupForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">회원가입</CardTitle>
+        <CardTitle className="text-2xl font-bold">{t("signup.title")}</CardTitle>
         <CardDescription>
-          새 계정을 만들어 IdeaToPRD를 시작하세요
+          {t("signup.description")}
         </CardDescription>
       </CardHeader>
 
@@ -80,7 +82,7 @@ export function SignupForm() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">또는</span>
+            <span className="bg-card px-2 text-muted-foreground">{t("divider")}</span>
           </div>
         </div>
 
@@ -91,7 +93,7 @@ export function SignupForm() {
               htmlFor="email"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              이메일
+              {t("email")}
             </label>
             <Input
               id="email"
@@ -108,13 +110,13 @@ export function SignupForm() {
               htmlFor="password"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              비밀번호
+              {t("password")}
             </label>
             <Input
               id="password"
               name="password"
               type="password"
-              placeholder="최소 6자 이상"
+              placeholder={t("passwordMinLengthHint")}
               required
               minLength={6}
               autoComplete="new-password"
@@ -126,13 +128,13 @@ export function SignupForm() {
               htmlFor="confirmPassword"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              비밀번호 확인
+              {t("confirmPassword")}
             </label>
             <Input
               id="confirmPassword"
               name="confirmPassword"
               type="password"
-              placeholder="비밀번호 재입력"
+              placeholder={t("confirmPasswordPlaceholder")}
               required
               minLength={6}
               autoComplete="new-password"
@@ -148,7 +150,7 @@ export function SignupForm() {
             {isPending ? (
               <span className="size-5 motion-safe:animate-spin rounded-full border-2 border-brand-primary-foreground border-t-transparent" />
             ) : (
-              "회원가입"
+              t("signup.button")
             )}
           </Button>
         </form>
@@ -156,12 +158,12 @@ export function SignupForm() {
 
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          이미 계정이 있으신가요?{" "}
+          {t("signup.hasAccount")}{" "}
           <Link
             href="/login"
             className="font-medium text-brand-primary underline-offset-4 hover:underline"
           >
-            로그인
+            {t("login.link")}
           </Link>
         </p>
       </CardFooter>

@@ -4,6 +4,7 @@
  * This test validates that Vitest + Testing Library setup works correctly.
  * Will be replaced with actual business logic tests as the project develops.
  */
+import { describe, it, expect } from 'vitest';
 
 // Simple utility function for testing
 function formatPrdTitle(title: string): string {

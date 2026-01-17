@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
 import { Pencil, Check, Loader2, AlertCircle, Coins } from 'lucide-react';
 import { Button } from '@/src/shared/ui/button';
 import { Textarea } from '@/src/shared/ui/textarea';
@@ -15,22 +16,22 @@ import {
 } from '@/src/shared/ui/card';
 import { cn } from '@/src/shared/lib/utils';
 
-// Section definitions
+// Section definitions with i18n keys
 const PRD_SECTIONS = [
-  { key: 'executive_summary', label: 'Executive Summary', labelKo: '요약' },
-  { key: 'problem_statement', label: 'Problem Statement', labelKo: '문제 정의' },
-  { key: 'target_users', label: 'Target Users', labelKo: '타겟 사용자' },
-  { key: 'requirements', label: 'Requirements', labelKo: '요구사항' },
-  { key: 'user_stories', label: 'User Stories', labelKo: '사용자 스토리' },
-  { key: 'success_metrics', label: 'Success Metrics', labelKo: '성공 지표' },
-  { key: 'technical_considerations', label: 'Technical Considerations', labelKo: '기술 고려사항' },
-  { key: 'timeline', label: 'Timeline & Milestones', labelKo: '일정' },
-  { key: 'risks', label: 'Risks & Mitigation', labelKo: '리스크' },
+  { key: 'executive_summary', i18nKey: 'executiveSummary' },
+  { key: 'problem_statement', i18nKey: 'problem' },
+  { key: 'target_users', i18nKey: 'targetUsers' },
+  { key: 'requirements', i18nKey: 'requirements' },
+  { key: 'user_stories', i18nKey: 'userStories' },
+  { key: 'success_metrics', i18nKey: 'successMetrics' },
+  { key: 'technical_considerations', i18nKey: 'technicalConsiderations' },
+  { key: 'timeline', i18nKey: 'timeline' },
+  { key: 'risks', i18nKey: 'risks' },
   // Research-specific sections
-  { key: 'market_analysis', label: 'Market Analysis', labelKo: '시장 분석' },
-  { key: 'competitive_landscape', label: 'Competitive Landscape', labelKo: '경쟁 분석' },
-  { key: 'tech_stack', label: 'Tech Stack', labelKo: '기술 스택' },
-  { key: 'gtm_strategy', label: 'GTM Strategy', labelKo: 'GTM 전략' },
+  { key: 'market_analysis', i18nKey: 'marketAnalysis' },
+  { key: 'competitive_landscape', i18nKey: 'competitiveLandscape' },
+  { key: 'tech_stack', i18nKey: 'techStack' },
+  { key: 'gtm_strategy', i18nKey: 'gtmStrategy' },
 ];
 
 interface RevisionPanelProps {
@@ -40,6 +41,9 @@ interface RevisionPanelProps {
 
 export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPanelProps) {
   const router = useRouter();
+  const t = useTranslations('prd');
+  const tCommon = useTranslations('common');
+  useLocale(); // Ensure locale is loaded for translations
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSections, setSelectedSections] = useState<string[]>([]);
   const [feedback, setFeedback] = useState('');
@@ -77,7 +81,7 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'PRD 수정에 실패했습니다.');
+        throw new Error(errorData.error || t('revisionFailed'));
       }
 
       // Stream the response - redirect to dashboard to see the new version
@@ -85,7 +89,7 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
       router.push('/dashboard');
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'PRD 수정에 실패했습니다.');
+      setError(err instanceof Error ? err.message : t('revisionFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +103,7 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
         className="gap-2"
       >
         <Pencil className="h-4 w-4" />
-        PRD 수정하기
+        {t('revise')}
       </Button>
     );
   }
@@ -109,10 +113,10 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Pencil className="h-5 w-5 text-amber-500" />
-          PRD 수정
+          {t('revisionTitle')}
         </CardTitle>
         <CardDescription>
-          수정할 섹션을 선택하고 피드백을 입력하세요. 1 크레딧이 소모됩니다.
+          {t('revisionDescription')}
         </CardDescription>
       </CardHeader>
 
@@ -120,7 +124,7 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
         {/* Section selector */}
         <div>
           <label className="text-sm font-medium mb-2 block">
-            수정할 섹션 선택
+            {t('selectSections')}
           </label>
           <div className="flex flex-wrap gap-2">
             {availableSections.map((section) => (
@@ -138,7 +142,7 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
                 {selectedSections.includes(section.key) && (
                   <Check className="inline h-3 w-3 mr-1" />
                 )}
-                {section.labelKo}
+                {t(`sections.${section.i18nKey}`)}
               </button>
             ))}
           </div>
@@ -147,16 +151,16 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
         {/* Feedback input */}
         <div>
           <label className="text-sm font-medium mb-2 block">
-            수정 피드백 <span className="text-muted-foreground font-normal">(최소 10자)</span>
+            {t('revisionFeedback')}
           </label>
           <Textarea
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
-            placeholder="어떤 부분을 어떻게 수정하면 좋을지 자세히 설명해주세요..."
+            placeholder={t('revisionPlaceholder')}
             className="min-h-[120px]"
           />
           <p className="text-xs text-muted-foreground mt-1">
-            {feedback.length}자 입력됨
+            {t('charactersEntered', { count: feedback.length })}
           </p>
         </div>
 
@@ -180,7 +184,7 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
           }}
           disabled={isSubmitting}
         >
-          취소
+          {tCommon('cancel')}
         </Button>
         <Button
           onClick={handleSubmit}
@@ -190,12 +194,12 @@ export function RevisionPanel({ prdId, isResearchVersion = false }: RevisionPane
           {isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              수정 중...
+              {t('revising')}
             </>
           ) : (
             <>
               <Coins className="h-4 w-4" />
-              1 크레딧으로 수정하기
+              {t('reviseWithCredit')}
             </>
           )}
         </Button>

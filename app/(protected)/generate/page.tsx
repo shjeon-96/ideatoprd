@@ -1,24 +1,55 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { PRDForm, PRDViewer, CREDITS_PER_VERSION, type PRDLanguage } from '@/src/features/prd-generation';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { useUser } from '@/src/features/auth/hooks/use-user';
+import { useWorkspace } from '@/src/features/workspace';
 import { InsufficientCreditsModal } from '@/src/features/purchase/ui/InsufficientCreditsModal';
 import { CreditBalance } from '@/src/features/purchase/ui/CreditBalance';
-import { Sparkles, Wand2 } from 'lucide-react';
+import { processUIMessageStream, type PRDSaveResult } from '@/src/shared/lib/stream';
+import { Sparkles, Wand2, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function GeneratePage() {
   const t = useTranslations();
+  const router = useRouter();
   const { profile, isLoading: isUserLoading, refetch } = useUser();
+  const { currentWorkspace, isWorkspaceMode } = useWorkspace();
   const [content, setContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [savedPrdId, setSavedPrdId] = useState<string | null>(null);
 
   // Credit modal state
   const [showCreditModal, setShowCreditModal] = useState(false);
   const [requiredCredits, setRequiredCredits] = useState(0);
+
+  // Handle PRD save result from stream
+  const handleSaveResult = useCallback(
+    (result: PRDSaveResult) => {
+      switch (result.type) {
+        case 'prd_saved':
+          if (result.prdId) {
+            setSavedPrdId(result.prdId);
+            // Auto-redirect to PRD detail page after short delay
+            setTimeout(() => {
+              router.push(`/dashboard/prds/${result.prdId}`);
+            }, 1500);
+          }
+          break;
+        case 'prd_save_failed':
+          setError(result.message || t('generate.saveError'));
+          break;
+        case 'credits_refunded':
+          // Credits were refunded due to save failure - refresh profile
+          refetch();
+          break;
+      }
+    },
+    [router, refetch, t]
+  );
 
   const handleGenerate = useCallback(
     async (data: {
@@ -30,7 +61,10 @@ export default function GeneratePage() {
       // Check credits before generating (skip in development)
       const isDev = process.env.NODE_ENV === 'development';
       const creditsNeeded = CREDITS_PER_VERSION[data.version];
-      const currentCredits = profile?.credits ?? 0;
+      // Use workspace credits in workspace mode, otherwise personal credits
+      const currentCredits = isWorkspaceMode
+        ? (currentWorkspace?.credit_balance ?? 0)
+        : (profile?.credits ?? 0);
 
       if (!isDev && currentCredits < creditsNeeded) {
         setRequiredCredits(creditsNeeded);
@@ -41,12 +75,16 @@ export default function GeneratePage() {
       setIsGenerating(true);
       setContent('');
       setError(null);
+      setSavedPrdId(null);
 
       try {
         const response = await fetch('/api/generate-prd', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
+          body: JSON.stringify({
+            ...data,
+            workspace_id: isWorkspaceMode ? currentWorkspace?.id : undefined,
+          }),
         });
 
         if (!response.ok) {
@@ -63,21 +101,13 @@ export default function GeneratePage() {
           throw new Error(errorData.error || t('generate.generateError'));
         }
 
-        // Handle streaming response
-        const reader = response.body?.getReader();
-        const decoder = new TextDecoder();
-
-        if (!reader) {
-          throw new Error(t('generate.streamError'));
-        }
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          setContent((prev) => prev + chunk);
-        }
+        // Process streaming response with save status handling
+        await processUIMessageStream(
+          response,
+          (text) => setContent((prev) => prev + text),
+          handleSaveResult,
+          (errorMsg) => setError(errorMsg)
+        );
 
         // Refresh user profile to update credits (with timeout)
         try {
@@ -85,7 +115,7 @@ export default function GeneratePage() {
             refetch(),
             new Promise((_, reject) =>
               setTimeout(() => reject(new Error('Refetch timeout')), 3000)
-            )
+            ),
           ]);
         } catch {
           // Ignore refetch errors - PRD was generated successfully
@@ -99,7 +129,7 @@ export default function GeneratePage() {
         setIsGenerating(false);
       }
     },
-    [profile?.credits, refetch, t]
+    [profile?.credits, currentWorkspace, isWorkspaceMode, refetch, t, handleSaveResult]
   );
 
   // Show loading only briefly, then default to 0 credits if profile not loaded
@@ -138,8 +168,30 @@ export default function GeneratePage() {
             </p>
           </div>
         </div>
-        <CreditBalance credits={profile?.credits ?? 0} size="lg" />
+        <CreditBalance
+          credits={profile?.credits ?? 0}
+          workspaceCredits={currentWorkspace?.credit_balance}
+          isWorkspaceMode={isWorkspaceMode}
+          size="lg"
+        />
       </div>
+
+      {/* Success Alert - PRD Saved */}
+      {savedPrdId && (
+        <div
+          role="status"
+          className="mb-8 flex items-center gap-3 rounded-xl border border-green-500/20 bg-green-500/10 p-4 text-green-700 dark:text-green-400"
+        >
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-green-500/20">
+            <CheckCircle className="size-5" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium">{t('generate.saveSuccess')}</p>
+            <p className="text-xs opacity-80">{t('generate.redirecting')}</p>
+          </div>
+          <Loader2 className="size-5 animate-spin opacity-60" />
+        </div>
+      )}
 
       {/* Error Alert */}
       {error && (

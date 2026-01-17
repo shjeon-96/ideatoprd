@@ -28,16 +28,19 @@ export interface TrendResearchResult {
   summary: string;
 }
 
-// Build search queries based on idea
+// Build search queries based on idea with dynamic year
 function buildSearchQueries(idea: string): {
   market: string;
   competitors: string;
   tech: string;
 } {
+  const currentYear = new Date().getFullYear();
+  const nextYear = currentYear + 1;
+
   return {
-    market: `${idea} market size trends 2024 2025`,
-    competitors: `${idea} competitors alternatives comparison`,
-    tech: `${idea} technology stack best practices 2025`,
+    market: `${idea} market size trends ${currentYear} ${nextYear}`,
+    competitors: `${idea} competitors alternatives comparison ${currentYear}`,
+    tech: `${idea} technology stack best practices ${currentYear}`,
   };
 }
 

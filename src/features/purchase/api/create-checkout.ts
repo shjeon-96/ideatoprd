@@ -2,6 +2,7 @@
 
 import { createCheckout, lemonSqueezySetup } from '@lemonsqueezy/lemonsqueezy.js';
 import { createClient } from '@/src/shared/lib/supabase/server';
+import { ErrorCodes } from '@/src/shared/lib/errors';
 import { CREDIT_PACKAGES } from '../model/credit-packages';
 import type { CreditPackage } from '@/src/entities';
 
@@ -21,11 +22,11 @@ export async function createCreditCheckout(
   // 1. Validate package exists
   const packageConfig = CREDIT_PACKAGES[packageKey];
   if (!packageConfig) {
-    return { success: false, error: '유효하지 않은 패키지입니다.' };
+    return { success: false, error: ErrorCodes.PACKAGE_INVALID };
   }
 
   if (!packageConfig.variantId) {
-    return { success: false, error: '패키지 설정이 완료되지 않았습니다.' };
+    return { success: false, error: ErrorCodes.PACKAGE_NOT_CONFIGURED };
   }
 
   // 2. Get authenticated user
@@ -36,7 +37,7 @@ export async function createCreditCheckout(
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
-    return { success: false, error: '로그인이 필요합니다.' };
+    return { success: false, error: ErrorCodes.AUTH_REQUIRED };
   }
 
   // 3. Initialize Lemon Squeezy SDK
@@ -45,7 +46,7 @@ export async function createCreditCheckout(
 
   if (!apiKey || !storeId) {
     console.error('Lemon Squeezy configuration missing');
-    return { success: false, error: '결제 시스템 설정 오류입니다.' };
+    return { success: false, error: ErrorCodes.PAYMENT_SYSTEM_ERROR };
   }
 
   lemonSqueezySetup({ apiKey });
@@ -73,12 +74,12 @@ export async function createCreditCheckout(
 
     if (error) {
       console.error('Checkout creation failed:', error);
-      return { success: false, error: '결제 페이지 생성에 실패했습니다.' };
+      return { success: false, error: ErrorCodes.PAYMENT_CHECKOUT_FAILED };
     }
 
     return { success: true, checkoutUrl: data.data.attributes.url };
   } catch (err) {
     console.error('Checkout error:', err);
-    return { success: false, error: '결제 처리 중 오류가 발생했습니다.' };
+    return { success: false, error: ErrorCodes.PAYMENT_PROCESSING_ERROR };
   }
 }

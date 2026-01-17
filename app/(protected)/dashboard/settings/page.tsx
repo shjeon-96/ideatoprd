@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Coins, User, Mail, Calendar, Settings, ArrowRight, Sparkles, Crown } from 'lucide-react';
+import { getTranslations, getLocale } from 'next-intl/server';
 import { createClient } from '@/src/shared/lib/supabase/server';
 import {
   Card,
@@ -18,6 +19,9 @@ export const metadata = {
 
 export default async function SettingsPage() {
   const supabase = await createClient();
+  const t = await getTranslations('settings');
+  const tSub = await getTranslations('subscription');
+  const locale = await getLocale();
 
   // Get current user
   const {
@@ -31,7 +35,7 @@ export default async function SettingsPage() {
           <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-2xl bg-muted">
             <User className="size-8 text-muted-foreground" />
           </div>
-          <p className="text-muted-foreground">로그인이 필요합니다.</p>
+          <p className="text-muted-foreground">{t('loginRequired')}</p>
         </div>
       </div>
     );
@@ -51,8 +55,9 @@ export default async function SettingsPage() {
   const subscriptionPlan = profile?.subscription_plan;
   const subscriptionStatus = profile?.subscription_status;
   const subscriptionRenewsAt = profile?.subscription_renews_at;
+  const dateLocale = locale === 'ko' ? 'ko-KR' : 'en-US';
   const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString('ko-KR', {
+    ? new Date(profile.created_at).toLocaleDateString(dateLocale, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -67,9 +72,9 @@ export default async function SettingsPage() {
           <Settings className="size-7 text-foreground" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">설정</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">{t('title')}</h1>
           <p className="mt-1 text-muted-foreground">
-            계정 정보와 크레딧을 관리하세요.
+            {t('description')}
           </p>
         </div>
       </div>
@@ -80,9 +85,9 @@ export default async function SettingsPage() {
           <CardHeader className="border-b border-border/50 pb-6">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Crown className="size-5 text-brand-primary" />
-              구독
+              {t('subscription.title')}
             </CardTitle>
-            <CardDescription>구독 플랜 관리</CardDescription>
+            <CardDescription>{t('subscription.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             {subscriptionPlan && subscriptionStatus ? (
@@ -94,11 +99,11 @@ export default async function SettingsPage() {
                   </div>
                   <div>
                     <p className="text-2xl font-bold tracking-tight text-foreground">
-                      {SUBSCRIPTION_PLANS[subscriptionPlan].name}
+                      {tSub(SUBSCRIPTION_PLANS[subscriptionPlan].nameKey)}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {subscriptionStatus === 'active' && '활성 구독'}
-                      {subscriptionStatus === 'cancelled' && '취소됨 (기간 만료 시 종료)'}
+                      {subscriptionStatus === 'active' && t('subscription.active')}
+                      {subscriptionStatus === 'cancelled' && t('subscription.cancelled')}
                     </p>
                   </div>
                 </div>
@@ -106,20 +111,20 @@ export default async function SettingsPage() {
                 {/* Subscription details */}
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">월간 크레딧</span>
+                    <span className="text-muted-foreground">{t('subscription.monthlyCredits')}</span>
                     <span className="font-medium">{SUBSCRIPTION_PLANS[subscriptionPlan].monthlyCredits}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">크레딧 캡</span>
+                    <span className="text-muted-foreground">{t('subscription.creditCap')}</span>
                     <span className="font-medium">{SUBSCRIPTION_PLANS[subscriptionPlan].creditCap}</span>
                   </div>
                   {subscriptionRenewsAt && (
                     <div className="flex items-center justify-between">
                       <span className="text-muted-foreground">
-                        {subscriptionStatus === 'cancelled' ? '종료일' : '다음 결제일'}
+                        {subscriptionStatus === 'cancelled' ? t('subscription.endDate') : t('subscription.nextBillingDate')}
                       </span>
                       <span className="font-medium">
-                        {new Date(subscriptionRenewsAt).toLocaleDateString('ko-KR')}
+                        {new Date(subscriptionRenewsAt).toLocaleDateString(dateLocale)}
                       </span>
                     </div>
                   )}
@@ -127,7 +132,7 @@ export default async function SettingsPage() {
 
                 <Link href="/subscribe" className="block">
                   <Button variant="outline" className="h-12 w-full font-semibold">
-                    구독 관리
+                    {t('subscription.manage')}
                     <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
@@ -137,15 +142,15 @@ export default async function SettingsPage() {
                 {/* No subscription */}
                 <div className="rounded-xl bg-muted/30 p-6 text-center">
                   <Crown className="mx-auto size-12 text-muted-foreground/50" />
-                  <p className="mt-4 font-medium text-foreground">구독 중이 아닙니다</p>
+                  <p className="mt-4 font-medium text-foreground">{t('subscription.notSubscribed')}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    구독하면 매월 크레딧이 자동으로 충전됩니다.
+                    {t('subscription.subscribeInfo')}
                   </p>
                 </div>
 
                 <Link href="/subscribe" className="block">
                   <Button className="btn-magnetic group h-12 w-full bg-gradient-to-r from-brand-primary to-brand-accent font-semibold text-white shadow-md hover:shadow-lg">
-                    구독 시작하기
+                    {t('subscription.start')}
                     <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </Link>
@@ -159,14 +164,15 @@ export default async function SettingsPage() {
           <CardHeader className="border-b border-border/50 pb-6">
             <CardTitle className="flex items-center gap-2 text-lg">
               <User className="size-5 text-brand-primary" />
-              프로필
+              {t('profile.title')}
             </CardTitle>
-            <CardDescription>계정 정보</CardDescription>
+            <CardDescription>{t('profile.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             {/* Avatar */}
             <div className="flex items-center gap-4">
               {profile?.avatar_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={profile.avatar_url}
                   alt={displayName}
@@ -181,7 +187,7 @@ export default async function SettingsPage() {
                 <p className="text-xl font-semibold text-foreground">{displayName}</p>
                 <p className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="size-3.5" />
-                  {memberSince} 가입
+                  {memberSince} {t('profile.joinedSuffix')}
                 </p>
               </div>
             </div>
@@ -193,7 +199,7 @@ export default async function SettingsPage() {
                   <User className="size-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-muted-foreground">이름</p>
+                  <p className="text-xs text-muted-foreground">{t('profile.name')}</p>
                   <p className="font-medium text-foreground">{displayName}</p>
                 </div>
               </div>
@@ -203,7 +209,7 @@ export default async function SettingsPage() {
                   <Mail className="size-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-muted-foreground">이메일</p>
+                  <p className="text-xs text-muted-foreground">{t('profile.email')}</p>
                   <p className="font-medium text-foreground">{userEmail}</p>
                 </div>
               </div>
@@ -213,7 +219,7 @@ export default async function SettingsPage() {
                   <Calendar className="size-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-xs text-muted-foreground">가입일</p>
+                  <p className="text-xs text-muted-foreground">{t('profile.joinDate')}</p>
                   <p className="font-medium text-foreground">{memberSince}</p>
                 </div>
               </div>
@@ -226,9 +232,9 @@ export default async function SettingsPage() {
           <CardHeader className="border-b border-border/50 pb-6">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Coins className="size-5 text-brand-primary" />
-              크레딧
+              {t('credits.title')}
             </CardTitle>
-            <CardDescription>PRD 생성 크레딧</CardDescription>
+            <CardDescription>{t('credits.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
             {/* Credit display */}
@@ -241,7 +247,7 @@ export default async function SettingsPage() {
                   {credits}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  사용 가능한 크레딧
+                  {t('credits.available')}
                 </p>
               </div>
             </div>
@@ -250,26 +256,25 @@ export default async function SettingsPage() {
             <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <span className="size-1.5 rounded-full bg-brand-primary" />
-                기본 PRD 생성: 1 크레딧
+                {t('credits.basicInfo')}
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <span className="size-1.5 rounded-full bg-brand-primary" />
-                상세 PRD 생성: 2 크레딧
+                {t('credits.detailedInfo')}
               </div>
               <div className="flex items-center gap-2 text-muted-foreground">
                 <span className="size-1.5 rounded-full bg-violet-500" />
-                리서치 PRD 생성: 3 크레딧
+                {t('credits.researchInfo')}
               </div>
             </div>
 
             <p className="text-sm leading-relaxed text-muted-foreground">
-              크레딧을 구매하여 더 많은 PRD를 생성하세요.
-              한 번 구매하면 영구적으로 사용할 수 있습니다.
+              {t('credits.purchaseInfo')}
             </p>
 
             <Link href="/purchase" className="block">
               <Button className="btn-magnetic group h-12 w-full bg-gradient-to-r from-brand-primary to-brand-accent font-semibold text-white shadow-md hover:shadow-lg">
-                크레딧 구매하기
+                {t('credits.purchase')}
                 <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>

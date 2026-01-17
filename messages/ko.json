@@ -121,11 +121,23 @@
   },
   "common": {
     "credits": "크레딧",
+    "workspaceCredits": "워크스페이스 크레딧",
     "settings": "설정",
     "signOut": "로그아웃",
     "loading": "로딩 중...",
     "close": "닫기",
-    "error": "오류"
+    "cancel": "취소",
+    "error": "오류",
+    "retry": "다시 시도",
+    "prev": "이전",
+    "next": "다음",
+    "items": "개",
+    "or": "또는"
+  },
+  "dashboard": {
+    "noPrds": "아직 PRD가 없습니다",
+    "createFirst": "첫 번째 PRD를 생성해보세요",
+    "createPrd": "PRD 생성"
   },
   "navigation": {
     "menu": "메뉴",
@@ -174,7 +186,39 @@
     "generating": "PRD 생성 중...",
     "streamError": "스트리밍을 시작할 수 없습니다.",
     "generateError": "PRD 생성에 실패했습니다.",
-    "generalError": "PRD 생성 중 오류가 발생했습니다."
+    "generalError": "PRD 생성 중 오류가 발생했습니다.",
+    "saveSuccess": "PRD가 성공적으로 저장되었습니다!",
+    "saveError": "PRD 저장에 실패했습니다.",
+    "redirecting": "잠시 후 PRD 상세 페이지로 이동합니다...",
+    "templates": {
+      "saas": {
+        "label": "SaaS",
+        "description": "구독 기반 웹 서비스"
+      },
+      "mobile": {
+        "label": "Mobile",
+        "description": "iOS/Android 앱"
+      },
+      "marketplace": {
+        "label": "Marketplace",
+        "description": "양면 플랫폼"
+      },
+      "extension": {
+        "label": "Extension",
+        "description": "브라우저/앱 확장"
+      },
+      "aiWrapper": {
+        "label": "AI Wrapper",
+        "description": "AI 기반 서비스"
+      }
+    },
+    "viewer": {
+      "placeholder": "PRD가 여기에 표시됩니다.",
+      "preview": "PRD 미리보기",
+      "generating": "생성 중...",
+      "copy": "복사",
+      "copied": "복사됨"
+    }
   },
   "prdLanguage": {
     "label": "PRD 작성 언어",
@@ -192,16 +236,362 @@
     "researchPRD": "리서치 PRD 생성: 3 크레딧",
     "noExpiry": "크레딧은 유효기간 없이 영구 사용 가능합니다.",
     "paymentNote": "결제는 Lemon Squeezy를 통해 안전하게 처리됩니다.",
-    "contactNote": "문의사항은 support@ideatoprd.com으로 연락해주세요."
+    "contactNote": "문의사항은 support@ideatoprd.com으로 연락해주세요.",
+    "popular": "인기",
+    "perCredit": "크레딧당 ${price}",
+    "processing": "처리 중...",
+    "buyCredits": "크레딧 구매하기",
+    "errors": {
+      "selectPackage": "패키지를 선택해주세요.",
+      "paymentError": "결제 처리 중 오류가 발생했습니다."
+    },
+    "packages": {
+      "starter": {
+        "name": "Starter",
+        "description": "체험용"
+      },
+      "basic": {
+        "name": "Basic",
+        "description": "개인용"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "프리랜서용"
+      },
+      "business": {
+        "name": "Business",
+        "description": "팀/기업용"
+      }
+    },
+    "insufficientCredits": {
+      "title": "크레딧이 부족합니다",
+      "description": "PRD 생성에 {required} 크레딧이 필요하지만, 현재 {current} 크레딧을 보유하고 있습니다.",
+      "deficit": "{count} 크레딧이 더 필요합니다.",
+      "info": "크레딧을 구매하면 바로 PRD를 생성할 수 있습니다.",
+      "buyButton": "크레딧 구매하기"
+    }
   },
   "dashboard": {
     "title": "내 PRD 목록",
     "empty": "아직 생성된 PRD가 없습니다.",
-    "createFirst": "첫 번째 PRD를 생성해보세요!"
+    "createFirst": "첫 번째 PRD를 생성해보세요!",
+    "noPrds": "아직 PRD가 없습니다",
+    "createPrd": "PRD 생성",
+    "loadError": "PRD 목록을 불러오지 못했습니다."
   },
   "languageSwitcher": {
     "label": "언어",
     "korean": "한국어",
     "english": "English"
+  },
+  "settings": {
+    "title": "설정",
+    "description": "계정 정보와 크레딧을 관리하세요.",
+    "loginRequired": "로그인이 필요합니다.",
+    "subscription": {
+      "title": "구독",
+      "description": "구독 플랜 관리",
+      "active": "활성 구독",
+      "cancelled": "취소됨 (기간 만료 시 종료)",
+      "monthlyCredits": "월간 크레딧",
+      "creditCap": "크레딧 캡",
+      "endDate": "종료일",
+      "nextBillingDate": "다음 결제일",
+      "manage": "구독 관리",
+      "notSubscribed": "구독 중이 아닙니다",
+      "subscribeInfo": "구독하면 매월 크레딧이 자동으로 충전됩니다.",
+      "start": "구독 시작하기"
+    },
+    "profile": {
+      "title": "프로필",
+      "description": "계정 정보",
+      "name": "이름",
+      "email": "이메일",
+      "joinDate": "가입일",
+      "joinedSuffix": "가입"
+    },
+    "credits": {
+      "title": "크레딧",
+      "description": "PRD 생성 크레딧",
+      "available": "사용 가능한 크레딧",
+      "basicInfo": "기본 PRD 생성: 1 크레딧",
+      "detailedInfo": "상세 PRD 생성: 2 크레딧",
+      "researchInfo": "리서치 PRD 생성: 3 크레딧",
+      "purchaseInfo": "크레딧을 구매하여 더 많은 PRD를 생성하세요. 한 번 구매하면 영구적으로 사용할 수 있습니다.",
+      "purchase": "크레딧 구매하기"
+    }
+  },
+  "subscribe": {
+    "mySubscription": "내 구독",
+    "description": "현재 구독 상태와 혜택을 확인하세요.",
+    "currentCredits": "현재 크레딧",
+    "creditsInfo": "크레딧은 PRD 생성에 사용됩니다.",
+    "goToDashboard": "대시보드로 이동",
+    "generatePrd": "PRD 생성하기",
+    "needMoreCredits": "추가 크레딧이 필요하신가요?",
+    "oneTimeCreditsInfo": "구독 크레딧 외에도 일회성 크레딧 패키지를 구매할 수 있습니다.",
+    "buyCredits": "크레딧 구매하기",
+    "selectPlan": "구독 플랜 선택",
+    "planDescription": "매월 크레딧을 자동으로 충전받고, 더 저렴한 가격에 PRD를 생성하세요.",
+    "oneTimeQuestion": "구독 없이 필요할 때만 구매하고 싶으신가요?",
+    "viewPackages": "일회성 크레딧 패키지 보기",
+    "whySubscribe": "왜 구독이 더 좋은가요?",
+    "benefits": {
+      "cheaper": {
+        "title": "✓ 더 저렴한 크레딧 단가",
+        "description": "일회성 구매 대비 최대 40% 저렴한 크레딧 단가"
+      },
+      "autoRefill": {
+        "title": "✓ 매월 자동 충전",
+        "description": "매월 정해진 크레딧이 자동으로 충전됩니다"
+      },
+      "accumulate": {
+        "title": "✓ 크레딧 누적 가능",
+        "description": "사용하지 않은 크레딧은 2개월치까지 누적됩니다"
+      },
+      "yearlyDiscount": {
+        "title": "✓ 연간 결제 시 20% 할인",
+        "description": "연간 결제를 선택하면 추가 20% 할인을 받을 수 있습니다"
+      }
+    }
+  },
+  "subscription": {
+    "popular": "인기",
+    "currentPlan": "현재 플랜",
+    "billingCycle": {
+      "monthly": "월",
+      "yearly": "년"
+    },
+    "monthlySavings": "월 ${price} (연 {discount}% 절약)",
+    "monthlyCredits": "월 {credits} 크레딧",
+    "creditCap": "최대 {cap} 크레딧까지 누적 가능",
+    "processing": "처리 중...",
+    "subscribeTo": "{plan} 플랜 구독하기",
+    "selectPlan": "플랜을 선택하세요",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "description": "개인 사용자를 위한 기본 플랜",
+        "features": {
+          "credits": "월 20 크레딧",
+          "cap": "최대 40 크레딧 누적",
+          "templates": "기본 PRD 템플릿",
+          "support": "이메일 지원"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "전문가를 위한 프로 플랜",
+        "features": {
+          "credits": "월 60 크레딧",
+          "cap": "최대 120 크레딧 누적",
+          "templates": "모든 PRD 템플릿",
+          "research": "Research 버전 포함",
+          "support": "우선 지원"
+        }
+      },
+      "business": {
+        "name": "Business",
+        "description": "팀과 기업을 위한 비즈니스 플랜",
+        "features": {
+          "credits": "월 150 크레딧",
+          "cap": "최대 300 크레딧 누적",
+          "templates": "모든 PRD 템플릿",
+          "research": "Research 버전 포함",
+          "support": "전용 지원",
+          "api": "API 액세스 (예정)"
+        }
+      }
+    },
+    "status": {
+      "planName": "{plan} 플랜",
+      "active": "활성",
+      "cancelled": "취소됨",
+      "cancelledWarning": "구독이 취소되었습니다",
+      "availableUntil": "{date}까지 서비스를 이용할 수 있습니다.",
+      "monthlyCredits": "월간 크레딧",
+      "maxAccumulation": "최대 {cap}까지 누적",
+      "billingCycle": "결제 주기",
+      "monthly": "월간",
+      "yearly": "연간",
+      "endDate": "종료일",
+      "nextBillingDate": "다음 결제일",
+      "includedFeatures": "포함된 기능"
+    }
+  },
+  "billing": {
+    "monthly": "월간 결제",
+    "yearly": "연간 결제",
+    "discount": "20% 할인"
+  },
+  "prd": {
+    "untitled": "제목 없는 PRD",
+    "loadingList": "PRD 목록 로딩 중",
+    "versionHistory": "버전 히스토리",
+    "versionsCount": "{count}개 버전",
+    "original": "원본",
+    "revision": "수정 v{version}",
+    "current": "현재",
+    "revise": "PRD 수정하기",
+    "revisionTitle": "PRD 수정",
+    "revisionDescription": "수정할 섹션을 선택하고 피드백을 입력하세요. 1 크레딧이 소모됩니다.",
+    "selectSections": "수정할 섹션 선택",
+    "revisionFeedback": "수정 피드백 (최소 10자)",
+    "revisionPlaceholder": "어떤 부분을 어떻게 수정하면 좋을지 자세히 설명해주세요...",
+    "charactersEntered": "{count}자 입력됨",
+    "revisionFailed": "PRD 수정에 실패했습니다.",
+    "revising": "수정 중...",
+    "reviseWithCredit": "1 크레딧으로 수정하기",
+    "sections": {
+      "executiveSummary": "요약",
+      "problem": "문제 정의",
+      "targetUsers": "타겟 사용자",
+      "requirements": "요구사항",
+      "coreFeatures": "핵심 기능",
+      "userStories": "사용자 스토리",
+      "techStack": "기술 스택",
+      "successMetrics": "성공 지표",
+      "technicalConsiderations": "기술 고려사항",
+      "risks": "리스크",
+      "timeline": "타임라인",
+      "marketAnalysis": "시장 분석",
+      "competitiveLandscape": "경쟁 분석",
+      "gtmStrategy": "GTM 전략"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "로그인",
+      "description": "계정에 로그인하여 PRD 작성을 시작하세요",
+      "button": "로그인",
+      "noAccount": "계정이 없으신가요?",
+      "link": "로그인",
+      "metaTitle": "로그인 | IdeaToPRD",
+      "metaDescription": "IdeaToPRD에 로그인하여 AI 기반 PRD 작성을 시작하세요"
+    },
+    "signup": {
+      "title": "회원가입",
+      "description": "새 계정을 만들어 IdeaToPRD를 시작하세요",
+      "button": "회원가입",
+      "hasAccount": "이미 계정이 있으신가요?",
+      "link": "회원가입",
+      "metaTitle": "회원가입 | IdeaToPRD",
+      "metaDescription": "IdeaToPRD에 가입하여 AI 기반 PRD 작성을 시작하세요"
+    },
+    "error": {
+      "metaTitle": "인증 오류 | IdeaToPRD",
+      "title": "인증 오류",
+      "defaultDescription": "인증 과정에서 오류가 발생했습니다.",
+      "errorCode": "오류 코드",
+      "backToLogin": "로그인으로 돌아가기",
+      "goHome": "홈으로 이동"
+    },
+    "email": "이메일",
+    "password": "비밀번호",
+    "passwordPlaceholder": "비밀번호 입력",
+    "confirmPassword": "비밀번호 확인",
+    "confirmPasswordPlaceholder": "비밀번호 재입력",
+    "passwordMinLength": "비밀번호는 최소 6자 이상이어야 합니다.",
+    "passwordMinLengthHint": "최소 6자 이상",
+    "passwordMismatch": "비밀번호가 일치하지 않습니다.",
+    "divider": "또는"
+  },
+  "workspace": {
+    "personal": "개인",
+    "switchTitle": "워크스페이스 전환",
+    "creditsSuffix": "cr",
+    "settings": "워크스페이스 설정",
+    "create": {
+      "title": "워크스페이스 생성",
+      "description": "팀과 협업할 워크스페이스를 생성하세요",
+      "button": "워크스페이스 생성",
+      "nameRequired": "워크스페이스 이름을 입력해주세요",
+      "failed": "워크스페이스 생성에 실패했습니다. 다시 시도해주세요.",
+      "placeholder": "우리 팀",
+      "creating": "생성 중..."
+    },
+    "name": "워크스페이스 이름",
+    "slugInfo": "URL 친화적인 슬러그가 자동으로 생성됩니다.",
+    "invite": {
+      "loading": "로딩 중...",
+      "title": "워크스페이스 초대",
+      "welcome": "환영합니다!",
+      "error": "초대 오류",
+      "validating": "초대를 확인하는 중...",
+      "invited": "워크스페이스에 초대되었습니다.",
+      "joined": "워크스페이스에 성공적으로 참여했습니다.",
+      "problemMessage": "초대에 문제가 발생했습니다.",
+      "accept": "초대 수락",
+      "accepting": "수락 중...",
+      "decline": "거절",
+      "redirecting": "워크스페이스로 이동 중...",
+      "goToDashboard": "대시보드로 이동",
+      "failed": "초대 수락에 실패했습니다"
+    }
+  },
+  "templates": {
+    "saas": {
+      "name": "SaaS",
+      "description": "구독 기반 웹 서비스"
+    },
+    "mobile": {
+      "name": "Mobile",
+      "description": "iOS/Android 앱"
+    },
+    "marketplace": {
+      "name": "Marketplace",
+      "description": "양면 플랫폼"
+    },
+    "extension": {
+      "name": "Extension",
+      "description": "브라우저/앱 확장"
+    },
+    "aiWrapper": {
+      "name": "AI-Wrapper",
+      "description": "AI 기반 서비스"
+    }
+  },
+  "errors": {
+    "AUTH_REQUIRED": "로그인이 필요합니다.",
+    "AUTH_INVALID_CREDENTIALS": "이메일 또는 비밀번호가 올바르지 않습니다.",
+    "AUTH_EMAIL_NOT_CONFIRMED": "이메일 인증이 필요합니다.",
+    "AUTH_CHECK_EMAIL": "이메일을 확인하여 가입을 완료해주세요.",
+    "VALIDATION_FAILED": "입력값이 유효하지 않습니다.",
+    "VALIDATION_IDEA_MIN_LENGTH": "아이디어는 최소 10자 이상이어야 합니다.",
+    "VALIDATION_IDEA_MAX_LENGTH": "아이디어는 500자를 초과할 수 없습니다.",
+    "VALIDATION_INVALID_TEMPLATE": "유효하지 않은 템플릿입니다.",
+    "VALIDATION_INVALID_VERSION": "유효하지 않은 버전입니다.",
+    "VALIDATION_INVALID_WORKSPACE_ID": "유효하지 않은 워크스페이스 ID입니다.",
+    "VALIDATION_INVALID_PRD_ID": "유효하지 않은 PRD ID입니다.",
+    "VALIDATION_FEEDBACK_MIN_LENGTH": "피드백은 최소 10자 이상이어야 합니다.",
+    "VALIDATION_FEEDBACK_MAX_LENGTH": "피드백은 2000자를 초과할 수 없습니다.",
+    "VALIDATION_SECTIONS_MIN": "최소 1개 이상의 섹션을 선택해야 합니다.",
+    "VALIDATION_SECTIONS_MAX": "최대 15개의 섹션까지 선택할 수 있습니다.",
+    "VALIDATION_INVALID_EMAIL": "유효한 이메일 주소를 입력해주세요.",
+    "VALIDATION_PASSWORD_MIN_LENGTH": "비밀번호는 최소 8자 이상이어야 합니다.",
+    "VALIDATION_PASSWORD_MAX_LENGTH": "비밀번호는 72자를 초과할 수 없습니다.",
+    "VALIDATION_NAME_MIN_LENGTH": "이름은 최소 2자 이상이어야 합니다.",
+    "VALIDATION_NAME_MAX_LENGTH": "이름은 50자를 초과할 수 없습니다.",
+    "VALIDATION_INVALID_USER_ID": "유효하지 않은 사용자 ID입니다.",
+    "CREDITS_INSUFFICIENT": "크레딧이 부족합니다.",
+    "CREDITS_REFUND_FAILED": "크레딧 환불에 실패했습니다.",
+    "WORKSPACE_CREDITS_INSUFFICIENT": "워크스페이스 크레딧이 부족합니다.",
+    "PACKAGE_INVALID": "유효하지 않은 패키지입니다.",
+    "PACKAGE_NOT_CONFIGURED": "패키지 설정이 완료되지 않았습니다.",
+    "PLAN_INVALID": "유효하지 않은 플랜입니다.",
+    "PLAN_NOT_CONFIGURED": "플랜 설정이 완료되지 않았습니다.",
+    "SUBSCRIPTION_ALREADY_ACTIVE": "이미 활성화된 구독이 있습니다.",
+    "SUBSCRIPTION_FETCH_FAILED": "구독 정보를 불러오는데 실패했습니다.",
+    "PAYMENT_SYSTEM_ERROR": "결제 시스템 설정 오류입니다.",
+    "PAYMENT_CHECKOUT_FAILED": "결제 페이지 생성에 실패했습니다.",
+    "PAYMENT_PROCESSING_ERROR": "결제 처리 중 오류가 발생했습니다.",
+    "PRD_NOT_FOUND": "PRD를 찾을 수 없습니다.",
+    "PRD_CONTENT_UNREADABLE": "PRD 내용을 읽을 수 없습니다.",
+    "PRD_SAVE_FAILED": "PRD 저장에 실패했습니다.",
+    "PRD_LIST_FAILED": "PRD 목록을 불러오는데 실패했습니다.",
+    "PRD_GENERATION_FAILED": "PRD 생성 중 오류가 발생했습니다.",
+    "WORKSPACE_ACCESS_DENIED": "워크스페이스 접근 권한이 없습니다.",
+    "RATE_LIMIT_EXCEEDED": "요청이 너무 많습니다. 잠시 후 다시 시도해주세요.",
+    "UNKNOWN_ERROR": "알 수 없는 오류가 발생했습니다."
   }
 }

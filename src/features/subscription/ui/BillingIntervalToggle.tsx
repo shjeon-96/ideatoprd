@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { cn } from '@/src/shared/lib/utils';
 import type { BillingInterval } from '@/src/entities';
 
@@ -14,6 +15,8 @@ export function BillingIntervalToggle({
   onChange,
   disabled = false,
 }: BillingIntervalToggleProps) {
+  const t = useTranslations('billing');
+
   return (
     <div className="flex items-center justify-center gap-3">
       <button
@@ -28,7 +31,7 @@ export function BillingIntervalToggle({
             : 'bg-muted text-muted-foreground hover:bg-muted/80'
         )}
       >
-        월간 결제
+        {t('monthly')}
       </button>
       <button
         onClick={() => onChange('yearly')}
@@ -42,9 +45,9 @@ export function BillingIntervalToggle({
             : 'bg-muted text-muted-foreground hover:bg-muted/80'
         )}
       >
-        연간 결제
+        {t('yearly')}
         <span className="absolute -right-2 -top-2 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-bold text-white">
-          20% 할인
+          {t('discount')}
         </span>
       </button>
     </div>

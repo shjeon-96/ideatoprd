@@ -1,11 +1,15 @@
+import { getTranslations } from 'next-intl/server';
+
 /**
  * Loading UI for Generate PRD page
  * Shows skeleton for the form while page is loading
  */
-export default function GenerateLoading() {
+export default async function GenerateLoading() {
+  const t = await getTranslations('common');
+
   return (
     <main className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto space-y-6" role="status" aria-label="페이지 로딩 중">
+      <div className="max-w-4xl mx-auto space-y-6" role="status" aria-label={t('loading')}>
         {/* Header skeleton */}
         <div className="space-y-2">
           <div className="h-9 w-48 bg-muted motion-safe:animate-pulse rounded" />

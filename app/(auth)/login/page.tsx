@@ -1,11 +1,15 @@
 import { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/src/features/auth";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "로그인 | IdeaToPRD",
-  description: "IdeaToPRD에 로그인하여 AI 기반 PRD 작성을 시작하세요",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("auth.login");
+  return {
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+  };
+}
 
 export default function LoginPage() {
   return (

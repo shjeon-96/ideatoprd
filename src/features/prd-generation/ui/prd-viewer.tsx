@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Copy, Check } from 'lucide-react';
 import { Button } from '@/src/shared/ui/button';
 import Markdown from 'react-markdown';
@@ -15,6 +16,7 @@ interface PRDViewerProps {
 }
 
 export function PRDViewer({ content, isStreaming }: PRDViewerProps) {
+  const t = useTranslations('generate.viewer');
   const containerRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
@@ -34,7 +36,7 @@ export function PRDViewer({ content, isStreaming }: PRDViewerProps) {
   if (!content) {
     return (
       <div className="flex h-[400px] items-center justify-center rounded-lg border border-dashed border-border bg-muted/50">
-        <p className="text-muted-foreground">PRD가 여기에 표시됩니다.</p>
+        <p className="text-muted-foreground">{t('placeholder')}</p>
       </div>
     );
   }
@@ -44,11 +46,11 @@ export function PRDViewer({ content, isStreaming }: PRDViewerProps) {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-border px-4 py-2">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">PRD 미리보기</span>
+          <span className="text-sm font-medium">{t('preview')}</span>
           {isStreaming && (
             <span className="flex items-center gap-1 text-xs text-primary">
               <span className="h-2 w-2 motion-safe:animate-pulse rounded-full bg-primary" />
-              생성 중...
+              {t('generating')}
             </span>
           )}
         </div>
@@ -64,7 +66,7 @@ export function PRDViewer({ content, isStreaming }: PRDViewerProps) {
             ) : (
               <Copy className="h-4 w-4" />
             )}
-            <span className="ml-1">{copied ? '복사됨' : '복사'}</span>
+            <span className="ml-1">{copied ? t('copied') : t('copy')}</span>
           </Button>
         </div>
       </div>

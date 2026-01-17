@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Dialog,
   DialogContent,
@@ -26,6 +27,8 @@ export function InsufficientCreditsModal({
   requiredCredits,
 }: InsufficientCreditsModalProps) {
   const router = useRouter();
+  const t = useTranslations('purchase.insufficientCredits');
+  const tCommon = useTranslations('common');
   const deficit = requiredCredits - currentCredits;
 
   return (
@@ -35,20 +38,19 @@ export function InsufficientCreditsModal({
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
             <AlertCircle className="h-6 w-6 text-destructive" />
           </div>
-          <DialogTitle className="text-center">크레딧이 부족합니다</DialogTitle>
+          <DialogTitle className="text-center">{t('title')}</DialogTitle>
           <DialogDescription className="text-center">
-            PRD 생성에 <strong>{requiredCredits} 크레딧</strong>이 필요하지만,
-            현재 <strong>{currentCredits} 크레딧</strong>을 보유하고 있습니다.
+            {t('description', { required: requiredCredits, current: currentCredits })}
             <br />
             <span className="text-destructive">
-              {deficit} 크레딧이 더 필요합니다.
+              {t('deficit', { count: deficit })}
             </span>
           </DialogDescription>
         </DialogHeader>
 
         <div className="mt-4 rounded-lg bg-muted/50 p-4 text-center">
           <p className="text-sm text-muted-foreground">
-            크레딧을 구매하면 바로 PRD를 생성할 수 있습니다.
+            {t('info')}
           </p>
         </div>
 
@@ -58,7 +60,7 @@ export function InsufficientCreditsModal({
             onClick={() => onOpenChange(false)}
             className="w-full sm:w-auto"
           >
-            취소
+            {tCommon('cancel')}
           </Button>
           <Button
             onClick={() => {
@@ -68,7 +70,7 @@ export function InsufficientCreditsModal({
             className="w-full sm:w-auto"
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
-            크레딧 구매하기
+            {t('buyButton')}
           </Button>
         </DialogFooter>
       </DialogContent>

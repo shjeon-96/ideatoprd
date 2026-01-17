@@ -10,6 +10,7 @@ interface SavePRDParams {
   title: string;
   content: Json;
   creditsUsed: number;
+  workspaceId?: string;
 }
 
 export class PRDSaveError extends Error {
@@ -36,6 +37,7 @@ export async function savePRD(params: SavePRDParams): Promise<PRD> {
       title: params.title,
       content: params.content,
       credits_used: params.creditsUsed,
+      workspace_id: params.workspaceId ?? null,
     })
     .select()
     .single();

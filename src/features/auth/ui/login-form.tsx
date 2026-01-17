@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Button } from "@/src/shared/ui/button";
 import { Input } from "@/src/shared/ui/input";
 import {
@@ -20,6 +21,7 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   const [isPending, startTransition] = useTransition();
+  const t = useTranslations("auth");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,9 +34,9 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold">로그인</CardTitle>
+        <CardTitle className="text-2xl font-bold">{t("login.title")}</CardTitle>
         <CardDescription>
-          계정에 로그인하여 PRD 작성을 시작하세요
+          {t("login.description")}
         </CardDescription>
       </CardHeader>
 
@@ -55,7 +57,7 @@ export function LoginForm() {
             <span className="w-full border-t" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">또는</span>
+            <span className="bg-card px-2 text-muted-foreground">{t("divider")}</span>
           </div>
         </div>
 
@@ -66,7 +68,7 @@ export function LoginForm() {
               htmlFor="email"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              이메일
+              {t("email")}
             </label>
             <Input
               id="email"
@@ -83,13 +85,13 @@ export function LoginForm() {
               htmlFor="password"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              비밀번호
+              {t("password")}
             </label>
             <Input
               id="password"
               name="password"
               type="password"
-              placeholder="비밀번호 입력"
+              placeholder={t("passwordPlaceholder")}
               required
               autoComplete="current-password"
             />
@@ -104,7 +106,7 @@ export function LoginForm() {
             {isPending ? (
               <span className="size-5 motion-safe:animate-spin rounded-full border-2 border-brand-primary-foreground border-t-transparent" />
             ) : (
-              "로그인"
+              t("login.button")
             )}
           </Button>
         </form>
@@ -112,12 +114,12 @@ export function LoginForm() {
 
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          계정이 없으신가요?{" "}
+          {t("login.noAccount")}{" "}
           <Link
             href="/signup"
             className="font-medium text-brand-primary underline-offset-4 hover:underline"
           >
-            회원가입
+            {t("signup.link")}
           </Link>
         </p>
       </CardFooter>

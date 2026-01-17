@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslations, useLocale } from 'next-intl';
 import { History, GitBranch, MessageSquare, ChevronRight } from 'lucide-react';
 import { Badge } from '@/src/shared/ui/badge';
 import { cn } from '@/src/shared/lib/utils';
@@ -10,6 +13,10 @@ interface VersionHistoryProps {
 }
 
 export function VersionHistory({ versions, currentVersionId }: VersionHistoryProps) {
+  const t = useTranslations('prd');
+  const locale = useLocale();
+  const dateLocale = locale === 'ko' ? 'ko-KR' : 'en-US';
+
   if (versions.length <= 1) {
     return null; // Don't show history if there's only one version
   }
@@ -18,9 +25,9 @@ export function VersionHistory({ versions, currentVersionId }: VersionHistoryPro
     <div className="rounded-lg border bg-muted/30 p-4">
       <div className="flex items-center gap-2 mb-3">
         <History className="h-4 w-4 text-muted-foreground" />
-        <h3 className="text-sm font-medium">버전 히스토리</h3>
+        <h3 className="text-sm font-medium">{t('versionHistory')}</h3>
         <Badge variant="secondary" className="text-xs">
-          {versions.length}개 버전
+          {t('versionsCount', { count: versions.length })}
         </Badge>
       </div>
 
@@ -28,7 +35,7 @@ export function VersionHistory({ versions, currentVersionId }: VersionHistoryPro
         {versions.map((version) => {
           const isCurrentVersion = version.id === currentVersionId;
           const isOriginal = version.version_number === 1;
-          const formattedDate = new Date(version.created_at).toLocaleDateString('ko-KR', {
+          const formattedDate = new Date(version.created_at).toLocaleDateString(dateLocale, {
             month: 'short',
             day: 'numeric',
             hour: '2-digit',
@@ -62,11 +69,11 @@ export function VersionHistory({ versions, currentVersionId }: VersionHistoryPro
                         'text-sm font-medium',
                         isCurrentVersion && 'text-primary'
                       )}>
-                        {isOriginal ? '원본' : `수정 v${version.version_number}`}
+                        {isOriginal ? t('original') : t('revision', { version: version.version_number })}
                       </span>
                       {isCurrentVersion && (
                         <Badge variant="outline" className="text-xs">
-                          현재
+                          {t('current')}
                         </Badge>
                       )}
                     </div>

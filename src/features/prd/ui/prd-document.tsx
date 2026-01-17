@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 20,
     color: '#64647a',
-    fontStyle: 'italic',
+    // Note: NotoSansKR doesn't have italic variant, use normal weight instead
   },
   metadata: {
     fontSize: 9,

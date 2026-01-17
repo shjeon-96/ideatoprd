@@ -121,11 +121,23 @@
   },
   "common": {
     "credits": "Credits",
+    "workspaceCredits": "Workspace Credits",
     "settings": "Settings",
     "signOut": "Sign out",
     "loading": "Loading...",
     "close": "Close",
-    "error": "Error"
+    "cancel": "Cancel",
+    "error": "Error",
+    "retry": "Retry",
+    "prev": "Previous",
+    "next": "Next",
+    "items": "items",
+    "or": "or"
+  },
+  "dashboard": {
+    "noPrds": "No PRDs yet",
+    "createFirst": "Create your first PRD to get started",
+    "createPrd": "Create PRD"
   },
   "navigation": {
     "menu": "Menu",
@@ -174,7 +186,39 @@
     "generating": "Generating PRD...",
     "streamError": "Unable to start streaming.",
     "generateError": "Failed to generate PRD.",
-    "generalError": "An error occurred while generating PRD."
+    "generalError": "An error occurred while generating PRD.",
+    "saveSuccess": "PRD saved successfully!",
+    "saveError": "Failed to save PRD.",
+    "redirecting": "Redirecting to PRD detail page...",
+    "templates": {
+      "saas": {
+        "label": "SaaS",
+        "description": "Subscription-based web service"
+      },
+      "mobile": {
+        "label": "Mobile",
+        "description": "iOS/Android app"
+      },
+      "marketplace": {
+        "label": "Marketplace",
+        "description": "Two-sided platform"
+      },
+      "extension": {
+        "label": "Extension",
+        "description": "Browser/app extension"
+      },
+      "aiWrapper": {
+        "label": "AI Wrapper",
+        "description": "AI-powered service"
+      }
+    },
+    "viewer": {
+      "placeholder": "PRD will be displayed here.",
+      "preview": "PRD Preview",
+      "generating": "Generating...",
+      "copy": "Copy",
+      "copied": "Copied"
+    }
   },
   "prdLanguage": {
     "label": "PRD Language",
@@ -192,16 +236,362 @@
     "researchPRD": "Research PRD generation: 3 credits",
     "noExpiry": "Credits never expire.",
     "paymentNote": "Payment is securely processed through Lemon Squeezy.",
-    "contactNote": "For inquiries, please contact support@ideatoprd.com."
+    "contactNote": "For inquiries, please contact support@ideatoprd.com.",
+    "popular": "Popular",
+    "perCredit": "${price}/credit",
+    "processing": "Processing...",
+    "buyCredits": "Buy Credits",
+    "errors": {
+      "selectPackage": "Please select a package.",
+      "paymentError": "An error occurred during payment processing."
+    },
+    "packages": {
+      "starter": {
+        "name": "Starter",
+        "description": "For trying out"
+      },
+      "basic": {
+        "name": "Basic",
+        "description": "For personal use"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For freelancers"
+      },
+      "business": {
+        "name": "Business",
+        "description": "For teams & enterprises"
+      }
+    },
+    "insufficientCredits": {
+      "title": "Insufficient Credits",
+      "description": "PRD generation requires {required} credits, but you only have {current} credits.",
+      "deficit": "You need {count} more credits.",
+      "info": "Purchase credits to generate PRD right away.",
+      "buyButton": "Buy Credits"
+    }
   },
   "dashboard": {
     "title": "My PRDs",
     "empty": "No PRDs generated yet.",
-    "createFirst": "Create your first PRD!"
+    "createFirst": "Create your first PRD!",
+    "noPrds": "No PRDs yet",
+    "createPrd": "Create PRD",
+    "loadError": "Failed to load PRDs."
   },
   "languageSwitcher": {
     "label": "Language",
     "korean": "Korean",
     "english": "English"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account and credits.",
+    "loginRequired": "Login required.",
+    "subscription": {
+      "title": "Subscription",
+      "description": "Manage subscription plan",
+      "active": "Active Subscription",
+      "cancelled": "Cancelled (ends at period end)",
+      "monthlyCredits": "Monthly Credits",
+      "creditCap": "Credit Cap",
+      "endDate": "End Date",
+      "nextBillingDate": "Next Billing Date",
+      "manage": "Manage Subscription",
+      "notSubscribed": "Not subscribed",
+      "subscribeInfo": "Subscribe to get monthly credit refills.",
+      "start": "Start Subscription"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Account Information",
+      "name": "Name",
+      "email": "Email",
+      "joinDate": "Join Date",
+      "joinedSuffix": "Joined"
+    },
+    "credits": {
+      "title": "Credits",
+      "description": "PRD Generation Credits",
+      "available": "Available Credits",
+      "basicInfo": "Basic PRD generation: 1 credit",
+      "detailedInfo": "Detailed PRD generation: 2 credits",
+      "researchInfo": "Research PRD generation: 3 credits",
+      "purchaseInfo": "Purchase credits to generate more PRDs. One-time purchase, use forever.",
+      "purchase": "Buy Credits"
+    }
+  },
+  "subscribe": {
+    "mySubscription": "My Subscription",
+    "description": "View your subscription status and benefits.",
+    "currentCredits": "Current Credits",
+    "creditsInfo": "Credits are used for PRD generation.",
+    "goToDashboard": "Go to Dashboard",
+    "generatePrd": "Generate PRD",
+    "needMoreCredits": "Need more credits?",
+    "oneTimeCreditsInfo": "You can purchase one-time credit packages in addition to subscription credits.",
+    "buyCredits": "Buy Credits",
+    "selectPlan": "Select Subscription Plan",
+    "planDescription": "Get monthly credit refills and generate PRDs at a lower cost.",
+    "oneTimeQuestion": "Want to purchase only when needed without subscription?",
+    "viewPackages": "View One-Time Packages",
+    "whySubscribe": "Why subscribe?",
+    "benefits": {
+      "cheaper": {
+        "title": "✓ Lower cost per credit",
+        "description": "Up to 40% cheaper than one-time purchase"
+      },
+      "autoRefill": {
+        "title": "✓ Monthly auto-refill",
+        "description": "Credits are automatically refilled every month"
+      },
+      "accumulate": {
+        "title": "✓ Credits accumulate",
+        "description": "Unused credits accumulate up to 2 months"
+      },
+      "yearlyDiscount": {
+        "title": "✓ 20% off annual billing",
+        "description": "Get additional 20% off with annual billing"
+      }
+    }
+  },
+  "subscription": {
+    "popular": "Popular",
+    "currentPlan": "Current Plan",
+    "billingCycle": {
+      "monthly": "mo",
+      "yearly": "yr"
+    },
+    "monthlySavings": "${price}/mo (Save {discount}% annually)",
+    "monthlyCredits": "{credits} credits/month",
+    "creditCap": "Accumulate up to {cap} credits",
+    "processing": "Processing...",
+    "subscribeTo": "Subscribe to {plan}",
+    "selectPlan": "Select a plan",
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "description": "Basic plan for individuals",
+        "features": {
+          "credits": "20 credits/month",
+          "cap": "Up to 40 credits accumulation",
+          "templates": "Basic PRD templates",
+          "support": "Email support"
+        }
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Pro plan for professionals",
+        "features": {
+          "credits": "60 credits/month",
+          "cap": "Up to 120 credits accumulation",
+          "templates": "All PRD templates",
+          "research": "Research version included",
+          "support": "Priority support"
+        }
+      },
+      "business": {
+        "name": "Business",
+        "description": "Business plan for teams and enterprises",
+        "features": {
+          "credits": "150 credits/month",
+          "cap": "Up to 300 credits accumulation",
+          "templates": "All PRD templates",
+          "research": "Research version included",
+          "support": "Dedicated support",
+          "api": "API access (coming soon)"
+        }
+      }
+    },
+    "status": {
+      "planName": "{plan} Plan",
+      "active": "Active",
+      "cancelled": "Cancelled",
+      "cancelledWarning": "Subscription cancelled",
+      "availableUntil": "Service available until {date}.",
+      "monthlyCredits": "Monthly Credits",
+      "maxAccumulation": "Max {cap} accumulation",
+      "billingCycle": "Billing Cycle",
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "endDate": "End Date",
+      "nextBillingDate": "Next Billing Date",
+      "includedFeatures": "Included Features"
+    }
+  },
+  "billing": {
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "discount": "20% off"
+  },
+  "prd": {
+    "untitled": "Untitled PRD",
+    "loadingList": "Loading PRD list",
+    "versionHistory": "Version History",
+    "versionsCount": "{count} versions",
+    "original": "Original",
+    "revision": "Revision v{version}",
+    "current": "Current",
+    "revise": "Revise PRD",
+    "revisionTitle": "Revise PRD",
+    "revisionDescription": "Select sections to revise and provide feedback. 1 credit will be used.",
+    "selectSections": "Select Sections to Revise",
+    "revisionFeedback": "Revision Feedback (min 10 characters)",
+    "revisionPlaceholder": "Describe in detail what you'd like to change...",
+    "charactersEntered": "{count} characters",
+    "revisionFailed": "Failed to revise PRD.",
+    "revising": "Revising...",
+    "reviseWithCredit": "Revise for 1 credit",
+    "sections": {
+      "executiveSummary": "Executive Summary",
+      "problem": "Problem Definition",
+      "targetUsers": "Target Users",
+      "requirements": "Requirements",
+      "coreFeatures": "Core Features",
+      "userStories": "User Stories",
+      "techStack": "Tech Stack",
+      "successMetrics": "Success Metrics",
+      "technicalConsiderations": "Technical Considerations",
+      "risks": "Risks",
+      "timeline": "Timeline",
+      "marketAnalysis": "Market Analysis",
+      "competitiveLandscape": "Competitive Landscape",
+      "gtmStrategy": "GTM Strategy"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "description": "Sign in to your account to start writing PRDs",
+      "button": "Login",
+      "noAccount": "Don't have an account?",
+      "link": "Login",
+      "metaTitle": "Login | IdeaToPRD",
+      "metaDescription": "Sign in to IdeaToPRD to start creating AI-powered PRDs"
+    },
+    "signup": {
+      "title": "Sign Up",
+      "description": "Create a new account to get started with IdeaToPRD",
+      "button": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "link": "Sign Up",
+      "metaTitle": "Sign Up | IdeaToPRD",
+      "metaDescription": "Join IdeaToPRD to start creating AI-powered PRDs"
+    },
+    "error": {
+      "metaTitle": "Authentication Error | IdeaToPRD",
+      "title": "Authentication Error",
+      "defaultDescription": "An error occurred during authentication.",
+      "errorCode": "Error Code",
+      "backToLogin": "Back to Login",
+      "goHome": "Go to Home"
+    },
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "passwordMinLength": "Password must be at least 6 characters.",
+    "passwordMinLengthHint": "At least 6 characters",
+    "passwordMismatch": "Passwords do not match.",
+    "divider": "or"
+  },
+  "workspace": {
+    "personal": "Personal",
+    "switchTitle": "Switch Workspace",
+    "creditsSuffix": "cr",
+    "settings": "Workspace Settings",
+    "create": {
+      "title": "Create Workspace",
+      "description": "Create a workspace to collaborate with your team",
+      "button": "Create Workspace",
+      "nameRequired": "Workspace name is required",
+      "failed": "Failed to create workspace. Please try again.",
+      "placeholder": "My Team",
+      "creating": "Creating..."
+    },
+    "name": "Workspace Name",
+    "slugInfo": "A URL-friendly slug will be generated automatically.",
+    "invite": {
+      "loading": "Loading...",
+      "title": "Workspace Invitation",
+      "welcome": "Welcome!",
+      "error": "Invitation Error",
+      "validating": "Validating your invitation...",
+      "invited": "You've been invited to join a workspace.",
+      "joined": "You've successfully joined the workspace.",
+      "problemMessage": "There was a problem with your invitation.",
+      "accept": "Accept Invitation",
+      "accepting": "Accepting...",
+      "decline": "Decline",
+      "redirecting": "Redirecting to workspace...",
+      "goToDashboard": "Go to Dashboard",
+      "failed": "Failed to accept invitation"
+    }
+  },
+  "templates": {
+    "saas": {
+      "name": "SaaS",
+      "description": "Subscription-based web service"
+    },
+    "mobile": {
+      "name": "Mobile",
+      "description": "iOS/Android app"
+    },
+    "marketplace": {
+      "name": "Marketplace",
+      "description": "Two-sided platform"
+    },
+    "extension": {
+      "name": "Extension",
+      "description": "Browser/app extension"
+    },
+    "aiWrapper": {
+      "name": "AI-Wrapper",
+      "description": "AI-powered service"
+    }
+  },
+  "errors": {
+    "AUTH_REQUIRED": "Login required.",
+    "AUTH_INVALID_CREDENTIALS": "Invalid email or password.",
+    "AUTH_EMAIL_NOT_CONFIRMED": "Email verification required.",
+    "AUTH_CHECK_EMAIL": "Please check your email to complete registration.",
+    "VALIDATION_FAILED": "Invalid input.",
+    "VALIDATION_IDEA_MIN_LENGTH": "Idea must be at least 10 characters.",
+    "VALIDATION_IDEA_MAX_LENGTH": "Idea cannot exceed 500 characters.",
+    "VALIDATION_INVALID_TEMPLATE": "Invalid template.",
+    "VALIDATION_INVALID_VERSION": "Invalid version.",
+    "VALIDATION_INVALID_WORKSPACE_ID": "Invalid workspace ID.",
+    "VALIDATION_INVALID_PRD_ID": "Invalid PRD ID.",
+    "VALIDATION_FEEDBACK_MIN_LENGTH": "Feedback must be at least 10 characters.",
+    "VALIDATION_FEEDBACK_MAX_LENGTH": "Feedback cannot exceed 2000 characters.",
+    "VALIDATION_SECTIONS_MIN": "At least 1 section must be selected.",
+    "VALIDATION_SECTIONS_MAX": "Up to 15 sections can be selected.",
+    "VALIDATION_INVALID_EMAIL": "Please enter a valid email address.",
+    "VALIDATION_PASSWORD_MIN_LENGTH": "Password must be at least 8 characters.",
+    "VALIDATION_PASSWORD_MAX_LENGTH": "Password cannot exceed 72 characters.",
+    "VALIDATION_NAME_MIN_LENGTH": "Name must be at least 2 characters.",
+    "VALIDATION_NAME_MAX_LENGTH": "Name cannot exceed 50 characters.",
+    "VALIDATION_INVALID_USER_ID": "Invalid user ID.",
+    "CREDITS_INSUFFICIENT": "Insufficient credits.",
+    "CREDITS_REFUND_FAILED": "Credit refund failed.",
+    "WORKSPACE_CREDITS_INSUFFICIENT": "Insufficient workspace credits.",
+    "PACKAGE_INVALID": "Invalid package.",
+    "PACKAGE_NOT_CONFIGURED": "Package not configured.",
+    "PLAN_INVALID": "Invalid plan.",
+    "PLAN_NOT_CONFIGURED": "Plan not configured.",
+    "SUBSCRIPTION_ALREADY_ACTIVE": "You already have an active subscription.",
+    "SUBSCRIPTION_FETCH_FAILED": "Failed to fetch subscription information.",
+    "PAYMENT_SYSTEM_ERROR": "Payment system configuration error.",
+    "PAYMENT_CHECKOUT_FAILED": "Failed to create checkout page.",
+    "PAYMENT_PROCESSING_ERROR": "An error occurred during payment processing.",
+    "PRD_NOT_FOUND": "PRD not found.",
+    "PRD_CONTENT_UNREADABLE": "PRD content is unreadable.",
+    "PRD_SAVE_FAILED": "Failed to save PRD.",
+    "PRD_LIST_FAILED": "Failed to load PRD list.",
+    "PRD_GENERATION_FAILED": "An error occurred while generating PRD.",
+    "WORKSPACE_ACCESS_DENIED": "Workspace access denied.",
+    "RATE_LIMIT_EXCEEDED": "Too many requests. Please try again later.",
+    "UNKNOWN_ERROR": "An unknown error occurred."
   }
 }

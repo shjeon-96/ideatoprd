@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { AuthGuard } from "@/src/features/auth";
+import { UserProvider } from "@/src/features/auth/hooks/use-user";
+import { WorkspaceProvider } from "@/src/features/workspace";
 import { UserMenu, LanguageSwitcher } from "@/src/widgets/common";
 import { MobileNav } from "@/src/widgets/dashboard";
 import type { Metadata } from "next";
@@ -22,26 +24,30 @@ interface ProtectedLayoutProps {
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-background">
-        <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container mx-auto flex h-14 items-center justify-between px-4">
-            <div className="flex items-center gap-2">
-              <MobileNav />
-              <Link
-                href="/"
-                className="font-editorial text-lg font-medium tracking-tight"
-              >
-                IdeaToPRD
-              </Link>
-            </div>
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
-              <UserMenu />
-            </div>
+      <UserProvider>
+        <WorkspaceProvider>
+          <div className="min-h-screen bg-background">
+            <header className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <div className="container mx-auto flex h-14 items-center justify-between px-4">
+                <div className="flex items-center gap-2">
+                  <MobileNav />
+                  <Link
+                    href="/dashboard"
+                    className="font-editorial text-lg font-medium tracking-tight"
+                  >
+                    IdeaToPRD
+                  </Link>
+                </div>
+                <div className="flex items-center gap-2">
+                  <LanguageSwitcher />
+                  <UserMenu />
+                </div>
+              </div>
+            </header>
+            {children}
           </div>
-        </header>
-        {children}
-      </div>
+        </WorkspaceProvider>
+      </UserProvider>
     </AuthGuard>
   );
 }

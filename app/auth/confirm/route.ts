@@ -3,6 +3,25 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 
 /**
+ * Validate redirect URL to prevent open redirect attacks
+ * Only allows redirects to the same origin
+ */
+function isValidRedirect(url: string, baseUrl: string): boolean {
+  // Only allow relative paths or same-origin URLs
+  if (url.startsWith('/') && !url.startsWith('//')) {
+    return true;
+  }
+
+  try {
+    const parsed = new URL(url, baseUrl);
+    const base = new URL(baseUrl);
+    return parsed.origin === base.origin;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Email confirmation route handler
  *
  * Handles:
@@ -20,6 +39,9 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") as EmailOtpType | null;
   const next = searchParams.get("next") ?? "/";
 
+  // Validate redirect URL to prevent open redirect attacks
+  const safeNext = isValidRedirect(next, request.url) ? next : "/";
+
   if (tokenHash && type) {
     const supabase = await createClient();
     const { error } = await supabase.auth.verifyOtp({
@@ -29,7 +51,7 @@ export async function GET(request: NextRequest) {
 
     if (!error) {
       // Successful verification - redirect to intended destination
-      return NextResponse.redirect(new URL(next, request.url));
+      return NextResponse.redirect(new URL(safeNext, request.url));
     }
 
     // Verification failed - redirect with error details
