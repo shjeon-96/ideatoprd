@@ -10,18 +10,10 @@ import {
   buildRevisionPrompt,
   PRD_SECTIONS,
   REVISION_SYSTEM_PROMPT,
-  REVISION_LANGUAGE_INSTRUCTIONS,
 } from '../revision';
 
 describe('PRD Revision Prompt System', () => {
   describe('PRD_SECTIONS', () => {
-    it('should have matching keys for ko and en languages', () => {
-      const koKeys = PRD_SECTIONS.ko.map((s) => s.key);
-      const enKeys = PRD_SECTIONS.en.map((s) => s.key);
-
-      expect(koKeys).toEqual(enKeys);
-    });
-
     it('should include all required base sections', () => {
       const requiredSections = [
         'executive_summary',
@@ -35,10 +27,10 @@ describe('PRD Revision Prompt System', () => {
         'risks',
       ];
 
-      const koKeys = PRD_SECTIONS.ko.map((s) => s.key);
+      const sectionKeys = PRD_SECTIONS.map((s) => s.key);
 
       requiredSections.forEach((section) => {
-        expect(koKeys).toContain(section);
+        expect(sectionKeys).toContain(section);
       });
     });
 
@@ -50,23 +42,24 @@ describe('PRD Revision Prompt System', () => {
         'gtm_strategy',
       ];
 
-      const koKeys = PRD_SECTIONS.ko.map((s) => s.key);
+      const sectionKeys = PRD_SECTIONS.map((s) => s.key);
 
       researchSections.forEach((section) => {
-        expect(koKeys).toContain(section);
+        expect(sectionKeys).toContain(section);
       });
     });
 
     it('should have non-empty labels for all sections', () => {
-      PRD_SECTIONS.ko.forEach((section) => {
+      PRD_SECTIONS.forEach((section) => {
         expect(section.label).toBeTruthy();
         expect(section.label.length).toBeGreaterThan(0);
       });
+    });
 
-      PRD_SECTIONS.en.forEach((section) => {
-        expect(section.label).toBeTruthy();
-        expect(section.label.length).toBeGreaterThan(0);
-      });
+    it('should have unique keys', () => {
+      const keys = PRD_SECTIONS.map((s) => s.key);
+      const uniqueKeys = [...new Set(keys)];
+      expect(keys.length).toBe(uniqueKeys.length);
     });
   });
 
@@ -82,17 +75,9 @@ describe('PRD Revision Prompt System', () => {
     it('should instruct to return complete PRD', () => {
       expect(REVISION_SYSTEM_PROMPT).toContain('COMPLETE PRD');
     });
-  });
 
-  describe('REVISION_LANGUAGE_INSTRUCTIONS', () => {
-    it('should have instructions for ko language', () => {
-      expect(REVISION_LANGUAGE_INSTRUCTIONS.ko).toBeTruthy();
-      expect(REVISION_LANGUAGE_INSTRUCTIONS.ko).toContain('한국어');
-    });
-
-    it('should have instructions for en language', () => {
-      expect(REVISION_LANGUAGE_INSTRUCTIONS.en).toBeTruthy();
-      expect(REVISION_LANGUAGE_INSTRUCTIONS.en).toContain('English');
+    it('should contain English language instructions', () => {
+      expect(REVISION_SYSTEM_PROMPT).toContain('English');
     });
   });
 
@@ -108,7 +93,6 @@ Test problem.`;
         originalPrd: mockOriginalPrd,
         feedback: 'Please improve the executive summary.',
         sections: ['executive_summary'],
-        language: 'ko',
       });
 
       expect(result).toHaveProperty('system');
@@ -122,7 +106,6 @@ Test problem.`;
         originalPrd: mockOriginalPrd,
         feedback: 'Test feedback',
         sections: ['executive_summary'],
-        language: 'ko',
       });
 
       expect(result.user).toContain(mockOriginalPrd);
@@ -135,7 +118,6 @@ Test problem.`;
         originalPrd: mockOriginalPrd,
         feedback,
         sections: ['executive_summary'],
-        language: 'ko',
       });
 
       expect(result.user).toContain(feedback);
@@ -146,31 +128,10 @@ Test problem.`;
         originalPrd: mockOriginalPrd,
         feedback: 'Test',
         sections: ['executive_summary', 'problem_statement'],
-        language: 'ko',
       });
 
-      // Should contain Korean labels
-      expect(result.user).toContain('요약');
-      expect(result.user).toContain('문제 정의');
-    });
-
-    it('should include language-specific instructions in system prompt', () => {
-      const koResult = buildRevisionPrompt({
-        originalPrd: mockOriginalPrd,
-        feedback: 'Test',
-        sections: ['executive_summary'],
-        language: 'ko',
-      });
-
-      const enResult = buildRevisionPrompt({
-        originalPrd: mockOriginalPrd,
-        feedback: 'Test',
-        sections: ['executive_summary'],
-        language: 'en',
-      });
-
-      expect(koResult.system).toContain('한국어');
-      expect(enResult.system).toContain('English');
+      expect(result.user).toContain('Executive Summary');
+      expect(result.user).toContain('Problem Statement');
     });
 
     it('should handle unknown section keys gracefully', () => {
@@ -178,13 +139,12 @@ Test problem.`;
         originalPrd: mockOriginalPrd,
         feedback: 'Test',
         sections: ['unknown_section', 'executive_summary'],
-        language: 'ko',
       });
 
       // Should include the unknown key as-is
       expect(result.user).toContain('unknown_section');
       // Should still include the known section label
-      expect(result.user).toContain('요약');
+      expect(result.user).toContain('Executive Summary');
     });
 
     it('should handle empty sections array', () => {
@@ -192,23 +152,30 @@ Test problem.`;
         originalPrd: mockOriginalPrd,
         feedback: 'Test',
         sections: [],
-        language: 'ko',
       });
 
       expect(result.system).toBeTruthy();
       expect(result.user).toBeTruthy();
     });
 
-    it('should use English labels when language is en', () => {
+    it('should include revision request tag in user prompt', () => {
       const result = buildRevisionPrompt({
         originalPrd: mockOriginalPrd,
         feedback: 'Test',
-        sections: ['executive_summary', 'target_users'],
-        language: 'en',
+        sections: ['executive_summary'],
       });
 
-      expect(result.user).toContain('Executive Summary');
-      expect(result.user).toContain('Target Users');
+      expect(result.user).toContain('revision_request');
+    });
+
+    it('should use REVISION_SYSTEM_PROMPT as system prompt', () => {
+      const result = buildRevisionPrompt({
+        originalPrd: mockOriginalPrd,
+        feedback: 'Test',
+        sections: ['executive_summary'],
+      });
+
+      expect(result.system).toBe(REVISION_SYSTEM_PROMPT);
     });
   });
 });
