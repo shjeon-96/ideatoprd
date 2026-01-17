@@ -30,8 +30,8 @@ test.describe('Landing Page', () => {
     // Scroll to pricing section
     await page.getByText(/pricing|가격/i).first().scrollIntoViewIfNeeded();
 
-    // Check pricing cards are visible
-    const pricingSection = page.locator('section').filter({ hasText: /starter|basic|pro/i });
+    // Check pricing cards are visible (use .first() for multiple matching elements)
+    const pricingSection = page.locator('section').filter({ hasText: /starter|basic|pro/i }).first();
     await expect(pricingSection).toBeVisible();
   });
 
