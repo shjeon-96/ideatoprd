@@ -17,6 +17,7 @@ interface PrdPdfDownloadProps {
     title: string;
     content?: {
       markdown?: string;
+      raw?: string;  // Legacy field support
       [key: string]: unknown;
     };
   };

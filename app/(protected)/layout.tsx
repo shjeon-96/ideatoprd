@@ -1,5 +1,5 @@
 import { AuthGuard } from "@/src/features/auth";
-import { UserMenu } from "@/src/widgets/common";
+import { UserMenu, LanguageSwitcher } from "@/src/widgets/common";
 import { MobileNav } from "@/src/widgets/dashboard";
 import type { Metadata } from "next";
 
@@ -33,7 +33,10 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
                 IdeaToPRD
               </a>
             </div>
-            <UserMenu />
+            <div className="flex items-center gap-2">
+              <LanguageSwitcher />
+              <UserMenu />
+            </div>
           </div>
         </header>
         {children}

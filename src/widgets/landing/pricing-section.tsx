@@ -3,6 +3,7 @@
 import { Button } from '@/src/shared/ui';
 import { Check, ArrowRight } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
+import Link from 'next/link';
 
 interface PricingPlan {
   name: string;
@@ -62,46 +63,34 @@ const pricingPlans: PricingPlan[] = [
 
 export function PricingSection() {
   return (
-    <section className="paper-texture relative overflow-hidden bg-background py-24 lg:py-32">
-      {/* Decorative elements */}
-      <div className="pointer-events-none absolute left-0 top-1/4 h-64 w-64 rounded-full bg-brand-secondary/30 blur-[100px]" />
-
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section header - Editorial asymmetric */}
-        <div className="mb-20 grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <span className="overline mb-4 block">Pricing</span>
-            <h2 className="heading-2">
-              심플한 가격,
-              <br />
-              숨김 비용 없음
-            </h2>
-          </div>
-          <div className="lg:col-span-5 lg:col-start-7">
-            <p className="body-large">
-              구독 없이 필요한 만큼만 크레딧을 구매하세요.
-              <span className="mt-2 block text-muted-foreground/80">
-                한 번 구매하면 영구적으로 사용할 수 있습니다.
-              </span>
-            </p>
-          </div>
+    <section id="pricing" className="relative bg-background py-24 lg:py-32">
+      <div className="container relative mx-auto px-6 lg:px-8">
+        {/* Section header */}
+        <div className="mx-auto mb-16 max-w-2xl text-center">
+          <span className="overline mb-4 block">Pricing</span>
+          <h2 className="heading-2 mb-4">심플한 가격, 숨김 비용 없음</h2>
+          <p className="body-large">
+            구독 없이 필요한 만큼만 크레딧을 구매하세요.
+            <br />
+            한 번 구매하면 영구적으로 사용할 수 있습니다.
+          </p>
         </div>
 
         {/* Pricing grid */}
-        <div className="mx-auto grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {pricingPlans.map((plan) => (
             <article
               key={plan.name}
               className={cn(
-                'group relative flex flex-col rounded-2xl border bg-card p-6 transition-all duration-300',
+                'relative flex flex-col rounded-2xl border bg-card p-6 transition-all duration-200',
                 plan.popular
-                  ? 'border-foreground shadow-xl shadow-foreground/5'
-                  : 'border-border hover:border-foreground/20 hover:shadow-lg'
+                  ? 'border-foreground shadow-lg'
+                  : 'border-border hover:border-foreground/20 hover:shadow-md'
               )}
             >
               {/* Badge */}
               {(plan.popular || plan.badge) && (
-                <div className="absolute -top-3 left-6">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                   <span
                     className={cn(
                       'inline-block rounded-full px-3 py-1 text-xs font-semibold',
@@ -116,19 +105,19 @@ export function PricingSection() {
               )}
 
               {/* Plan header */}
-              <div className="mb-6 pt-2">
+              <div className="mb-4 pt-2">
                 <p className="mb-1 text-sm text-muted-foreground">
                   {plan.description}
                 </p>
-                <h3 className="text-xl font-semibold tracking-tight">
+                <h3 className="text-xl font-semibold text-foreground">
                   {plan.name}
                 </h3>
               </div>
 
               {/* Price */}
-              <div className="mb-8">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-4xl font-bold tracking-tight">
+              <div className="mb-6">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-bold tracking-tight text-foreground">
                     {plan.price}
                   </span>
                 </div>
@@ -138,34 +127,39 @@ export function PricingSection() {
               </div>
 
               {/* Features */}
-              <ul className="mb-8 flex-1 space-y-3">
+              <ul className="mb-6 flex-1 space-y-2.5">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3 text-sm">
+                  <li
+                    key={feature}
+                    className="flex items-start gap-2.5 text-sm"
+                  >
                     <Check className="mt-0.5 size-4 shrink-0 text-brand-primary" />
-                    <span>{feature}</span>
+                    <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               {/* CTA */}
-              <Button
-                className={cn(
-                  'group/btn w-full transition-all',
-                  plan.popular
-                    ? 'bg-foreground text-background hover:bg-foreground/90'
-                    : 'border-foreground/20 hover:border-foreground/40 hover:bg-foreground/5'
-                )}
-                variant={plan.popular ? 'default' : 'outline'}
-              >
-                구매하기
-                <ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
-              </Button>
+              <Link href="/signup">
+                <Button
+                  className={cn(
+                    'w-full transition-all',
+                    plan.popular
+                      ? 'btn-primary'
+                      : 'btn-ghost'
+                  )}
+                  variant={plan.popular ? 'default' : 'outline'}
+                >
+                  구매하기
+                  <ArrowRight className="ml-1 size-4" />
+                </Button>
+              </Link>
             </article>
           ))}
         </div>
 
-        {/* Trust badge */}
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-muted-foreground">
+        {/* Trust indicators */}
+        <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
           <span className="flex items-center gap-2">
             <span className="size-1.5 rounded-full bg-brand-primary" />
             안전한 결제

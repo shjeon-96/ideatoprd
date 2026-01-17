@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useUser } from "@/src/features/auth/hooks/use-user";
 import { signOut } from "@/src/features/auth/actions/auth-actions";
 import { Coins, ShoppingCart, Settings, LogOut } from "lucide-react";
@@ -11,6 +12,7 @@ import { Coins, ShoppingCart, Settings, LogOut } from "lucide-react";
  * Shows user email, credits, and navigation options
  */
 export function UserMenu() {
+  const t = useTranslations();
   const { user, profile, loading, isAuthenticated } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -76,7 +78,7 @@ export function UserMenu() {
             <div className="flex items-center gap-2 text-sm">
               <Coins className="h-4 w-4 text-primary" />
               <span className="font-medium">{profile?.credits ?? 0}</span>
-              <span className="text-muted-foreground">크레딧</span>
+              <span className="text-muted-foreground">{t('common.credits')}</span>
             </div>
           </div>
 
@@ -87,15 +89,15 @@ export function UserMenu() {
               onClick={() => setIsOpen(false)}
             >
               <ShoppingCart className="h-4 w-4" />
-              크레딧 구매
+              {t('userMenu.buyCredits')}
             </Link>
             <Link
-              href="/settings"
+              href="/dashboard/settings"
               className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent transition-colors"
               onClick={() => setIsOpen(false)}
             >
               <Settings className="h-4 w-4" />
-              Settings
+              {t('common.settings')}
             </Link>
           </div>
 
@@ -106,7 +108,7 @@ export function UserMenu() {
                 className="w-full flex items-center gap-2 px-4 py-2 text-left text-sm text-foreground hover:bg-accent transition-colors"
               >
                 <LogOut className="h-4 w-4" />
-                Sign out
+                {t('common.signOut')}
               </button>
             </form>
           </div>

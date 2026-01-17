@@ -1,11 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Calendar } from 'lucide-react';
+import { ArrowLeft, Calendar, GitBranch } from 'lucide-react';
 import {
   getPrd,
+  getPrdVersions,
   PrdViewer,
   CopyMarkdownButton,
   PrdPdfDownload,
+  RevisionPanel,
+  VersionHistory,
 } from '@/src/features/prd';
 import { Badge } from '@/src/shared/ui/badge';
 import { Button } from '@/src/shared/ui/button';
@@ -16,18 +19,24 @@ interface PrdDetailPageProps {
 
 export default async function PrdDetailPage({ params }: PrdDetailPageProps) {
   const { id } = await params;
-  const prd = await getPrd(id);
+  const [prd, versions] = await Promise.all([
+    getPrd(id),
+    getPrdVersions(id),
+  ]);
 
   if (!prd) {
     notFound();
   }
 
-  const markdown = prd.content?.markdown ?? '';
+  // Support both new (markdown) and legacy (raw) content structure
+  const markdown = prd.content?.markdown ?? prd.content?.raw ?? '';
   const formattedDate = new Date(prd.created_at).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
+  const isResearchVersion = prd.version === 'research';
+  const hasMultipleVersions = versions.length > 1;
 
   return (
     <div className="space-y-6">
@@ -47,7 +56,13 @@ export default async function PrdDetailPage({ params }: PrdDetailPageProps) {
           </h1>
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <Badge variant="secondary">{prd.template}</Badge>
-            <Badge variant="outline">v{prd.version}</Badge>
+            <Badge variant="outline">{prd.version}</Badge>
+            {hasMultipleVersions && (
+              <Badge variant="outline" className="gap-1">
+                <GitBranch className="h-3 w-3" />
+                v{prd.version_number}
+              </Badge>
+            )}
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               {formattedDate}
@@ -76,15 +91,28 @@ export default async function PrdDetailPage({ params }: PrdDetailPageProps) {
         <p className="text-sm">{prd.idea}</p>
       </div>
 
-      {/* PRD Content */}
-      <div className="rounded-lg border p-6">
-        {markdown ? (
-          <PrdViewer content={markdown} />
-        ) : (
-          <p className="text-muted-foreground text-center py-8">
-            No content available for this PRD.
-          </p>
-        )}
+      {/* Main content grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
+        {/* PRD Content */}
+        <div className="space-y-6">
+          <div className="rounded-lg border p-6">
+            {markdown ? (
+              <PrdViewer content={markdown} />
+            ) : (
+              <p className="text-muted-foreground text-center py-8">
+                No content available for this PRD.
+              </p>
+            )}
+          </div>
+
+          {/* Revision Panel */}
+          <RevisionPanel prdId={prd.id} isResearchVersion={isResearchVersion} />
+        </div>
+
+        {/* Sidebar - Version History */}
+        <aside className="space-y-4">
+          <VersionHistory versions={versions} currentVersionId={prd.id} />
+        </aside>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 export { PRD_SYSTEM_PROMPT, getSystemPrompt } from './lib/prompts/system';
 export { TEMPLATE_MAP } from './lib/prompts/templates';
-export type { GeneratePRDRequest, PRDGenerationContext } from './model/types';
+export type { GeneratePRDRequest, PRDGenerationContext, PRDLanguage } from './model/types';
 export {
   CREDITS_PER_VERSION,
   validateIdea,

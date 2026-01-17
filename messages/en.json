@@ -1,0 +1,87 @@
+{
+  "common": {
+    "credits": "Credits",
+    "settings": "Settings",
+    "signOut": "Sign out",
+    "loading": "Loading...",
+    "close": "Close",
+    "error": "Error"
+  },
+  "navigation": {
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "myPRDs": "My PRDs",
+    "myPRDsDesc": "Manage your PRDs",
+    "newPRD": "New PRD",
+    "newPRDDesc": "Create new PRD",
+    "subscribe": "Subscribe",
+    "subscribeDesc": "Manage subscription",
+    "creditsNav": "Credits",
+    "creditsNavDesc": "Buy credits",
+    "settingsNav": "Settings",
+    "settingsNavDesc": "Account settings",
+    "dashboard": "Dashboard"
+  },
+  "sidebar": {
+    "proTip": "Pro Tip",
+    "proTipContent": "Generate a detailed PRD for a more comprehensive document."
+  },
+  "userMenu": {
+    "buyCredits": "Buy Credits"
+  },
+  "generate": {
+    "title": "Generate PRD",
+    "description": "Enter your idea and AI will automatically generate a PRD.",
+    "ideaInput": "Idea Input",
+    "ideaInputDesc": "What product do you want to build?",
+    "ideaLabel": "Idea",
+    "ideaPlaceholder": "Example: An AI-powered resume analysis service that analyzes job seekers' resumes and suggests improvements.",
+    "minLengthError": "Please enter at least {minLength} characters.",
+    "templateSelect": "Select Template",
+    "versionSelect": "PRD Version",
+    "versionBasic": "Basic",
+    "versionDetailed": "Detailed",
+    "versionResearch": "Research",
+    "versionBasicDesc": "Core sections only",
+    "versionDetailedDesc": "All sections in detail",
+    "versionResearchDesc": "Web search-based trend analysis",
+    "recommended": "Recommended",
+    "credit": "credit",
+    "insufficientCredits": "Insufficient credits.",
+    "creditsStatus": "(Current: {current}, Required: {required})",
+    "generateButton": "Generate PRD",
+    "generating": "Generating PRD...",
+    "streamError": "Unable to start streaming.",
+    "generateError": "Failed to generate PRD.",
+    "generalError": "An error occurred while generating PRD."
+  },
+  "prdLanguage": {
+    "label": "PRD Language",
+    "korean": "Korean",
+    "english": "English",
+    "description": "Select the language for the generated PRD document."
+  },
+  "purchase": {
+    "title": "Buy Credits",
+    "description": "Purchase credits needed for PRD generation.",
+    "selectPackage": "Select Package",
+    "usageInfo": "Credit Usage Guide",
+    "basicPRD": "Basic PRD generation: 1 credit",
+    "detailedPRD": "Detailed PRD generation: 2 credits",
+    "researchPRD": "Research PRD generation: 3 credits",
+    "noExpiry": "Credits never expire.",
+    "paymentNote": "Payment is securely processed through Lemon Squeezy.",
+    "contactNote": "For inquiries, please contact support@ideatoprd.com."
+  },
+  "dashboard": {
+    "title": "My PRDs",
+    "empty": "No PRDs generated yet.",
+    "createFirst": "Create your first PRD!"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "korean": "Korean",
+    "english": "English"
+  }
+}

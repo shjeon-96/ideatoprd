@@ -12,7 +12,18 @@ interface SavePRDParams {
   creditsUsed: number;
 }
 
-export async function savePRD(params: SavePRDParams): Promise<PRD | null> {
+export class PRDSaveError extends Error {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly originalError?: unknown
+  ) {
+    super(message);
+    this.name = 'PRDSaveError';
+  }
+}
+
+export async function savePRD(params: SavePRDParams): Promise<PRD> {
   const supabase = await createClient();
 
   const { data, error } = await supabase
@@ -30,8 +41,15 @@ export async function savePRD(params: SavePRDParams): Promise<PRD | null> {
     .single();
 
   if (error) {
-    console.error('Failed to save PRD:', error);
-    return null;
+    throw new PRDSaveError(
+      'PRD 저장에 실패했습니다.',
+      error.code,
+      error
+    );
+  }
+
+  if (!data) {
+    throw new PRDSaveError('PRD 저장 결과가 없습니다.', 'NO_DATA');
   }
 
   return data;
@@ -46,7 +64,8 @@ export function extractPRDTitle(content: string): string {
 // Parse PRD sections for structured storage
 export function parsePRDContent(content: string): Json {
   return {
-    raw: content,
+    markdown: content,  // Primary field for reading
+    raw: content,       // Legacy compatibility
     generatedAt: new Date().toISOString(),
   };
 }

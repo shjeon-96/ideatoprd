@@ -4,5 +4,5 @@
  * Sidebar and layout components for the dashboard
  */
 
-export { Sidebar, navItems } from './sidebar';
+export { Sidebar, navItemKeys } from './sidebar';
 export { MobileNav } from './mobile-nav';

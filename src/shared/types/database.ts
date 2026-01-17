@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.1"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       prds: {
@@ -47,11 +22,15 @@ export type Database = {
           generation_time_ms: number | null
           id: string
           idea: string
+          parent_id: string | null
+          revised_sections: string[] | null
+          revision_feedback: string | null
           template: Database["public"]["Enums"]["prd_template"]
           title: string | null
           updated_at: string
           user_id: string
           version: Database["public"]["Enums"]["prd_version"]
+          version_number: number
         }
         Insert: {
           content?: Json | null
@@ -60,11 +39,15 @@ export type Database = {
           generation_time_ms?: number | null
           id?: string
           idea: string
+          parent_id?: string | null
+          revised_sections?: string[] | null
+          revision_feedback?: string | null
           template?: Database["public"]["Enums"]["prd_template"]
           title?: string | null
           updated_at?: string
           user_id: string
           version?: Database["public"]["Enums"]["prd_version"]
+          version_number?: number
         }
         Update: {
           content?: Json | null
@@ -73,13 +56,24 @@ export type Database = {
           generation_time_ms?: number | null
           id?: string
           idea?: string
+          parent_id?: string | null
+          revised_sections?: string[] | null
+          revision_feedback?: string | null
           template?: Database["public"]["Enums"]["prd_template"]
           title?: string | null
           updated_at?: string
           user_id?: string
           version?: Database["public"]["Enums"]["prd_version"]
+          version_number?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "prds_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "prds"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "prds_user_id_fkey"
             columns: ["user_id"]
@@ -97,6 +91,13 @@ export type Database = {
           display_name: string | null
           email: string | null
           id: string
+          subscription_plan:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
+          subscription_renews_at: string | null
+          subscription_status:
+            | Database["public"]["Enums"]["subscription_status"]
+            | null
           updated_at: string
         }
         Insert: {
@@ -106,6 +107,13 @@ export type Database = {
           display_name?: string | null
           email?: string | null
           id: string
+          subscription_plan?:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
+          subscription_renews_at?: string | null
+          subscription_status?:
+            | Database["public"]["Enums"]["subscription_status"]
+            | null
           updated_at?: string
         }
         Update: {
@@ -115,6 +123,13 @@ export type Database = {
           display_name?: string | null
           email?: string | null
           id?: string
+          subscription_plan?:
+            | Database["public"]["Enums"]["subscription_plan"]
+            | null
+          subscription_renews_at?: string | null
+          subscription_status?:
+            | Database["public"]["Enums"]["subscription_status"]
+            | null
           updated_at?: string
         }
         Relationships: []
@@ -165,6 +180,77 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "purchases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          amount_cents: number
+          billing_interval: Database["public"]["Enums"]["billing_interval"]
+          cancelled_at: string | null
+          created_at: string
+          credit_cap: number
+          currency: string
+          current_period_end: string
+          current_period_start: string
+          ends_at: string | null
+          id: string
+          lemon_squeezy_customer_id: string | null
+          lemon_squeezy_subscription_id: string
+          lemon_squeezy_variant_id: string | null
+          monthly_credits: number
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          status: Database["public"]["Enums"]["subscription_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          billing_interval?: Database["public"]["Enums"]["billing_interval"]
+          cancelled_at?: string | null
+          created_at?: string
+          credit_cap: number
+          currency?: string
+          current_period_end: string
+          current_period_start: string
+          ends_at?: string | null
+          id?: string
+          lemon_squeezy_customer_id?: string | null
+          lemon_squeezy_subscription_id: string
+          lemon_squeezy_variant_id?: string | null
+          monthly_credits: number
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          billing_interval?: Database["public"]["Enums"]["billing_interval"]
+          cancelled_at?: string | null
+          created_at?: string
+          credit_cap?: number
+          currency?: string
+          current_period_end?: string
+          current_period_start?: string
+          ends_at?: string | null
+          id?: string
+          lemon_squeezy_customer_id?: string | null
+          lemon_squeezy_subscription_id?: string
+          lemon_squeezy_variant_id?: string | null
+          monthly_credits?: number
+          plan?: Database["public"]["Enums"]["subscription_plan"]
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -260,9 +346,46 @@ export type Database = {
         }
         Returns: boolean
       }
+      get_active_subscription: {
+        Args: { p_user_id: string }
+        Returns: {
+          billing_interval: Database["public"]["Enums"]["billing_interval"]
+          cancelled_at: string
+          credit_cap: number
+          current_period_end: string
+          ends_at: string
+          id: string
+          monthly_credits: number
+          plan: Database["public"]["Enums"]["subscription_plan"]
+          status: Database["public"]["Enums"]["subscription_status"]
+        }[]
+      }
+      get_latest_prd_version: { Args: { p_prd_id: string }; Returns: string }
+      get_prd_versions: {
+        Args: { p_prd_id: string }
+        Returns: {
+          created_at: string
+          id: string
+          revised_sections: string[]
+          revision_feedback: string
+          title: string
+          version_number: number
+        }[]
+      }
       get_user_credits: { Args: { p_user_id: string }; Returns: number }
+      grant_subscription_credits: {
+        Args: {
+          p_amount: number
+          p_credit_cap: number
+          p_description?: string
+          p_subscription_id?: string
+          p_user_id: string
+        }
+        Returns: number
+      }
     }
     Enums: {
+      billing_interval: "monthly" | "yearly"
       credit_package: "starter" | "basic" | "pro" | "business"
       prd_template:
         | "saas"
@@ -270,13 +393,21 @@ export type Database = {
         | "marketplace"
         | "extension"
         | "ai_wrapper"
-      prd_version: "basic" | "detailed"
+      prd_version: "basic" | "detailed" | "research"
       purchase_status: "pending" | "completed" | "failed" | "refunded"
+      subscription_plan: "basic" | "pro" | "business"
+      subscription_status:
+        | "active"
+        | "paused"
+        | "cancelled"
+        | "expired"
+        | "past_due"
       usage_type:
         | "prd_generation"
         | "credit_purchase"
         | "credit_refund"
         | "signup_bonus"
+        | "subscription_credit"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -402,11 +533,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
+      billing_interval: ["monthly", "yearly"],
       credit_package: ["starter", "basic", "pro", "business"],
       prd_template: [
         "saas",
@@ -415,13 +544,22 @@ export const Constants = {
         "extension",
         "ai_wrapper",
       ],
-      prd_version: ["basic", "detailed"],
+      prd_version: ["basic", "detailed", "research"],
       purchase_status: ["pending", "completed", "failed", "refunded"],
+      subscription_plan: ["basic", "pro", "business"],
+      subscription_status: [
+        "active",
+        "paused",
+        "cancelled",
+        "expired",
+        "past_due",
+      ],
       usage_type: [
         "prd_generation",
         "credit_purchase",
         "credit_refund",
         "signup_bonus",
+        "subscription_credit",
       ],
     },
   },

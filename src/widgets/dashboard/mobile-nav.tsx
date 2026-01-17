@@ -3,15 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/src/shared/lib/utils';
-import { navItems } from './sidebar';
+import { navItemKeys } from './sidebar';
 
 /**
  * Mobile navigation drawer
  * Shows hamburger menu on mobile, opens slide-out drawer with nav links
  */
 export function MobileNav() {
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
@@ -22,7 +24,7 @@ export function MobileNav() {
         type="button"
         onClick={() => setIsOpen(true)}
         className="md:hidden flex items-center justify-center h-9 w-9 rounded-lg border border-border hover:bg-muted transition-colors"
-        aria-label="메뉴 열기"
+        aria-label={t('navigation.openMenu')}
         aria-expanded={isOpen}
       >
         <Menu className="h-5 w-5" />
@@ -46,12 +48,12 @@ export function MobileNav() {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
-          <span className="font-semibold">메뉴</span>
+          <span className="font-semibold">{t('navigation.menu')}</span>
           <button
             type="button"
             onClick={() => setIsOpen(false)}
             className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors"
-            aria-label="메뉴 닫기"
+            aria-label={t('navigation.closeMenu')}
           >
             <X className="h-5 w-5" />
           </button>
@@ -59,7 +61,7 @@ export function MobileNav() {
 
         {/* Navigation */}
         <nav className="p-4 space-y-1">
-          {navItems.map(({ href, icon: Icon, label }) => {
+          {navItemKeys.map(({ href, icon: Icon, labelKey }) => {
             const isActive =
               href === '/dashboard'
                 ? pathname === href
@@ -78,7 +80,7 @@ export function MobileNav() {
                 )}
               >
                 <Icon className="h-4 w-4" />
-                {label}
+                {t(labelKey)}
               </Link>
             );
           })}

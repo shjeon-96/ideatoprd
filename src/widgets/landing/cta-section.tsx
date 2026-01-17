@@ -1,68 +1,50 @@
 'use client';
 
+import Link from 'next/link';
 import { Button } from '@/src/shared/ui';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export function CtaSection() {
   return (
-    <section className="relative overflow-hidden py-24 lg:py-32">
-      {/* Gradient background - warm coral */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%)',
-        }}
-      />
+    <section className="relative overflow-hidden bg-foreground py-24 lg:py-32">
+      {/* Subtle pattern */}
+      <div className="pointer-events-none absolute inset-0 opacity-5">
+        <div className="grid-pattern h-full w-full" style={{ backgroundImage: 'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)' }} />
+      </div>
 
-      {/* Noise texture overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.15]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          mixBlendMode: 'overlay',
-        }}
-      />
-
-      {/* Decorative elements */}
-      <div className="pointer-events-none absolute -left-20 top-1/2 size-40 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 top-1/2 size-40 -translate-y-1/2 rounded-full bg-white/10 blur-3xl" />
-
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          {/* Icon */}
-          <div className="mb-8 inline-flex items-center justify-center rounded-full bg-white/20 p-4 backdrop-blur-sm">
-            <Sparkles className="size-6 text-white" />
-          </div>
-
+      <div className="container relative mx-auto px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
           {/* Headline */}
-          <h2 className="mb-6 text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl">
+          <h2 className="mb-6 text-3xl font-bold tracking-tight text-background md:text-4xl lg:text-5xl">
             지금 바로 첫 PRD를
             <br />
             만들어보세요
           </h2>
 
           {/* Subheadline */}
-          <p className="mx-auto mb-10 max-w-lg text-lg text-white/80">
-            가입하면 3 크레딧 무료 지급.
-            <br className="hidden sm:block" />
-            신용카드 없이 시작하세요.
+          <p className="mx-auto mb-10 max-w-md text-lg leading-relaxed text-background/70">
+            가입하면 <span className="font-semibold text-background">3 크레딧 무료</span> 지급.
+            <br />
+            신용카드 없이 바로 시작하세요.
           </p>
 
           {/* CTA Button */}
-          <Button
-            size="lg"
-            className="group h-14 bg-white px-10 text-base font-semibold shadow-xl shadow-black/20 transition-all hover:bg-white/95 hover:shadow-2xl"
-            style={{ color: '#e07a5f' }}
-          >
-            무료로 시작하기
-            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-          </Button>
+          <Link href="/signup">
+            <Button
+              size="lg"
+              className="group h-12 gap-2 rounded-lg bg-background px-8 text-base font-medium text-foreground transition-all hover:bg-background/90"
+            >
+              무료로 시작하기
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+            </Button>
+          </Link>
 
-          {/* Secondary info */}
-          <p className="mt-6 text-sm text-white/60">
-            2분 내 가입 완료 · 바로 PRD 생성 시작
-          </p>
+          {/* Trust indicators */}
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-background/50">
+            <span>✓ 2분 내 가입 완료</span>
+            <span>✓ 안전한 결제</span>
+            <span>✓ 즉시 PRD 생성</span>
+          </div>
         </div>
       </div>
     </section>

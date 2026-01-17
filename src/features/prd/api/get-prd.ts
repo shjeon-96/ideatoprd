@@ -4,14 +4,16 @@ import type { PRD } from '@/src/entities';
 
 /**
  * PRD content structure stored in JSONB
+ * Supports both new (markdown) and legacy (raw) content structure
  */
 export interface PrdContent {
   markdown?: string;
+  raw?: string;  // Legacy field for backward compatibility
   [key: string]: unknown;
 }
 
 /**
- * PRD detail item with all fields
+ * PRD detail item with all fields including versioning
  */
 export interface PrdDetailItem {
   id: string;
@@ -22,6 +24,11 @@ export interface PrdDetailItem {
   content: PrdContent | null;
   created_at: string;
   updated_at: string;
+  // Versioning fields
+  parent_id: string | null;
+  version_number: number;
+  revision_feedback: string | null;
+  revised_sections: string[] | null;
 }
 
 /**
@@ -37,7 +44,7 @@ export const getPrd = cache(async (id: string): Promise<PrdDetailItem | null> =>
 
   const { data, error } = await supabase
     .from('prds')
-    .select('id, title, idea, template, version, content, created_at, updated_at')
+    .select('id, title, idea, template, version, content, created_at, updated_at, parent_id, version_number, revision_feedback, revised_sections')
     .eq('id', id)
     .single();
 
@@ -51,4 +58,38 @@ export const getPrd = cache(async (id: string): Promise<PrdDetailItem | null> =>
   }
 
   return data as PrdDetailItem;
+});
+
+/**
+ * PRD version item for version history
+ */
+export interface PrdVersionItem {
+  id: string;
+  version_number: number;
+  title: string | null;
+  revision_feedback: string | null;
+  revised_sections: string[] | null;
+  created_at: string;
+}
+
+/**
+ * Fetches all versions of a PRD (original + revisions)
+ * Uses the get_prd_versions SQL function
+ *
+ * @param prdId - Any PRD UUID in the version chain
+ * @returns Array of version items sorted by version_number desc
+ */
+export const getPrdVersions = cache(async (prdId: string): Promise<PrdVersionItem[]> => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.rpc('get_prd_versions', {
+    p_prd_id: prdId,
+  });
+
+  if (error) {
+    console.error('Failed to fetch PRD versions:', error);
+    return [];
+  }
+
+  return (data ?? []) as PrdVersionItem[];
 });

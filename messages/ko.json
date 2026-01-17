@@ -1,0 +1,87 @@
+{
+  "common": {
+    "credits": "크레딧",
+    "settings": "설정",
+    "signOut": "로그아웃",
+    "loading": "로딩 중...",
+    "close": "닫기",
+    "error": "오류"
+  },
+  "navigation": {
+    "menu": "메뉴",
+    "openMenu": "메뉴 열기",
+    "closeMenu": "메뉴 닫기",
+    "myPRDs": "My PRDs",
+    "myPRDsDesc": "생성된 PRD 관리",
+    "newPRD": "New PRD",
+    "newPRDDesc": "새 PRD 생성",
+    "subscribe": "Subscribe",
+    "subscribeDesc": "구독 플랜 관리",
+    "creditsNav": "Credits",
+    "creditsNavDesc": "크레딧 구매",
+    "settingsNav": "Settings",
+    "settingsNavDesc": "계정 설정",
+    "dashboard": "Dashboard"
+  },
+  "sidebar": {
+    "proTip": "Pro Tip",
+    "proTipContent": "상세 버전으로 PRD를 생성하면 더 완성도 높은 문서를 얻을 수 있습니다."
+  },
+  "userMenu": {
+    "buyCredits": "크레딧 구매"
+  },
+  "generate": {
+    "title": "PRD 생성",
+    "description": "아이디어를 입력하면 AI가 PRD를 자동으로 생성합니다.",
+    "ideaInput": "아이디어 입력",
+    "ideaInputDesc": "어떤 제품을 만들고 싶으신가요?",
+    "ideaLabel": "아이디어",
+    "ideaPlaceholder": "예: AI 기반 이력서 분석 서비스로 구직자의 이력서를 분석하고 개선점을 제안합니다.",
+    "minLengthError": "최소 {minLength}자 이상 입력해주세요.",
+    "templateSelect": "템플릿 선택",
+    "versionSelect": "PRD 버전",
+    "versionBasic": "기본",
+    "versionDetailed": "상세",
+    "versionResearch": "리서치",
+    "versionBasicDesc": "핵심 섹션만 포함",
+    "versionDetailedDesc": "모든 섹션 상세 작성",
+    "versionResearchDesc": "웹 검색 기반 트렌드 분석 포함",
+    "recommended": "추천",
+    "credit": "크레딧",
+    "insufficientCredits": "크레딧이 부족합니다.",
+    "creditsStatus": "(보유: {current}, 필요: {required})",
+    "generateButton": "PRD 생성하기",
+    "generating": "PRD 생성 중...",
+    "streamError": "스트리밍을 시작할 수 없습니다.",
+    "generateError": "PRD 생성에 실패했습니다.",
+    "generalError": "PRD 생성 중 오류가 발생했습니다."
+  },
+  "prdLanguage": {
+    "label": "PRD 작성 언어",
+    "korean": "한국어",
+    "english": "English",
+    "description": "생성될 PRD 문서의 언어를 선택하세요."
+  },
+  "purchase": {
+    "title": "크레딧 구매",
+    "description": "PRD 생성에 필요한 크레딧을 구매하세요.",
+    "selectPackage": "패키지 선택",
+    "usageInfo": "크레딧 사용 안내",
+    "basicPRD": "기본 PRD 생성: 1 크레딧",
+    "detailedPRD": "상세 PRD 생성: 2 크레딧",
+    "researchPRD": "리서치 PRD 생성: 3 크레딧",
+    "noExpiry": "크레딧은 유효기간 없이 영구 사용 가능합니다.",
+    "paymentNote": "결제는 Lemon Squeezy를 통해 안전하게 처리됩니다.",
+    "contactNote": "문의사항은 support@ideatoprd.com으로 연락해주세요."
+  },
+  "dashboard": {
+    "title": "내 PRD 목록",
+    "empty": "아직 생성된 PRD가 없습니다.",
+    "createFirst": "첫 번째 PRD를 생성해보세요!"
+  },
+  "languageSwitcher": {
+    "label": "언어",
+    "korean": "한국어",
+    "english": "English"
+  }
+}

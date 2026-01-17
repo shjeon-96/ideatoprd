@@ -1,57 +1,53 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin '@tailwindcss/typography';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Neo-Editorial Base - Warm off-white with deep ink */
-  --background: #faf9f7;
-  --foreground: #1a1a2e;
-  --radius: 0.5rem;
+  /* Clean Minimal - Pure white with subtle grays */
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --radius: 0.625rem;
   --card: #ffffff;
-  --card-foreground: #1a1a2e;
+  --card-foreground: #0a0a0a;
   --popover: #ffffff;
-  --popover-foreground: #1a1a2e;
-  --primary: #1a1a2e;
-  --primary-foreground: #faf9f7;
-  --secondary: #f5f4f1;
-  --secondary-foreground: #1a1a2e;
-  --muted: #f0eeeb;
-  --muted-foreground: #64647a;
-  --accent: #f5f4f1;
-  --accent-foreground: #1a1a2e;
-  --destructive: #dc4a3d;
-  --border: #e5e3df;
-  --input: #e5e3df;
-  --ring: #e07a5f;
-  --chart-1: #e07a5f;
-  --chart-2: #3d405b;
-  --chart-3: #81b29a;
-  --chart-4: #f2cc8f;
-  --chart-5: #c9ada7;
-  --sidebar: #f5f4f1;
-  --sidebar-foreground: #1a1a2e;
-  --sidebar-primary: #1a1a2e;
-  --sidebar-primary-foreground: #faf9f7;
-  --sidebar-accent: #f0eeeb;
-  --sidebar-accent-foreground: #1a1a2e;
-  --sidebar-border: #e5e3df;
-  --sidebar-ring: #e07a5f;
+  --popover-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #0a0a0a;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f5f5f5;
+  --accent-foreground: #0a0a0a;
+  --destructive: #ef4444;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #0a0a0a;
+  --chart-1: #0a0a0a;
+  --chart-2: #404040;
+  --chart-3: #737373;
+  --chart-4: #a3a3a3;
+  --chart-5: #d4d4d4;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #0a0a0a;
+  --sidebar-primary: #0a0a0a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #0a0a0a;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #0a0a0a;
 
-  /* IdeaToPRD Brand Colors - Coral/Terracotta accent */
+  /* Brand Colors - Coral accent */
   --brand-primary: #e07a5f;
   --brand-primary-foreground: #ffffff;
-  --brand-secondary: #fdf0ed;
+  --brand-secondary: #fef7f5;
   --brand-accent: #f2a285;
 
-  /* Gradient - Warm coral to terracotta */
+  /* Gradient */
   --gradient-start: #e07a5f;
   --gradient-end: #f2a285;
-
-  /* Editorial extras */
-  --ink: #1a1a2e;
-  --paper: #faf9f7;
-  --highlight: #fff3cd;
 }
 
 @theme inline {
@@ -96,69 +92,51 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
 
-  /* IdeaToPRD Brand Colors for Tailwind */
+  /* Brand Colors for Tailwind */
   --color-brand-primary: var(--brand-primary);
   --color-brand-primary-foreground: var(--brand-primary-foreground);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-accent: var(--brand-accent);
   --color-gradient-start: var(--gradient-start);
   --color-gradient-end: var(--gradient-end);
-
-  /* Editorial extras for Tailwind */
-  --color-ink: var(--ink);
-  --color-paper: var(--paper);
-  --color-highlight: var(--highlight);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Neo-Editorial Dark - Deep ink with warm paper tones */
-    --background: #1a1a2e;
-    --foreground: #f5f4f1;
-    --card: #252540;
-    --card-foreground: #f5f4f1;
-    --popover: #252540;
-    --popover-foreground: #f5f4f1;
-    --primary: #f5f4f1;
-    --primary-foreground: #1a1a2e;
-    --secondary: #2d2d44;
-    --secondary-foreground: #f5f4f1;
-    --muted: #35354d;
-    --muted-foreground: #a0a0b2;
-    --accent: #2d2d44;
-    --accent-foreground: #f5f4f1;
-    --destructive: #ef6b5e;
-    --border: rgba(255, 255, 255, 0.1);
-    --input: rgba(255, 255, 255, 0.08);
-    --ring: #f2a285;
-    --chart-1: #f2a285;
-    --chart-2: #6b6b8a;
-    --chart-3: #9bc4aa;
-    --chart-4: #f7dca8;
-    --chart-5: #d4bfba;
-    --sidebar: #222238;
-    --sidebar-foreground: #f5f4f1;
-    --sidebar-primary: #f2a285;
-    --sidebar-primary-foreground: #1a1a2e;
-    --sidebar-accent: #2d2d44;
-    --sidebar-accent-foreground: #f5f4f1;
-    --sidebar-border: rgba(255, 255, 255, 0.1);
-    --sidebar-ring: #f2a285;
+    --background: #0a0a0a;
+    --foreground: #fafafa;
+    --card: #141414;
+    --card-foreground: #fafafa;
+    --popover: #141414;
+    --popover-foreground: #fafafa;
+    --primary: #fafafa;
+    --primary-foreground: #0a0a0a;
+    --secondary: #1f1f1f;
+    --secondary-foreground: #fafafa;
+    --muted: #1f1f1f;
+    --muted-foreground: #a3a3a3;
+    --accent: #1f1f1f;
+    --accent-foreground: #fafafa;
+    --destructive: #ef4444;
+    --border: #262626;
+    --input: #262626;
+    --ring: #fafafa;
+    --sidebar: #0f0f0f;
+    --sidebar-foreground: #fafafa;
+    --sidebar-primary: #fafafa;
+    --sidebar-primary-foreground: #0a0a0a;
+    --sidebar-accent: #1f1f1f;
+    --sidebar-accent-foreground: #fafafa;
+    --sidebar-border: #262626;
+    --sidebar-ring: #fafafa;
 
-    /* IdeaToPRD Brand Colors - Dark mode (brighter coral) */
     --brand-primary: #f2a285;
-    --brand-primary-foreground: #1a1a2e;
-    --brand-secondary: #3d2f2a;
+    --brand-primary-foreground: #0a0a0a;
+    --brand-secondary: #1a1512;
     --brand-accent: #f7c4a5;
 
-    /* Gradient colors - Dark mode */
     --gradient-start: #e07a5f;
     --gradient-end: #f2a285;
-
-    /* Editorial extras - Dark */
-    --ink: #f5f4f1;
-    --paper: #1a1a2e;
-    --highlight: #5c4a3d;
   }
 }
 
@@ -172,53 +150,40 @@ body {
 }
 
 .dark {
-  /* Neo-Editorial Dark - Deep ink with warm paper tones */
-  --background: #1a1a2e;
-  --foreground: #f5f4f1;
-  --card: #252540;
-  --card-foreground: #f5f4f1;
-  --popover: #252540;
-  --popover-foreground: #f5f4f1;
-  --primary: #f5f4f1;
-  --primary-foreground: #1a1a2e;
-  --secondary: #2d2d44;
-  --secondary-foreground: #f5f4f1;
-  --muted: #35354d;
-  --muted-foreground: #a0a0b2;
-  --accent: #2d2d44;
-  --accent-foreground: #f5f4f1;
-  --destructive: #ef6b5e;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.08);
-  --ring: #f2a285;
-  --chart-1: #f2a285;
-  --chart-2: #6b6b8a;
-  --chart-3: #9bc4aa;
-  --chart-4: #f7dca8;
-  --chart-5: #d4bfba;
-  --sidebar: #222238;
-  --sidebar-foreground: #f5f4f1;
-  --sidebar-primary: #f2a285;
-  --sidebar-primary-foreground: #1a1a2e;
-  --sidebar-accent: #2d2d44;
-  --sidebar-accent-foreground: #f5f4f1;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: #f2a285;
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #141414;
+  --card-foreground: #fafafa;
+  --popover: #141414;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1f1f1f;
+  --secondary-foreground: #fafafa;
+  --muted: #1f1f1f;
+  --muted-foreground: #a3a3a3;
+  --accent: #1f1f1f;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --border: #262626;
+  --input: #262626;
+  --ring: #fafafa;
+  --sidebar: #0f0f0f;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #fafafa;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1f1f1f;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #262626;
+  --sidebar-ring: #fafafa;
 
-  /* IdeaToPRD Brand Colors - Dark mode */
   --brand-primary: #f2a285;
-  --brand-primary-foreground: #1a1a2e;
-  --brand-secondary: #3d2f2a;
+  --brand-primary-foreground: #0a0a0a;
+  --brand-secondary: #1a1512;
   --brand-accent: #f7c4a5;
 
-  /* Gradient colors - Dark mode */
   --gradient-start: #e07a5f;
   --gradient-end: #f2a285;
-
-  /* Editorial extras - Dark */
-  --ink: #f5f4f1;
-  --paper: #1a1a2e;
-  --highlight: #5c4a3d;
 }
 
 @layer base {
@@ -231,23 +196,28 @@ body {
 }
 
 @layer components {
-  /* Typography utilities for IdeaToPRD - Editorial style */
+  /* ═══════════════════════════════════════════════════════════
+     MINIMAL DESIGN SYSTEM - Clean & Modern
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Text gradient */
   .text-gradient {
     @apply bg-gradient-to-r from-gradient-start to-gradient-end bg-clip-text text-transparent;
   }
 
+  /* Typography - Clean sans-serif */
   .heading-1 {
-    @apply text-4xl font-bold tracking-[-0.03em] md:text-5xl lg:text-6xl;
+    @apply text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl;
     text-wrap: balance;
   }
 
   .heading-2 {
-    @apply text-3xl font-bold tracking-[-0.02em] md:text-4xl;
+    @apply text-3xl font-bold tracking-tight md:text-4xl;
     text-wrap: balance;
   }
 
   .heading-3 {
-    @apply text-2xl font-semibold tracking-[-0.01em] md:text-3xl;
+    @apply text-2xl font-semibold tracking-tight md:text-3xl;
     text-wrap: balance;
   }
 
@@ -255,76 +225,40 @@ body {
     @apply text-lg leading-relaxed text-muted-foreground md:text-xl;
   }
 
-  /* Editorial label/overline */
+  /* Overline label */
   .overline {
-    @apply text-xs font-semibold uppercase tracking-[0.15em] text-brand-primary;
+    @apply text-xs font-medium uppercase tracking-widest text-muted-foreground;
   }
 
-  /* Pull quote style */
-  .pull-quote {
-    @apply border-l-2 border-brand-primary pl-6 text-xl font-medium italic leading-relaxed md:text-2xl;
-  }
+  /* ═══════════════════════════════════════════════════════════
+     ANIMATIONS
+     ═══════════════════════════════════════════════════════════ */
 
-  /* Paper texture overlay */
-  .paper-texture {
-    position: relative;
-  }
-  .paper-texture::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
-    mix-blend-mode: multiply;
-  }
-  .dark .paper-texture::before {
-    mix-blend-mode: soft-light;
-    opacity: 0.05;
-  }
-
-  /* Animation utilities */
   .animate-fade-in {
-    animation: fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fade-in 0.5s ease-out forwards;
   }
 
   .animate-fade-up {
-    animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fade-up 0.6s ease-out forwards;
   }
 
   .animate-scale-in {
-    animation: scale-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: scale-in 0.5s ease-out forwards;
   }
 
   .animate-slide-in-right {
-    animation: slide-in-right 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: slide-in-right 0.6s ease-out forwards;
   }
-
-  .animate-typewriter {
-    animation: typewriter 0.8s steps(20) forwards;
-  }
-
-  /* Stagger delay utilities */
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  .stagger-5 { animation-delay: 0.5s; }
-  .stagger-6 { animation-delay: 0.6s; }
 
   @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   @keyframes fade-up {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
@@ -346,7 +280,7 @@ body {
   @keyframes slide-in-right {
     from {
       opacity: 0;
-      transform: translateX(32px);
+      transform: translateX(20px);
     }
     to {
       opacity: 1;
@@ -354,63 +288,180 @@ body {
     }
   }
 
-  @keyframes typewriter {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
-  }
+  /* Stagger delay utilities */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
+
+  /* ═══════════════════════════════════════════════════════════
+     INTERACTIVE ELEMENTS
+     ═══════════════════════════════════════════════════════════ */
 
   /* Hover lift effect */
   .hover-lift {
-    @apply transition-all duration-300 ease-out;
+    @apply transition-all duration-200 ease-out;
   }
   .hover-lift:hover {
-    @apply -translate-y-1 shadow-lg;
+    @apply -translate-y-0.5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
-  /* Card shine effect on hover */
-  .card-shine {
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-200;
+  }
+  .card-hover:hover {
+    @apply border-foreground/20;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Glow effect */
+  .glow-brand {
+    box-shadow: 0 0 40px rgba(224, 122, 95, 0.15);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BUTTONS
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Primary button with gradient */
+  .btn-primary {
+    @apply relative overflow-hidden bg-foreground text-background transition-all duration-200;
+  }
+  .btn-primary:hover {
+    @apply bg-foreground/90;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply border border-border bg-transparent transition-all duration-200;
+  }
+  .btn-ghost:hover {
+    @apply border-foreground/20 bg-muted;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     BADGES
+     ═══════════════════════════════════════════════════════════ */
+
+  .badge-minimal {
+    @apply inline-flex items-center gap-2 rounded-full border border-border bg-background px-3 py-1.5 text-sm font-medium;
+  }
+
+  .badge-brand {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand-secondary px-3 py-1.5 text-sm font-medium text-brand-primary;
+  }
+
+  /* Status dot */
+  .status-dot {
+    @apply size-2 rounded-full bg-brand-primary;
+    animation: pulse-dot 2s ease-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     CARDS
+     ═══════════════════════════════════════════════════════════ */
+
+  .card-minimal {
+    @apply rounded-xl border border-border bg-card p-6 transition-all duration-200;
+  }
+  .card-minimal:hover {
+    @apply border-foreground/10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .card-feature {
+    @apply rounded-2xl border border-border bg-card p-8 transition-all duration-200;
+  }
+  .card-feature:hover {
+    @apply border-foreground/10;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     GRID PATTERNS
+     ═══════════════════════════════════════════════════════════ */
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .dot-pattern {
+    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* ═══════════════════════════════════════════════════════════
+     UTILITIES
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Gradient border */
+  .gradient-border {
+    position: relative;
+    background: var(--card);
+    border-radius: var(--radius-lg);
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .gradient-border:hover::before {
+    opacity: 1;
+  }
+
+  /* Shine effect */
+  .shine {
     position: relative;
     overflow: hidden;
   }
-  .card-shine::after {
+  .shine::after {
     content: '';
     position: absolute;
     inset: 0;
     background: linear-gradient(
       105deg,
       transparent 40%,
-      rgba(255, 255, 255, 0.03) 45%,
-      rgba(255, 255, 255, 0.05) 50%,
-      rgba(255, 255, 255, 0.03) 55%,
+      rgba(255, 255, 255, 0.05) 45%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.05) 55%,
       transparent 60%
     );
     transform: translateX(-100%);
-    transition: transform 0.6s ease-out;
+    transition: transform 0.5s ease-out;
   }
-  .card-shine:hover::after {
+  .shine:hover::after {
     transform: translateX(100%);
   }
 
-  /* Underline animation */
-  .underline-animate {
-    position: relative;
-    display: inline-block;
+  /* Number badge */
+  .badge-number {
+    @apply inline-flex size-6 items-center justify-center rounded-md bg-muted text-xs font-medium;
   }
-  .underline-animate::after {
+
+  /* Divider with text */
+  .divider-text {
+    @apply flex items-center gap-4 text-sm text-muted-foreground;
+  }
+  .divider-text::before,
+  .divider-text::after {
     content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: var(--brand-primary);
-    transition: width 0.3s ease-out;
-  }
-  .underline-animate:hover::after {
-    width: 100%;
+    @apply h-px flex-1 bg-border;
   }
 }

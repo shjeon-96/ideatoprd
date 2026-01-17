@@ -5,3 +5,4 @@
  */
 
 export { useCopyToClipboard } from './use-copy-to-clipboard';
+export { useLocale } from './use-locale';

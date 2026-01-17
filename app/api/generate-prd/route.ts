@@ -8,35 +8,77 @@ import {
   getSystemPrompt,
   validateIdea,
   CREDITS_PER_VERSION,
+  type PRDLanguage,
 } from '@/src/features/prd-generation';
+import { USER_PROMPT_TEMPLATES } from '@/src/features/prd-generation/lib/prompts/system';
 import {
   savePRD,
   extractPRDTitle,
   parsePRDContent,
+  PRDSaveError,
 } from '@/src/features/prd-generation/api/save-prd';
+import {
+  researchTrends,
+  formatResearchForPrompt,
+} from '@/src/shared/lib/tavily';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { createClient } from '@/src/shared/lib/supabase/server';
 
-export const runtime = 'edge';
+// Use nodejs runtime for Tavily API compatibility
+export const runtime = 'nodejs';
+
+// HTTP response helper for consistent error responses
+function jsonResponse(data: object, status: number): Response {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+// Refund credits on failure
+async function refundCredits(
+  userId: string,
+  amount: number,
+  reason: string
+): Promise<boolean> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc('add_credit', {
+      p_user_id: userId,
+      p_amount: amount,
+      p_usage_type: 'credit_refund',
+      p_description: `환불: ${reason}`,
+    });
+
+    if (error) {
+      console.error('[CRITICAL] Credit refund failed:', error);
+      return false;
+    }
+    return data === true;
+  } catch (err) {
+    console.error('[CRITICAL] Credit refund exception:', err);
+    return false;
+  }
+}
 
 export async function POST(req: Request) {
   let userId: string | null = null;
   let fullContent = '';
+  let creditsDeducted = 0;
 
   try {
-    const { idea, template, version } = (await req.json()) as {
+    const { idea, template, version, language = 'ko' } = (await req.json()) as {
       idea: string;
       template: PRDTemplate;
       version: PRDVersion;
+      language?: PRDLanguage;
     };
+    creditsDeducted = CREDITS_PER_VERSION[version];
 
     // 1. Validate input
     const validation = validateIdea(idea);
     if (!validation.valid) {
-      return new Response(JSON.stringify({ error: validation.error }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return jsonResponse({ error: validation.error }, 400);
     }
 
     // 2. Authenticate user
@@ -47,10 +89,7 @@ export async function POST(req: Request) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return new Response(JSON.stringify({ error: '로그인이 필요합니다.' }), {
-        status: 401,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return jsonResponse({ error: '로그인이 필요합니다.' }, 401);
     }
     userId = user.id;
 
@@ -70,48 +109,54 @@ export async function POST(req: Request) {
       );
 
       if (deductError || !deductResult) {
-        console.error('Credit deduction failed:', deductError);
-        return new Response(
-          JSON.stringify({ error: '크레딧이 부족합니다.' }),
-          {
-            status: 402,
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+        return jsonResponse({ error: '크레딧이 부족합니다.' }, 402);
       }
-    } else {
-      console.log('[DEV] Skipping credit deduction');
     }
 
-    // 4. Select model based on version
-    const model = version === 'detailed' ? advancedModel : defaultModel;
+    // 4. Select model based on version (research uses advanced model)
+    const model = version === 'basic' ? defaultModel : advancedModel;
 
-    // 5. Build prompt
-    const systemPrompt = getSystemPrompt(template);
+    // 5. Perform trend research for research version
+    let researchContext = '';
+    if (version === 'research') {
+      try {
+        const trendResearch = await researchTrends(idea);
+        researchContext = formatResearchForPrompt(trendResearch);
+      } catch (researchError) {
+        // Log but continue without research data
+        console.error('Trend research failed:', researchError);
+        researchContext = '\n<trend_research>\nResearch data unavailable. Please generate PRD based on your knowledge.\n</trend_research>\n';
+      }
+    }
+
+    // 6. Build prompt with language support and research context
+    const systemPrompt = getSystemPrompt(template, language, version);
+    const promptTemplate = USER_PROMPT_TEMPLATES[language];
     const userPrompt = `
 <user_input>
-아이디어: ${idea}
-버전: ${version === 'detailed' ? '상세 (Detailed)' : '기본 (Basic)'}
+${promptTemplate.label}: ${idea}
+Version: ${promptTemplate.versionLabel(version)}
 </user_input>
-
-위 아이디어에 대한 PRD를 생성해주세요.
-${version === 'basic' ? '핵심 섹션만 간략하게 작성해주세요.' : '모든 섹션을 상세하게 작성해주세요.'}
+${researchContext}
+${promptTemplate.instruction}
+${promptTemplate.getHint(version)}
 `;
 
-    // 6. Stream response with content accumulation
+    // 7. Stream response with content accumulation
+    const maxTokens = version === 'basic' ? 4096 : AI_CONFIG.maxTokens;
     const result = streamText({
       model,
       system: systemPrompt,
       prompt: userPrompt,
-      maxOutputTokens: version === 'detailed' ? AI_CONFIG.maxTokens : 4096,
+      maxOutputTokens: maxTokens,
       temperature: AI_CONFIG.temperature,
       onChunk: ({ chunk }) => {
         if (chunk.type === 'text-delta') {
           fullContent += chunk.text;
         }
       },
-      onFinish: async ({ usage }) => {
-        // Save PRD to database
+      onFinish: async () => {
+        // Save PRD to database with refund on failure
         if (userId && fullContent) {
           try {
             await savePRD({
@@ -123,11 +168,24 @@ ${version === 'basic' ? '핵심 섹션만 간략하게 작성해주세요.' : '�
               content: parsePRDContent(fullContent),
               creditsUsed: creditsRequired,
             });
-            console.log('PRD saved successfully. Tokens:', usage);
           } catch (saveError) {
-            console.error('Failed to save PRD:', saveError);
-            // Note: Credit already deducted, PRD was generated
-            // Consider refund logic for production
+            // Refund credits on save failure (PRD was generated but not saved)
+            const refunded = await refundCredits(
+              userId,
+              creditsRequired,
+              saveError instanceof PRDSaveError
+                ? `PRD 저장 실패 (${saveError.code})`
+                : 'PRD 저장 실패'
+            );
+
+            if (!refunded) {
+              // Critical: credit refund failed - log for manual intervention
+              console.error('[CRITICAL] Both PRD save and refund failed:', {
+                userId,
+                credits: creditsRequired,
+                error: saveError,
+              });
+            }
           }
         }
       },
@@ -135,16 +193,11 @@ ${version === 'basic' ? '핵심 섹션만 간략하게 작성해주세요.' : '�
 
     return result.toTextStreamResponse();
   } catch (error) {
-    console.error('PRD generation error:', error);
+    // If credit was deducted but generation failed, attempt refund
+    if (userId && creditsDeducted > 0) {
+      await refundCredits(userId, creditsDeducted, 'PRD 생성 중 오류');
+    }
 
-    // If credit was deducted but generation failed, consider refund
-    // For MVP, log the error and notify user
-    return new Response(
-      JSON.stringify({ error: 'PRD 생성 중 오류가 발생했습니다.' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return jsonResponse({ error: 'PRD 생성 중 오류가 발생했습니다.' }, 500);
   }
 }

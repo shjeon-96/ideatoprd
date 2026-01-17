@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { PRDForm, PRDViewer, CREDITS_PER_VERSION } from '@/src/features/prd-generation';
+import { useTranslations } from 'next-intl';
+import { PRDForm, PRDViewer, CREDITS_PER_VERSION, type PRDLanguage } from '@/src/features/prd-generation';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { useUser } from '@/src/features/auth/hooks/use-user';
 import { InsufficientCreditsModal } from '@/src/features/purchase/ui/InsufficientCreditsModal';
 import { CreditBalance } from '@/src/features/purchase/ui/CreditBalance';
+import { Sparkles, Wand2 } from 'lucide-react';
 
 export default function GeneratePage() {
+  const t = useTranslations();
   const { profile, isLoading: isUserLoading, refetch } = useUser();
   const [content, setContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -22,6 +25,7 @@ export default function GeneratePage() {
       idea: string;
       template: PRDTemplate;
       version: PRDVersion;
+      language: PRDLanguage;
     }) => {
       // Check credits before generating (skip in development)
       const isDev = process.env.NODE_ENV === 'development';
@@ -56,7 +60,7 @@ export default function GeneratePage() {
             return;
           }
 
-          throw new Error(errorData.error || 'PRD 생성에 실패했습니다.');
+          throw new Error(errorData.error || t('generate.generateError'));
         }
 
         // Handle streaming response
@@ -64,7 +68,7 @@ export default function GeneratePage() {
         const decoder = new TextDecoder();
 
         if (!reader) {
-          throw new Error('스트리밍을 시작할 수 없습니다.');
+          throw new Error(t('generate.streamError'));
         }
 
         while (true) {
@@ -89,52 +93,80 @@ export default function GeneratePage() {
         }
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : 'PRD 생성 중 오류가 발생했습니다.'
+          err instanceof Error ? err.message : t('generate.generalError')
         );
       } finally {
         setIsGenerating(false);
       }
     },
-    [profile?.credits, refetch]
+    [profile?.credits, refetch, t]
   );
 
   // Show loading only briefly, then default to 0 credits if profile not loaded
   if (isUserLoading && !profile) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <div
-          className="h-8 w-8 motion-safe:animate-spin rounded-full border-4 border-primary border-t-transparent"
-          role="status"
-          aria-label="로딩 중"
-        />
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative">
+            <div className="size-12 rounded-full border-4 border-brand-secondary" />
+            <div
+              className="absolute inset-0 size-12 motion-safe:animate-spin rounded-full border-4 border-brand-primary border-t-transparent"
+              role="status"
+              aria-label={t('common.loading')}
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-6xl">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">PRD 생성</h1>
-          <p className="mt-2 text-muted-foreground">
-            아이디어를 입력하면 AI가 PRD를 자동으로 생성합니다.
-          </p>
+    <div className="animate-fade-in">
+      {/* Page Header */}
+      <div className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-4">
+          <div className="glow-brand flex size-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-primary to-brand-accent shadow-lg">
+            <Wand2 className="size-7 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              {t('generate.title')}
+            </h1>
+            <p className="mt-1 text-muted-foreground">
+              {t('generate.description')}
+            </p>
+          </div>
         </div>
         <CreditBalance credits={profile?.credits ?? 0} size="lg" />
       </div>
 
+      {/* Error Alert */}
       {error && (
         <div
           role="alert"
-          className="mb-6 rounded-lg bg-destructive/10 p-4 text-destructive"
+          className="mb-8 flex items-center gap-3 rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-destructive"
         >
-          {error}
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-destructive/20">
+            <span className="text-sm font-bold">!</span>
+          </div>
+          <p className="text-sm">{error}</p>
         </div>
       )}
 
+      {/* Main Content Grid */}
       <div className="grid gap-8 lg:grid-cols-2">
-        {/* Left: Form */}
-        <div>
+        {/* Left: Form Card */}
+        <div className="card-3d rounded-2xl border border-border/50 bg-card p-6 shadow-sm lg:p-8">
+          <div className="mb-6 flex items-center gap-3 border-b border-border/50 pb-6">
+            <div className="flex size-10 items-center justify-center rounded-xl bg-brand-secondary">
+              <Sparkles className="size-5 text-brand-primary" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-foreground">{t('generate.ideaInput')}</h2>
+              <p className="text-sm text-muted-foreground">{t('generate.ideaInputDesc')}</p>
+            </div>
+          </div>
           <PRDForm
             onSubmit={handleGenerate}
             isLoading={isGenerating}
@@ -142,8 +174,8 @@ export default function GeneratePage() {
           />
         </div>
 
-        {/* Right: Viewer */}
-        <div aria-live="polite" aria-atomic="false">
+        {/* Right: Viewer Card */}
+        <div className="card-3d rounded-2xl border border-border/50 bg-card shadow-sm" aria-live="polite" aria-atomic="false">
           <PRDViewer content={content} isStreaming={isGenerating} />
         </div>
       </div>

@@ -1,10 +1,14 @@
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 
+// PRD generation language
+export type PRDLanguage = 'ko' | 'en';
+
 // API Request
 export interface GeneratePRDRequest {
   idea: string;
   template: PRDTemplate;
   version: PRDVersion;
+  language: PRDLanguage;
 }
 
 // For internal use
@@ -20,6 +24,7 @@ export interface PRDGenerationContext {
 export const CREDITS_PER_VERSION: Record<PRDVersion, number> = {
   basic: 1,
   detailed: 2,
+  research: 3,
 };
 
 // Validation
