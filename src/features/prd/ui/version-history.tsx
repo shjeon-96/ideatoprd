@@ -25,7 +25,7 @@ export function VersionHistory({ versions, currentVersionId }: VersionHistoryPro
       </div>
 
       <div className="space-y-2">
-        {versions.map((version, index) => {
+        {versions.map((version) => {
           const isCurrentVersion = version.id === currentVersionId;
           const isOriginal = version.version_number === 1;
           const formattedDate = new Date(version.created_at).toLocaleDateString('ko-KR', {

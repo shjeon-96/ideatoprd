@@ -1,8 +1,17 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { defaultLocale, locales, type Locale } from '@/src/i18n/config';
+
+/**
+ * Get initial locale from localStorage (client-side only)
+ */
+function getInitialLocale(): Locale {
+  if (typeof window === 'undefined') return defaultLocale;
+  const stored = localStorage.getItem('locale') as Locale | null;
+  return stored && locales.includes(stored) ? stored : defaultLocale;
+}
 
 /**
  * Hook for managing locale state
@@ -11,15 +20,7 @@ import { defaultLocale, locales, type Locale } from '@/src/i18n/config';
 export function useLocale() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-
-  // Initialize locale from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('locale') as Locale | null;
-    if (stored && locales.includes(stored)) {
-      setLocaleState(stored);
-    }
-  }, []);
+  const [locale, setLocaleState] = useState<Locale>(getInitialLocale);
 
   const setLocale = (newLocale: Locale) => {
     // Persist to localStorage

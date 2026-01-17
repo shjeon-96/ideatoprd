@@ -1,4 +1,124 @@
 {
+  "landing": {
+    "hero": {
+      "badge": "Powered by Claude AI",
+      "title1": "아이디어 한 줄로",
+      "title2": "PRD 완성",
+      "subtitle": "2-3일 걸리던 PRD 작성, 이제 {minutes}분이면 충분합니다.",
+      "subtitleDetail": "Claude AI가 당신의 아이디어를 체계적인 PRD 문서로 변환합니다.",
+      "ctaPrimary": "무료로 시작하기",
+      "ctaSecondary": "기능 살펴보기",
+      "trustFreeCredits": "3 크레딧 무료 제공",
+      "trustFastGeneration": "5분 내 PRD 완성",
+      "previewTitle": "PRD 생성 완료",
+      "previewTime": "4분 32초 소요",
+      "previewSections": ["문제 정의", "타겟 사용자", "핵심 기능", "성공 지표"],
+      "previewComplete": "완료"
+    },
+    "features": {
+      "overline": "Features",
+      "title": "왜 <brand>IdeaToPRD</brand> 인가요?",
+      "subtitle": "복잡한 PRD 작성 과정을 AI가 대신합니다.",
+      "subtitleDetail": "아이디어에만 집중하세요.",
+      "items": [
+        {
+          "title": "즉시 PRD 생성",
+          "description": "5분 만에 완성되는 PRD. 아이디어만 입력하면 체계적인 문서가 자동으로 생성됩니다."
+        },
+        {
+          "title": "5가지 템플릿",
+          "description": "SaaS, Mobile, Marketplace, Extension, AI-Wrapper 등 프로젝트 유형에 맞는 템플릿을 제공합니다."
+        },
+        {
+          "title": "AI 기반 분석",
+          "description": "Claude AI가 아이디어를 구조화하고, 타겟 사용자와 핵심 기능을 분석합니다."
+        },
+        {
+          "title": "다양한 내보내기",
+          "description": "Markdown 복사, PDF 다운로드로 어디서든 PRD를 활용할 수 있습니다."
+        },
+        {
+          "title": "PRD 히스토리",
+          "description": "생성한 PRD를 언제든 다시 확인하고 수정할 수 있습니다."
+        },
+        {
+          "title": "유연한 가격",
+          "description": "구독 없이 필요한 만큼만 크레딧을 구매하세요. 숨겨진 비용이 없습니다."
+        }
+      ]
+    },
+    "pricing": {
+      "overline": "Pricing",
+      "title": "심플한 가격, 숨김 비용 없음",
+      "subtitle": "구독 없이 필요한 만큼만 크레딧을 구매하세요.",
+      "subtitleDetail": "한 번 구매하면 영구적으로 사용할 수 있습니다.",
+      "mostPopular": "Most Popular",
+      "creditsUnit": "크레딧 · 일회성 구매",
+      "ctaButton": "구매하기",
+      "plans": [
+        {
+          "name": "Starter",
+          "description": "가볍게 시작하기",
+          "features": ["PRD 3회 생성", "5가지 템플릿", "Markdown 복사"]
+        },
+        {
+          "name": "Basic",
+          "description": "인디 해커용",
+          "features": ["PRD 10회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리"]
+        },
+        {
+          "name": "Pro",
+          "description": "스타트업 PM용",
+          "features": ["PRD 25회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리", "PDF 다운로드"]
+        },
+        {
+          "name": "Business",
+          "description": "팀/에이전시용",
+          "badge": "최고 가성비",
+          "features": ["PRD 100회 생성", "5가지 템플릿", "Markdown 복사", "PRD 히스토리", "PDF 다운로드", "우선 지원"]
+        }
+      ],
+      "trust": {
+        "securePayment": "안전한 결제",
+        "lemonSqueezy": "Lemon Squeezy 기반",
+        "refundable": "언제든 환불 가능"
+      }
+    },
+    "cta": {
+      "title": "지금 바로 첫 PRD를",
+      "titleLine2": "만들어보세요",
+      "subtitle": "가입하면 <credits>3</credits> 크레딧 무료 지급.",
+      "subtitleDetail": "신용카드 없이 바로 시작하세요.",
+      "button": "무료로 시작하기",
+      "trust": {
+        "quickSignup": "2분 내 가입 완료",
+        "securePayment": "안전한 결제",
+        "instantGeneration": "즉시 PRD 생성"
+      }
+    },
+    "footer": {
+      "tagline": "아이디어 한 줄로 PRD 완성.",
+      "taglineDetail": "AI 기반 PRD 자동 생성 서비스.",
+      "copyright": "© 2026 IdeaToPRD. All rights reserved.",
+      "poweredBy": "Powered by Claude AI",
+      "product": {
+        "title": "Product",
+        "features": "기능",
+        "pricing": "가격",
+        "faq": "FAQ"
+      },
+      "company": {
+        "title": "Company",
+        "blog": "블로그",
+        "contact": "문의하기"
+      },
+      "legal": {
+        "title": "Legal",
+        "terms": "이용약관",
+        "privacy": "개인정보처리방침"
+      }
+    }
+  },
   "common": {
     "credits": "크레딧",
     "settings": "설정",

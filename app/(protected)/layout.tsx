@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AuthGuard } from "@/src/features/auth";
 import { UserMenu, LanguageSwitcher } from "@/src/widgets/common";
 import { MobileNav } from "@/src/widgets/dashboard";
@@ -26,12 +27,12 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
           <div className="container mx-auto flex h-14 items-center justify-between px-4">
             <div className="flex items-center gap-2">
               <MobileNav />
-              <a
+              <Link
                 href="/"
                 className="font-editorial text-lg font-medium tracking-tight"
               >
                 IdeaToPRD
-              </a>
+              </Link>
             </div>
             <div className="flex items-center gap-2">
               <LanguageSwitcher />

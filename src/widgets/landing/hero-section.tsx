@@ -1,10 +1,14 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Button } from '@/src/shared/ui';
 import { FileText, ArrowRight, Sparkles, Clock } from 'lucide-react';
 import Link from 'next/link';
 
 export function HeroSection() {
+  const t = useTranslations('landing.hero');
+  const sections = t.raw('previewSections') as string[];
+
   return (
     <section className="relative min-h-[100vh] overflow-hidden bg-background">
       {/* Subtle grid background */}
@@ -24,7 +28,7 @@ export function HeroSection() {
           >
             <span className="badge-minimal">
               <span className="status-dot" />
-              <span>Powered by Claude AI</span>
+              <span>{t('badge')}</span>
             </span>
           </div>
 
@@ -34,10 +38,10 @@ export function HeroSection() {
             style={{ animationDelay: '100ms', animationFillMode: 'forwards' }}
           >
             <span className="heading-1 block text-foreground">
-              아이디어 한 줄로
+              {t('title1')}
             </span>
             <span className="heading-1 mt-2 block">
-              <span className="text-gradient">PRD 완성</span>
+              <span className="text-gradient">{t('title2')}</span>
             </span>
           </h1>
 
@@ -46,11 +50,9 @@ export function HeroSection() {
             className="animate-fade-up mx-auto mb-10 max-w-xl text-xl leading-relaxed text-muted-foreground opacity-0"
             style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}
           >
-            2-3일 걸리던 PRD 작성, 이제{' '}
-            <span className="font-semibold text-foreground">5분</span>이면
-            충분합니다.
+            {t('subtitle', { minutes: 5 })}
             <br />
-            Claude AI가 당신의 아이디어를 체계적인 PRD 문서로 변환합니다.
+            {t('subtitleDetail')}
           </p>
 
           {/* CTA Buttons */}
@@ -63,7 +65,7 @@ export function HeroSection() {
                 size="lg"
                 className="btn-primary group h-12 gap-2 rounded-lg px-8 text-base font-medium"
               >
-                무료로 시작하기
+                {t('ctaPrimary')}
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Button>
             </Link>
@@ -73,7 +75,7 @@ export function HeroSection() {
                 size="lg"
                 className="btn-ghost h-12 rounded-lg px-8 text-base font-medium"
               >
-                기능 살펴보기
+                {t('ctaSecondary')}
               </Button>
             </Link>
           </div>
@@ -85,11 +87,11 @@ export function HeroSection() {
           >
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Sparkles className="size-4 text-brand-primary" />
-              <span>3 크레딧 무료 제공</span>
+              <span>{t('trustFreeCredits')}</span>
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Clock className="size-4 text-brand-primary" />
-              <span>5분 내 PRD 완성</span>
+              <span>{t('trustFastGeneration')}</span>
             </div>
           </div>
         </div>
@@ -107,29 +109,27 @@ export function HeroSection() {
               <FileText className="size-5" />
             </div>
             <div>
-              <div className="font-medium text-foreground">PRD 생성 완료</div>
+              <div className="font-medium text-foreground">{t('previewTitle')}</div>
               <div className="text-xs text-muted-foreground">
-                4분 32초 소요
+                {t('previewTime')}
               </div>
             </div>
           </div>
 
           {/* Generated sections */}
           <div className="space-y-2">
-            {['문제 정의', '타겟 사용자', '핵심 기능', '성공 지표'].map(
-              (section, i) => (
-                <div
-                  key={section}
-                  className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-2"
-                >
-                  <span className="badge-number">{i + 1}</span>
-                  <span className="text-sm text-foreground">{section}</span>
-                  <span className="ml-auto text-xs text-brand-primary">
-                    완료
-                  </span>
-                </div>
-              )
-            )}
+            {sections.map((section, i) => (
+              <div
+                key={section}
+                className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-2"
+              >
+                <span className="badge-number">{i + 1}</span>
+                <span className="text-sm text-foreground">{section}</span>
+                <span className="ml-auto text-xs text-brand-primary">
+                  {t('previewComplete')}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

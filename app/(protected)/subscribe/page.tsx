@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { SubscriptionPlans } from '@/src/features/subscription/ui/SubscriptionPlans';
@@ -11,7 +10,6 @@ import { CreditBalance } from '@/src/features/purchase/ui/CreditBalance';
 import { useUser } from '@/src/features/auth/hooks/use-user';
 
 export default function SubscribePage() {
-  const router = useRouter();
   const { profile, isLoading: isUserLoading } = useUser();
   const [subscription, setSubscription] = useState<ActiveSubscription | null>(null);
   const [isLoadingSubscription, setIsLoadingSubscription] = useState(true);

@@ -34,9 +34,6 @@ function buildSearchQueries(idea: string): {
   competitors: string;
   tech: string;
 } {
-  // Extract key concepts from idea
-  const ideaLower = idea.toLowerCase();
-
   return {
     market: `${idea} market size trends 2024 2025`,
     competitors: `${idea} competitors alternatives comparison`,

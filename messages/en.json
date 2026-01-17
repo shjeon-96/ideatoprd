@@ -1,4 +1,124 @@
 {
+  "landing": {
+    "hero": {
+      "badge": "Powered by Claude AI",
+      "title1": "From Idea to",
+      "title2": "PRD in Minutes",
+      "subtitle": "PRD writing that took 2-3 days, now done in {minutes} minutes.",
+      "subtitleDetail": "Claude AI transforms your ideas into structured PRD documents.",
+      "ctaPrimary": "Get Started Free",
+      "ctaSecondary": "Explore Features",
+      "trustFreeCredits": "3 Free Credits",
+      "trustFastGeneration": "PRD in 5 Minutes",
+      "previewTitle": "PRD Generated",
+      "previewTime": "4m 32s elapsed",
+      "previewSections": ["Problem Definition", "Target Users", "Core Features", "Success Metrics"],
+      "previewComplete": "Done"
+    },
+    "features": {
+      "overline": "Features",
+      "title": "Why <brand>IdeaToPRD</brand>?",
+      "subtitle": "AI handles the complex PRD writing process.",
+      "subtitleDetail": "Focus on your ideas.",
+      "items": [
+        {
+          "title": "Instant PRD Generation",
+          "description": "Complete PRD in 5 minutes. Just enter your idea and a structured document is automatically generated."
+        },
+        {
+          "title": "5 Templates",
+          "description": "Templates for SaaS, Mobile, Marketplace, Extension, AI-Wrapper and more project types."
+        },
+        {
+          "title": "AI-Powered Analysis",
+          "description": "Claude AI structures your ideas and analyzes target users and core features."
+        },
+        {
+          "title": "Multiple Exports",
+          "description": "Copy as Markdown or download as PDF to use your PRD anywhere."
+        },
+        {
+          "title": "PRD History",
+          "description": "Review and edit your generated PRDs anytime."
+        },
+        {
+          "title": "Flexible Pricing",
+          "description": "Buy only the credits you need without subscription. No hidden costs."
+        }
+      ]
+    },
+    "pricing": {
+      "overline": "Pricing",
+      "title": "Simple Pricing, No Hidden Fees",
+      "subtitle": "Buy only the credits you need without subscription.",
+      "subtitleDetail": "One-time purchase, use forever.",
+      "mostPopular": "Most Popular",
+      "creditsUnit": "credits · one-time purchase",
+      "ctaButton": "Buy Now",
+      "plans": [
+        {
+          "name": "Starter",
+          "description": "Light start",
+          "features": ["3 PRD generations", "5 templates", "Markdown copy"]
+        },
+        {
+          "name": "Basic",
+          "description": "For indie hackers",
+          "features": ["10 PRD generations", "5 templates", "Markdown copy", "PRD history"]
+        },
+        {
+          "name": "Pro",
+          "description": "For startup PMs",
+          "features": ["25 PRD generations", "5 templates", "Markdown copy", "PRD history", "PDF download"]
+        },
+        {
+          "name": "Business",
+          "description": "For teams/agencies",
+          "badge": "Best Value",
+          "features": ["100 PRD generations", "5 templates", "Markdown copy", "PRD history", "PDF download", "Priority support"]
+        }
+      ],
+      "trust": {
+        "securePayment": "Secure Payment",
+        "lemonSqueezy": "Powered by Lemon Squeezy",
+        "refundable": "Refundable Anytime"
+      }
+    },
+    "cta": {
+      "title": "Create Your First PRD",
+      "titleLine2": "Right Now",
+      "subtitle": "Get <credits>3</credits> free credits on signup.",
+      "subtitleDetail": "Start instantly without credit card.",
+      "button": "Get Started Free",
+      "trust": {
+        "quickSignup": "2-min signup",
+        "securePayment": "Secure payment",
+        "instantGeneration": "Instant PRD generation"
+      }
+    },
+    "footer": {
+      "tagline": "From idea to PRD in minutes.",
+      "taglineDetail": "AI-powered PRD generation service.",
+      "copyright": "© 2026 IdeaToPRD. All rights reserved.",
+      "poweredBy": "Powered by Claude AI",
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "pricing": "Pricing",
+        "faq": "FAQ"
+      },
+      "company": {
+        "title": "Company",
+        "blog": "Blog",
+        "contact": "Contact"
+      },
+      "legal": {
+        "title": "Legal",
+        "terms": "Terms of Service",
+        "privacy": "Privacy Policy"
+      }
+    }
+  },
   "common": {
     "credits": "Credits",
     "settings": "Settings",

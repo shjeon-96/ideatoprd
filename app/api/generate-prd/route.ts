@@ -192,7 +192,7 @@ ${promptTemplate.getHint(version)}
     });
 
     return result.toTextStreamResponse();
-  } catch (error) {
+  } catch (_error) {
     // If credit was deducted but generation failed, attempt refund
     if (userId && creditsDeducted > 0) {
       await refundCredits(userId, creditsDeducted, 'PRD 생성 중 오류');

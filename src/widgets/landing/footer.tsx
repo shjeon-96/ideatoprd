@@ -1,32 +1,9 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Twitter, Github, ArrowUpRight, Sparkles } from 'lucide-react';
-
-const footerLinks = {
-  product: {
-    title: 'Product',
-    links: [
-      { label: '기능', href: '#features' },
-      { label: '가격', href: '#pricing' },
-      { label: 'FAQ', href: '#faq' },
-    ],
-  },
-  company: {
-    title: 'Company',
-    links: [
-      { label: '블로그', href: '/blog' },
-      { label: '문의하기', href: '/contact' },
-    ],
-  },
-  legal: {
-    title: 'Legal',
-    links: [
-      { label: '이용약관', href: '/terms' },
-      { label: '개인정보처리방침', href: '/privacy' },
-    ],
-  },
-};
+import { LanguageSwitcher } from '@/src/widgets/common';
 
 const socialLinks = [
   { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
@@ -34,6 +11,33 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const t = useTranslations('landing.footer');
+
+  const footerLinks = {
+    product: {
+      title: t('product.title'),
+      links: [
+        { label: t('product.features'), href: '#features' },
+        { label: t('product.pricing'), href: '#pricing' },
+        { label: t('product.faq'), href: '#faq' },
+      ],
+    },
+    company: {
+      title: t('company.title'),
+      links: [
+        { label: t('company.blog'), href: '/blog' },
+        { label: t('company.contact'), href: '/contact' },
+      ],
+    },
+    legal: {
+      title: t('legal.title'),
+      links: [
+        { label: t('legal.terms'), href: '/terms' },
+        { label: t('legal.privacy'), href: '/privacy' },
+      ],
+    },
+  };
+
   return (
     <footer className="relative border-t border-border/50 bg-muted/10">
       {/* Top gradient line */}
@@ -57,9 +61,9 @@ export function Footer() {
               </div>
             </div>
             <p className="mb-8 max-w-xs text-sm leading-relaxed text-muted-foreground">
-              아이디어 한 줄로 PRD 완성.
+              {t('tagline')}
               <br />
-              AI 기반 PRD 자동 생성 서비스.
+              {t('taglineDetail')}
             </p>
 
             {/* Social links */}
@@ -109,12 +113,13 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 sm:flex-row">
-          <p className="text-sm text-muted-foreground">
-            © 2026 IdeaToPRD. All rights reserved.
-          </p>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
-            <span className="status-dot size-1.5" />
-            Powered by Claude AI
+          <p className="text-sm text-muted-foreground">{t('copyright')}</p>
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
+              <span className="status-dot size-1.5" />
+              {t('poweredBy')}
+            </div>
           </div>
         </div>
       </div>
