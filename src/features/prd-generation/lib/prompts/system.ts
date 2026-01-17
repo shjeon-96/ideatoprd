@@ -1,6 +1,5 @@
 import { TEMPLATE_MAP } from './templates';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
-import type { PRDLanguage } from '../../model/types';
 
 // Base prompt without language section
 const PRD_BASE_PROMPT = `
@@ -222,82 +221,23 @@ Avoid these mistakes:
 </anti_patterns>
 `;
 
-// Language-specific instructions
-const LANGUAGE_INSTRUCTIONS: Record<PRDLanguage, string> = {
-  ko: `<language>
-- Write the PRD in Korean (한국어)
-- Use technical terms in English where appropriate
-</language>`,
-  en: `<language>
+// Language instructions (English only)
+const LANGUAGE_INSTRUCTIONS = `<language>
 - Write the PRD in English
 - Use professional technical terminology
 - Keep the tone professional and clear
-</language>`,
-};
+</language>`;
 
 // Version label mapping
-export const VERSION_LABELS: Record<PRDLanguage, Record<PRDVersion, string>> = {
-  ko: {
-    basic: '기본 (Basic)',
-    detailed: '상세 (Detailed)',
-    research: '리서치 (Research)',
-  },
-  en: {
-    basic: 'Basic',
-    detailed: 'Detailed',
-    research: 'Research',
-  },
+export const VERSION_LABELS: Record<PRDVersion, string> = {
+  basic: 'Basic',
+  detailed: 'Detailed',
+  research: 'Research',
 };
 
-// Version hints
-export const VERSION_HINTS: Record<PRDLanguage, Record<PRDVersion, string>> = {
-  ko: {
-    basic: `제공된 <trend_research> 데이터를 활용하여 모든 섹션을 작성해주세요:
-- Executive Summary: 3-4 문단으로 문제, 솔루션, 차별점 설명
-- Market Analysis: 리서치 데이터 기반 시장 규모와 트렌드 (출처 URL 인용)
-- Competitive Landscape: 리서치에서 발견된 경쟁사 분석
-- Problem Statement: 최소 3개 이상의 pain point와 심각도
-- Target Users: 2개 이상의 페르소나
-- Requirements: 기능 요구사항 최소 8개, 비기능 요구사항 4개
-- User Stories: 최소 6개
-- Success Metrics: 최소 6개 KPI
-- Technical Considerations: 리서치 기반 기술 스택 추천
-- Timeline: MVP 로드맵
-- Risks: 최소 4개 리스크
-
-중요: 면책조항이나 "검증 필요" 문구 없이 리서치 데이터를 자신있게 인용하세요.`,
-    detailed: `제공된 <trend_research> 데이터를 활용하여 모든 섹션을 상세하게 작성해주세요:
-- Executive Summary: 4-5 문단으로 문제, 솔루션, 차별점, 시장 기회 심층 분석
-- Market Analysis: TAM/SAM/SOM 추정, 시장 트렌드 (리서치 출처 인용 필수)
-- Competitive Landscape: 리서치 기반 경쟁사 비교 분석, 차별화 전략
-- Problem Statement: 최소 5개 pain point와 현재 해결책 한계 분석
-- Target Users: 3개 이상의 상세한 페르소나
-- Requirements: 기능 요구사항 12개, 비기능 요구사항 6개
-- User Stories: 최소 10개
-- Success Metrics: 최소 10개 SMART KPI (선행/후행 지표 구분)
-- Technical Considerations: 리서치 기반 기술 스택, 아키텍처, 확장성 전략
-- Timeline: MVP, Beta, GA 단계별 로드맵
-- Risks: 최소 6개 리스크 (확률 × 영향도 매트릭스)
-
-중요: 면책조항이나 "검증 필요" 문구 없이 리서치 데이터를 자신있게 인용하세요.`,
-    research: `제공된 <trend_research> 리서치를 바탕으로 모든 섹션을 투자자 수준으로 상세하게 작성해주세요:
-- Executive Summary: 5-6 문단으로 시장 기회, 솔루션, 경쟁 우위, 수익 모델 심층 분석
-- Market Analysis: TAM/SAM/SOM 구체적 수치와 출처, 시장 성장률(CAGR), 산업 동향 (리서치 URL 인용 필수)
-- Competitive Landscape: 최소 5개 경쟁사 분석 (기능, 가격, 시장점유율 비교표), 차별화 전략, 경쟁 우위
-- Problem Statement: 최소 5개 pain point와 현재 솔루션의 gap 분석 (리서치 기반)
-- Target Users: 3개 이상의 상세한 페르소나 (시장 데이터 기반 검증)
-- Requirements: 기능 요구사항 최소 15개, 비기능 요구사항 최소 8개 (경쟁사 벤치마킹 포함)
-- User Stories: 최소 12개의 사용자 스토리
-- Success Metrics: 최소 12개 KPI (경쟁사 벤치마크 대비 목표치)
-- Technical Stack: 리서치 트렌드 기반 기술 스택 추천, 아키텍처, 확장성, 인프라 비용 추정
-- Timeline: MVP → Beta → GA 상세 로드맵
-- Risks: 최소 8개 리스크와 대응 전략
-- GTM Strategy: 런칭 전략, 마케팅 채널, 가격 전략, 파트너십 기회
-
-중요: 면책조항이나 "검증 필요" 문구 없이 리서치 데이터를 자신있게 인용하세요.`,
-  },
-  en: {
-    basic: `Use the provided <trend_research> data to write all sections:
+// Version hints (English only)
+export const VERSION_HINTS: Record<PRDVersion, string> = {
+  basic: `Use the provided <trend_research> data to write all sections:
 - Executive Summary: 3-4 paragraphs covering problem, solution, and differentiators
 - Market Analysis: Market size and trends based on research data (cite source URLs)
 - Competitive Landscape: Analysis of competitors found in research
@@ -311,7 +251,7 @@ export const VERSION_HINTS: Record<PRDLanguage, Record<PRDVersion, string>> = {
 - Risks: At least 4 risks
 
 IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verification" statements.`,
-    detailed: `Use the provided <trend_research> data to write all sections in detail:
+  detailed: `Use the provided <trend_research> data to write all sections in detail:
 - Executive Summary: 4-5 paragraphs with deep analysis of problem, solution, differentiators, market opportunity
 - Market Analysis: TAM/SAM/SOM estimates, market trends (must cite research sources)
 - Competitive Landscape: Research-based competitor comparison, differentiation strategy
@@ -325,7 +265,7 @@ IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verifica
 - Risks: 6 risks with probability × impact matrix
 
 IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verification" statements.`,
-    research: `Use the provided <trend_research> to write all sections at investor-grade detail:
+  research: `Use the provided <trend_research> to write all sections at investor-grade detail:
 - Executive Summary: 5-6 paragraphs with deep analysis of market opportunity, solution, competitive advantage, revenue model
 - Market Analysis: TAM/SAM/SOM with specific figures and sources, CAGR, industry dynamics (must cite research URLs)
 - Competitive Landscape: Analyze at least 5 competitors (feature, pricing, market share comparison table), differentiation strategy, competitive moat
@@ -340,38 +280,27 @@ IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verifica
 - GTM Strategy: Launch strategy, marketing channels, pricing strategy, partnership opportunities
 
 IMPORTANT: Cite research data confidently WITHOUT disclaimers or "needs verification" statements.`,
-  },
 };
 
-// User prompt templates by language
-export const USER_PROMPT_TEMPLATES: Record<PRDLanguage, { label: string; versionLabel: (v: PRDVersion) => string; instruction: string; getHint: (v: PRDVersion) => string }> = {
-  ko: {
-    label: '아이디어',
-    versionLabel: (v) => VERSION_LABELS.ko[v],
-    instruction: '위 아이디어에 대한 PRD를 생성해주세요.',
-    getHint: (v) => VERSION_HINTS.ko[v],
-  },
-  en: {
-    label: 'Idea',
-    versionLabel: (v) => VERSION_LABELS.en[v],
-    instruction: 'Please generate a PRD for the above idea.',
-    getHint: (v) => VERSION_HINTS.en[v],
-  },
+// User prompt template (English only)
+export const USER_PROMPT_TEMPLATE = {
+  label: 'Idea',
+  versionLabel: (v: PRDVersion) => VERSION_LABELS[v],
+  instruction: 'Please generate a PRD for the above idea.',
+  getHint: (v: PRDVersion) => VERSION_HINTS[v],
 };
 
-// Legacy export for backwards compatibility (defaults to Korean)
-export const PRD_SYSTEM_PROMPT = `${PRD_BASE_PROMPT}\n${LANGUAGE_INSTRUCTIONS.ko}`;
+// Legacy export for backwards compatibility
+export const PRD_SYSTEM_PROMPT = `${PRD_BASE_PROMPT}\n${LANGUAGE_INSTRUCTIONS}`;
 
 export const getSystemPrompt = (
   templateType: PRDTemplate,
-  language: PRDLanguage = 'ko',
   version: PRDVersion = 'basic'
 ): string => {
   const templatePrompt = TEMPLATE_MAP[templateType] || '';
-  const langInstruction = LANGUAGE_INSTRUCTIONS[language];
 
   // Use research prompt for research version
   const basePrompt = version === 'research' ? PRD_RESEARCH_PROMPT : PRD_BASE_PROMPT;
 
-  return `${basePrompt}\n${langInstruction}\n\n${templatePrompt}`;
+  return `${basePrompt}\n${LANGUAGE_INSTRUCTIONS}\n\n${templatePrompt}`;
 };

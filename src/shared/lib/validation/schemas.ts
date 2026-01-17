@@ -14,7 +14,6 @@ export const generatePRDSchema = z.object({
   version: z.enum(['basic', 'detailed', 'research'], {
     message: ErrorCodes.VALIDATION_INVALID_VERSION,
   }),
-  language: z.enum(['ko', 'en']).optional().default('ko'),
   workspace_id: z.string().uuid(ErrorCodes.VALIDATION_INVALID_WORKSPACE_ID).optional(),
 });
 
@@ -32,7 +31,6 @@ export const revisePRDSchema = z.object({
     .array(z.string())
     .min(1, ErrorCodes.VALIDATION_SECTIONS_MIN)
     .max(15, ErrorCodes.VALIDATION_SECTIONS_MAX),
-  language: z.enum(['ko', 'en']).optional().default('ko'),
 });
 
 export type RevisePRDInput = z.infer<typeof revisePRDSchema>;

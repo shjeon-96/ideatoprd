@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/src/shared/ui/button';
 import { TemplateSelector } from './template-selector';
-import { PRDLanguageSelector } from './prd-language-selector';
-import { MAX_IDEA_LENGTH, MIN_IDEA_LENGTH, type PRDLanguage } from '../model/types';
+import { MAX_IDEA_LENGTH, MIN_IDEA_LENGTH } from '../model/types';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { Loader2, FileText, Zap, AlertCircle, Search } from 'lucide-react';
 import { CREDITS_PER_VERSION } from '../model/types';
@@ -15,7 +14,6 @@ interface PRDFormProps {
     idea: string;
     template: PRDTemplate;
     version: PRDVersion;
-    language: PRDLanguage;
   }) => void;
   isLoading: boolean;
   userCredits: number;
@@ -27,7 +25,6 @@ export function PRDForm({ onSubmit, isLoading, userCredits, initialIdea = '' }: 
   const [idea, setIdea] = useState(initialIdea);
   const [template, setTemplate] = useState<PRDTemplate>('saas');
   const [version, setVersion] = useState<PRDVersion>('basic');
-  const [language, setLanguage] = useState<PRDLanguage>('ko');
 
   const isDev = process.env.NODE_ENV === 'development';
   const creditsRequired = CREDITS_PER_VERSION[version];
@@ -37,7 +34,7 @@ export function PRDForm({ onSubmit, isLoading, userCredits, initialIdea = '' }: 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValidIdea || !hasEnoughCredits || isLoading) return;
-    onSubmit({ idea: idea.trim(), template, version, language });
+    onSubmit({ idea: idea.trim(), template, version });
   };
 
   const characterProgress = (idea.length / MAX_IDEA_LENGTH) * 100;
@@ -89,13 +86,6 @@ export function PRDForm({ onSubmit, isLoading, userCredits, initialIdea = '' }: 
           disabled={isLoading}
         />
       </div>
-
-      {/* PRD Language Selector */}
-      <PRDLanguageSelector
-        value={language}
-        onChange={setLanguage}
-        disabled={isLoading}
-      />
 
       {/* Version Selector */}
       <div className="space-y-3">

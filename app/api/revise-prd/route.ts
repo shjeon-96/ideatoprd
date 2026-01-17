@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       return jsonResponse({ error: validation.error }, 400);
     }
 
-    const { prdId, feedback, sections, language } = validation.data;
+    const { prdId, feedback, sections } = validation.data;
 
     // 2. Authenticate user
     const supabase = await createClient();
@@ -114,7 +114,6 @@ export async function POST(req: Request) {
       originalPrd: originalMarkdown,
       feedback,
       sections,
-      language,
     });
 
     // 7. Stream the revised PRD with Anthropic prompt caching

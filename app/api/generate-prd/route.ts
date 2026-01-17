@@ -8,9 +8,8 @@ import {
   getSystemPrompt,
   validateIdea,
   CREDITS_PER_VERSION,
-  type PRDLanguage,
 } from '@/src/features/prd-generation';
-import { USER_PROMPT_TEMPLATES } from '@/src/features/prd-generation/lib/prompts/system';
+import { USER_PROMPT_TEMPLATE } from '@/src/features/prd-generation/lib/prompts/system';
 import {
   savePRD,
   extractPRDTitle,
@@ -69,7 +68,7 @@ async function refundWorkspaceCredits(
     const { data, error } = await supabase.rpc('add_workspace_credit', {
       p_workspace_id: workspaceId,
       p_amount: amount,
-      p_description: `환불: ${reason}`,
+      p_description: `Refund: ${reason}`,
     });
 
     if (error) {
@@ -107,7 +106,7 @@ async function refundCredits(
       p_user_id: userId,
       p_amount: amount,
       p_usage_type: 'credit_refund',
-      p_description: `환불: ${reason}`,
+      p_description: `Refund: ${reason}`,
     });
 
     if (error) {
@@ -128,11 +127,10 @@ export async function POST(req: Request) {
   let workspaceId: string | null = null;
 
   try {
-    const { idea, template, version, language = 'ko', workspace_id } = (await req.json()) as {
+    const { idea, template, version, workspace_id } = (await req.json()) as {
       idea: string;
       template: PRDTemplate;
       version: PRDVersion;
-      language?: PRDLanguage;
       workspace_id?: string;
     };
     creditsDeducted = CREDITS_PER_VERSION[version];
@@ -174,7 +172,7 @@ export async function POST(req: Request) {
           workspaceId,
           userId,
           creditsRequired,
-          `PRD 생성: ${idea.slice(0, 50)}...`
+          `PRD Generation: ${idea.slice(0, 50)}...`
         );
         if (!success) {
           return jsonResponse({ error: ErrorCodes.WORKSPACE_CREDITS_INSUFFICIENT }, 402);
@@ -186,7 +184,7 @@ export async function POST(req: Request) {
           {
             p_user_id: userId,
             p_amount: creditsRequired,
-            p_description: `PRD 생성: ${idea.slice(0, 50)}...`,
+            p_description: `PRD Generation: ${idea.slice(0, 50)}...`,
           }
         );
 
@@ -210,17 +208,16 @@ export async function POST(req: Request) {
       researchContext = '\n<trend_research>\nResearch data temporarily unavailable.\n</trend_research>\n';
     }
 
-    // 6. Build prompt with language support and research context
-    const systemPrompt = getSystemPrompt(template, language, version);
-    const promptTemplate = USER_PROMPT_TEMPLATES[language];
+    // 6. Build prompt with research context
+    const systemPrompt = getSystemPrompt(template, version);
     const userPrompt = `
 <user_input>
-${promptTemplate.label}: ${idea}
-Version: ${promptTemplate.versionLabel(version)}
+${USER_PROMPT_TEMPLATE.label}: ${idea}
+Version: ${USER_PROMPT_TEMPLATE.versionLabel(version)}
 </user_input>
 ${researchContext}
-${promptTemplate.instruction}
-${promptTemplate.getHint(version)}
+${USER_PROMPT_TEMPLATE.instruction}
+${USER_PROMPT_TEMPLATE.getHint(version)}
 `;
 
     // 7. Stream response with UIMessageStream for both text and save result
@@ -286,8 +283,8 @@ ${promptTemplate.getHint(version)}
           } catch (saveError) {
             // Refund credits on save failure (PRD was generated but not saved)
             const refundReason = saveError instanceof PRDSaveError
-              ? `PRD 저장 실패 (${saveError.code})`
-              : 'PRD 저장 실패';
+              ? `PRD save failed (${saveError.code})`
+              : 'PRD save failed';
 
             let refunded: boolean;
             if (workspaceId) {
@@ -345,9 +342,9 @@ ${promptTemplate.getHint(version)}
     if (userId && creditsDeducted > 0) {
       let refundSuccess = false;
       if (workspaceId) {
-        refundSuccess = await refundWorkspaceCredits(workspaceId, userId, creditsDeducted, 'PRD 생성 중 오류');
+        refundSuccess = await refundWorkspaceCredits(workspaceId, userId, creditsDeducted, 'PRD generation error');
       } else {
-        refundSuccess = await refundCredits(userId, creditsDeducted, 'PRD 생성 중 오류');
+        refundSuccess = await refundCredits(userId, creditsDeducted, 'PRD generation error');
       }
 
       if (!refundSuccess) {

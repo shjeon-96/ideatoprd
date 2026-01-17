@@ -1,14 +1,13 @@
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 
-// PRD generation language
-export type PRDLanguage = 'ko' | 'en';
+// PRD generation language (English only)
+export type PRDLanguage = 'en';
 
 // API Request
 export interface GeneratePRDRequest {
   idea: string;
   template: PRDTemplate;
   version: PRDVersion;
-  language: PRDLanguage;
 }
 
 // For internal use
@@ -35,13 +34,13 @@ export function validateIdea(idea: string): { valid: boolean; error?: string } {
   if (!idea || idea.trim().length < MIN_IDEA_LENGTH) {
     return {
       valid: false,
-      error: `아이디어는 최소 ${MIN_IDEA_LENGTH}자 이상이어야 합니다.`,
+      error: `Idea must be at least ${MIN_IDEA_LENGTH} characters.`,
     };
   }
   if (idea.length > MAX_IDEA_LENGTH) {
     return {
       valid: false,
-      error: `아이디어는 ${MAX_IDEA_LENGTH}자를 초과할 수 없습니다.`,
+      error: `Idea cannot exceed ${MAX_IDEA_LENGTH} characters.`,
     };
   }
   return { valid: true };

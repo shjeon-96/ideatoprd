@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { PRDForm, PRDViewer, GenerationProgress, GenerationComplete, CREDITS_PER_VERSION, type PRDLanguage } from '@/src/features/prd-generation';
+import { PRDForm, PRDViewer, GenerationProgress, GenerationComplete, CREDITS_PER_VERSION } from '@/src/features/prd-generation';
 import type { PRDTemplate, PRDVersion } from '@/src/entities';
 import { useUser } from '@/src/features/auth/hooks/use-user';
 import { useWorkspace } from '@/src/features/workspace';
@@ -71,7 +71,6 @@ export default function GeneratePage() {
       idea: string;
       template: PRDTemplate;
       version: PRDVersion;
-      language: PRDLanguage;
     }) => {
       // Check credits before generating (skip in development)
       const isDev = process.env.NODE_ENV === 'development';
